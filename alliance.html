@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fiche Alliance</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 20px;
+            padding: 0;
+            background-color: #e9ecef;
+            color: #343a40;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: #ffffff;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #495057;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        input, textarea, select {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ced4da;
+            border-radius: 5px;
+            background-color: #f8f9fa;
+            transition: border-color 0.3s, background-color 0.3s;
+        }
+
+        input:focus, textarea:focus, select:focus {
+            border-color: #80bdff;
+            outline: 0;
+            background-color: #ffffff;
+        }
+
+        button {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .image-preview {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .image-preview img {
+            max-width: 150px;
+            border-radius: 5px;
+            border: 1px solid #ced4da;
+        }
+
+        .download-pdf {
+            text-align: center;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Fiche Alliance</h1>
+        <form id="alliance-form">
+            <div class="form-group">
+                <label for="name">Nom de l'alliance :</label>
+                <input type="text" id="name" name="name" required>
+            </div>
+
+            <div class="form-group">
+                <label for="members">Membres :</label>
+                <textarea id="members" name="members" rows="5"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="purpose">But :</label>
+                <textarea id="purpose" name="purpose" rows="4"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="history">Historique :</label>
+                <textarea id="history" name="history" rows="6"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="leader">Chef :</label>
+                <input type="text" id="leader" name="leader">
+            </div>
+
+            <div class="form-group">
+                <label for="achievements">Réalisations :</label>
+                <textarea id="achievements" name="achievements" rows="4"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="rivals">Rivaux :</label>
+                <textarea id="rivals" name="rivals" rows="4"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="image-upload">Ajouter des images :</label>
+                <input type="file" id="image-upload" multiple accept="image/*">
+                <div class="image-preview" id="image-preview"></div>
+            </div>
+
+            <button type="button" id="download-pdf">Télécharger en PDF</button>
+        </form>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+    <script>
+        const imageUpload = document.getElementById('image-upload');
+        const imagePreview = document.getElementById('image-preview');
+        const form = document.getElementById('alliance-form');
+
+        let imageFiles = [];
+
+        imageUpload.addEventListener('change', (event) => {
+            imagePreview.innerHTML = '';
+            imageFiles = Array.from(event.target.files);
+            imageFiles.forEach(file => {
+                const reader = new FileReader();
+                reader.onload = () => {
+                    const img = document.createElement('img');
+                    img.src = reader.result;
+                    imagePreview.appendChild(img);
+                };
+                reader.readAsDataURL(file);
+            });
+        });
+
+        document.getElementById('download-pdf').addEventListener('click', () => {
+            const { jsPDF } = window.jspdf;
+            const pdf = new jsPDF();
+
+            pdf.text('Fiche Alliance', 10, 10);
+            pdf.text(`Nom : ${form.name.value}`, 10, 20);
+            pdf.text(`Membres :`, 10, 30);
+            pdf.text(form.members.value, 10, 40, { maxWidth: 180 });
+            pdf.text(`But :`, 10, 70);
+            pdf.text(form.purpose.value, 10, 80, { maxWidth: 180 });
+            pdf.text(`Historique :`, 10, 110);
+            pdf.text(form.history.value, 10, 120, { maxWidth: 180 });
+            pdf.text(`Chef : ${form.leader.value}`, 10, 150);
+            pdf.text(`Réalisations :`, 10, 160);
+            pdf.text(form.achievements.value, 10, 170, { maxWidth: 180 });
+            pdf.text(`Rivaux :`, 10, 200);
+            pdf.text(form.rivals.value, 10, 210, { maxWidth: 180 });
+
+            let yOffset = 240;
+            if (imageFiles.length > 0) {
+                pdf.text('Images :', 10, yOffset);
+                imageFiles.forEach((file, index) => {
+                    const reader = new FileReader();
+                    reader.onload = () => {
+                        pdf.addImage(reader.result, 'JPEG', 10, yOffset + 10 + (index * 50), 50, 50);
+                        if (index === imageFiles.length - 1) {
+                            pdf.save('fiche_alliance.pdf');
+                        }
+                    };
+                    reader.readAsDataURL(file);
+                });
+            } else {
+                pdf.save('fiche_alliance.pdf');
+            }
+        });
+    </script>
+</body>
+</html>
