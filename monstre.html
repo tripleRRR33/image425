@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fiche Monstre</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 0;
+            background-color: #f4f4f9;
+            color: #333;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #444;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+        }
+
+        input, textarea, select {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button {
+            background-color: #007BFF;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .image-preview {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .image-preview img {
+            max-width: 150px;
+            border-radius: 5px;
+        }
+
+        .download-pdf {
+            text-align: center;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Fiche Monstre</h1>
+        <form id="monster-form">
+            <div class="form-group">
+                <label for="name">Nom du monstre :</label>
+                <input type="text" id="name" name="name" required>
+            </div>
+
+            <div class="form-group">
+                <label for="origin">Origine ou habitat :</label>
+                <textarea id="origin" name="origin" rows="4"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="appearance">Apparence :</label>
+                <textarea id="appearance" name="appearance" rows="4"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="powers">Pouvoirs et capacités :</label>
+                <textarea id="powers" name="powers" rows="4"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="weaknesses">Faiblesses :</label>
+                <textarea id="weaknesses" name="weaknesses" rows="4"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="mythology">Histoire ou mythologie :</label>
+                <textarea id="mythology" name="mythology" rows="6"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="interactions">Interactions avec les autres :</label>
+                <textarea id="interactions" name="interactions" rows="4"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="image-upload">Ajouter des images :</label>
+                <input type="file" id="image-upload" multiple accept="image/*">
+                <div class="image-preview" id="image-preview"></div>
+            </div>
+
+            <button type="button" id="download-pdf">Télécharger en PDF</button>
+        </form>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+    <script>
+        const imageUpload = document.getElementById('image-upload');
+        const imagePreview = document.getElementById('image-preview');
+        const form = document.getElementById('monster-form');
+
+        let imageFiles = [];
+
+        imageUpload.addEventListener('change', (event) => {
+            imagePreview.innerHTML = '';
+            imageFiles = Array.from(event.target.files);
+            imageFiles.forEach(file => {
+                const reader = new FileReader();
+                reader.onload = () => {
+                    const img = document.createElement('img');
+                    img.src = reader.result;
+                    imagePreview.appendChild(img);
+                };
+                reader.readAsDataURL(file);
+            });
+        });
+
+        document.getElementById('download-pdf').addEventListener('click', async () => {
+            const { jsPDF } = window.jspdf;
+            const pdf = new jsPDF();
+
+            pdf.text('Fiche Monstre', 10, 10);
+            pdf.text(`Nom : ${form.name.value}`, 10, 20);
+            pdf.text(`Origine ou habitat :`, 10, 30);
+            pdf.text(form.origin.value, 10, 40, { maxWidth: 180 });
+            pdf.text(`Apparence :`, 10, 70);
+            pdf.text(form.appearance.value, 10, 80, { maxWidth: 180 });
+            pdf.text(`Pouvoirs et capacités :`, 10, 110);
+            pdf.text(form.powers.value, 10, 120, { maxWidth: 180 });
+            pdf.text(`Faiblesses :`, 10, 150);
+            pdf.text(form.weaknesses.value, 10, 160, { maxWidth: 180 });
+            pdf.text(`Histoire ou mythologie :`, 10, 190);
+            pdf.text(form.mythology.value, 10, 200, { maxWidth: 180 });
+            pdf.text(`Interactions avec les autres :`, 10, 230);
+            pdf.text(form.interactions.value, 10, 240, { maxWidth: 180 });
+
+            for (const file of imageFiles) {
+                const reader = new FileReader();
+                reader.onload = async () => {
+                    const img = new Image();
+                    img.src = reader.result;
+                    pdf.addImage(img, 'JPEG', 10, 270, 50, 50);
+                };
+                await reader.readAsDataURL(file);
+            }
+
+            pdf.save('fiche_monstre.pdf');
+        });
+    </script>
+</body>
+</html>
