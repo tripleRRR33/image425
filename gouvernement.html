@@ -3,14 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fiche Alliance</title>
+    <title>Fiche Gouvernement</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Roboto', sans-serif;
             margin: 20px;
             padding: 0;
-            background-color: #e9ecef;
+            background-color: #f8f9fa;
             color: #343a40;
         }
 
@@ -31,10 +32,11 @@
 
         .form-group {
             margin-bottom: 15px;
+            display: flex;
+            flex-direction: column;
         }
 
         label {
-            display: block;
             font-weight: bold;
             margin-bottom: 5px;
         }
@@ -47,6 +49,7 @@
             border-radius: 5px;
             background-color: #f8f9fa;
             transition: border-color 0.3s, background-color 0.3s;
+            font-size: 16px;
         }
 
         input:focus, textarea:focus, select:focus {
@@ -62,11 +65,13 @@
             border: none;
             border-radius: 5px;
             cursor: pointer;
-            transition: background-color 0.3s;
+            transition: background-color 0.3s, transform 0.3s;
+            font-size: 16px;
         }
 
         button:hover {
             background-color: #0056b3;
+            transform: scale(1.05);
         }
 
         .image-preview {
@@ -86,51 +91,68 @@
             text-align: center;
             margin-top: 20px;
         }
+
+        .card {
+            padding: 20px;
+            background: #f8f9fa;
+            border: 1px solid #ced4da;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Fiche Alliance</h1>
-        <form id="alliance-form">
-            <div class="form-group">
-                <label for="name">Nom de l'alliance :</label>
-                <input type="text" id="name" name="name" required>
+        <h1>Fiche Gouvernement</h1>
+        <form id="government-form">
+            <div class="card">
+                <div class="form-group">
+                    <label for="name">Nom du gouvernement :</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="type">Type de gouvernement :</label>
+                    <input type="text" id="type" name="type">
+                </div>
+                <div class="form-group">
+                    <label for="leader">Chef du gouvernement :</label>
+                    <input type="text" id="leader" name="leader">
+                </div>
             </div>
 
-            <div class="form-group">
-                <label for="members">Membres :</label>
-                <textarea id="members" name="members" rows="5"></textarea>
+            <div class="card">
+                <div class="form-group">
+                    <label for="description">Description :</label>
+                    <textarea id="description" name="description" rows="5"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="history">Historique :</label>
+                    <textarea id="history" name="history" rows="6"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="policies">Politiques :</label>
+                    <textarea id="policies" name="policies" rows="4"></textarea>
+                </div>
             </div>
 
-            <div class="form-group">
-                <label for="purpose">But :</label>
-                <textarea id="purpose" name="purpose" rows="4"></textarea>
+            <div class="card">
+                <div class="form-group">
+                    <label for="alliances">Alliances :</label>
+                    <textarea id="alliances" name="alliances" rows="4"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="enemies">Ennemis :</label>
+                    <textarea id="enemies" name="enemies" rows="4"></textarea>
+                </div>
             </div>
 
-            <div class="form-group">
-                <label for="history">Historique :</label>
-                <textarea id="history" name="history" rows="6"></textarea>
-            </div>
-
-            <div class="form-group">
-                <label for="leader">Chef :</label>
-                <input type="text" id="leader" name="leader">
-            </div>
-
-            <div class="form-group">
-                <label for="achievements">Réalisations :</label>
-                <textarea id="achievements" name="achievements" rows="4"></textarea>
-            </div>
-
-            <div class="form-group">
-                <label for="rivals">Rivaux :</label>
-                <textarea id="rivals" name="rivals" rows="4"></textarea>
-            </div>
-
-            <div class="form-group">
-                <label for="image-upload">Ajouter des images :</label>
-                <input type="file" id="image-upload" multiple accept="image/*">
-                <div class="image-preview" id="image-preview"></div>
+            <div class="card">
+                <div class="form-group">
+                    <label for="image-upload">Ajouter des images :</label>
+                    <input type="file" id="image-upload" multiple accept="image/*">
+                    <div class="image-preview" id="image-preview"></div>
+                </div>
             </div>
 
             <button type="button" id="download-pdf">Télécharger en PDF</button>
@@ -141,7 +163,7 @@
     <script>
         const imageUpload = document.getElementById('image-upload');
         const imagePreview = document.getElementById('image-preview');
-        const form = document.getElementById('alliance-form');
+        const form = document.getElementById('government-form');
 
         let imageFiles = [];
 
@@ -163,21 +185,22 @@
             const { jsPDF } = window.jspdf;
             const pdf = new jsPDF();
 
-            pdf.text('Fiche Alliance', 10, 10);
+            pdf.text('Fiche Gouvernement', 10, 10);
             pdf.text(`Nom : ${form.name.value}`, 10, 20);
-            pdf.text(`Membres :`, 10, 30);
-            pdf.text(form.members.value, 10, 40, { maxWidth: 180 });
-            pdf.text(`But :`, 10, 70);
-            pdf.text(form.purpose.value, 10, 80, { maxWidth: 180 });
-            pdf.text(`Historique :`, 10, 110);
-            pdf.text(form.history.value, 10, 120, { maxWidth: 180 });
-            pdf.text(`Chef : ${form.leader.value}`, 10, 150);
-            pdf.text(`Réalisations :`, 10, 160);
-            pdf.text(form.achievements.value, 10, 170, { maxWidth: 180 });
-            pdf.text(`Rivaux :`, 10, 200);
-            pdf.text(form.rivals.value, 10, 210, { maxWidth: 180 });
+            pdf.text(`Type de gouvernement : ${form.type.value}`, 10, 30);
+            pdf.text(`Chef du gouvernement : ${form.leader.value}`, 10, 40);
+            pdf.text(`Description :`, 10, 50);
+            pdf.text(form.description.value, 10, 60, { maxWidth: 180 });
+            pdf.text(`Historique :`, 10, 90);
+            pdf.text(form.history.value, 10, 100, { maxWidth: 180 });
+            pdf.text(`Politiques :`, 10, 130);
+            pdf.text(form.policies.value, 10, 140, { maxWidth: 180 });
+            pdf.text(`Alliances :`, 10, 170);
+            pdf.text(form.alliances.value, 10, 180, { maxWidth: 180 });
+            pdf.text(`Ennemis :`, 10, 210);
+            pdf.text(form.enemies.value, 10, 220, { maxWidth: 180 });
 
-            let yOffset = 240;
+            let yOffset = 250;
             if (imageFiles.length > 0) {
                 pdf.text('Images :', 10, yOffset);
                 imageFiles.forEach((file, index) => {
@@ -185,13 +208,13 @@
                     reader.onload = () => {
                         pdf.addImage(reader.result, 'JPEG', 10, yOffset + 10 + (index * 50), 50, 50);
                         if (index === imageFiles.length - 1) {
-                            pdf.save('fiche_alliance.pdf');
+                            pdf.save('fiche_gouvernement.pdf');
                         }
                     };
                     reader.readAsDataURL(file);
                 });
             } else {
-                pdf.save('fiche_alliance.pdf');
+                pdf.save('fiche_gouvernement.pdf');
             }
         });
     </script>
