@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fiche Divinité</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 0;
+            background-color: #f4f4f9;
+            color: #333;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #444;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+        }
+
+        input, textarea, select {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button {
+            background-color: #007BFF;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .image-preview {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .image-preview img {
+            max-width: 150px;
+            border-radius: 5px;
+        }
+
+        .download-pdf {
+            text-align: center;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Fiche Divinité</h1>
+        <form id="deity-form">
+            <div class="form-group">
+                <label for="name">Nom de la divinité :</label>
+                <input type="text" id="name" name="name" required>
+            </div>
+
+            <div class="form-group">
+                <label for="domain">Domaine(s) d'influence :</label>
+                <textarea id="domain" name="domain" rows="4"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="symbol">Symbole(s) associé(s) :</label>
+                <textarea id="symbol" name="symbol" rows="2"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="mythology">Mythes et légendes :</label>
+                <textarea id="mythology" name="mythology" rows="6"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="personality">Personnalité et comportement :</label>
+                <textarea id="personality" name="personality" rows="4"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="worship">Rites et culte :</label>
+                <textarea id="worship" name="worship" rows="4"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="followers">Adorateurs et prêtres :</label>
+                <textarea id="followers" name="followers" rows="4"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="powers">Pouvoirs et capacités :</label>
+                <textarea id="powers" name="powers" rows="4"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="relations">Relations avec d'autres divinités :</label>
+                <textarea id="relations" name="relations" rows="4"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="notes">Notes supplémentaires :</label>
+                <textarea id="notes" name="notes" rows="4"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="image-upload">Ajouter des images :</label>
+                <input type="file" id="image-upload" multiple accept="image/*">
+                <div class="image-preview" id="image-preview"></div>
+            </div>
+
+            <button type="button" id="download-pdf">Télécharger en PDF</button>
+        </form>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+    <script>
+        const imageUpload = document.getElementById('image-upload');
+        const imagePreview = document.getElementById('image-preview');
+        const form = document.getElementById('deity-form');
+
+        let imageFiles = [];
+
+        imageUpload.addEventListener('change', (event) => {
+            imagePreview.innerHTML = '';
+            imageFiles = Array.from(event.target.files);
+            imageFiles.forEach(file => {
+                const reader = new FileReader();
+                reader.onload = () => {
+                    const img = document.createElement('img');
+                    img.src = reader.result;
+                    imagePreview.appendChild(img);
+                };
+                reader.readAsDataURL(file);
+            });
+        });
+
+        document.getElementById('download-pdf').addEventListener('click', () => {
+            const { jsPDF } = window.jspdf;
+            const pdf = new jsPDF();
+
+            pdf.text('Fiche Divinité', 10, 10);
+            pdf.text(`Nom : ${form.name.value}`, 10, 20);
+            pdf.text(`Domaine(s) :`, 10, 30);
+            pdf.text(form.domain.value, 10, 40, { maxWidth: 180 });
+            pdf.text(`Symbole(s) :`, 10, 70);
+            pdf.text(form.symbol.value, 10, 80, { maxWidth: 180 });
+            pdf.text(`Mythes et légendes :`, 10, 110);
+            pdf.text(form.mythology.value, 10, 120, { maxWidth: 180 });
+            pdf.text(`Personnalité :`, 10, 150);
+            pdf.text(form.personality.value, 10, 160, { maxWidth: 180 });
+            pdf.text(`Rites et culte :`, 10, 190);
+            pdf.text(form.worship.value, 10, 200, { maxWidth: 180 });
+            pdf.text(`Adorateurs :`, 10, 230);
+            pdf.text(form.followers.value, 10, 240, { maxWidth: 180 });
+
+            imageFiles.forEach((file, index) => {
+                const reader = new FileReader();
+                reader.onload = () => {
+                    const img = new Image();
+                    img.src = reader.result;
+                    pdf.addImage(img, 'JPEG', 10, 270 + (index * 50), 50, 50);
+                };
+                reader.readAsDataURL(file);
+            });
+
+            pdf.save('fiche_divinite.pdf');
+        });
+    </script>
+</body>
+</html>
