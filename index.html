@@ -211,4 +211,30 @@
             pdf.text(form.quests.value, 10, 310, { maxWidth: 180 });
             pdf.text(`Relations :`, 10, 340);
             pdf.text(form.relations.value, 10, 350, { maxWidth: 180 });
-           
+            pdf.text(`Traits de personnalité :`, 10, 380);
+            pdf.text(form.traits.value, 10, 390, { maxWidth: 180 });
+            pdf.text(`Peurs et faiblesses :`, 10, 420);
+            pdf.text(form.fears.value, 10, 430, { maxWidth: 180 });
+            pdf.text(`Objectifs :`, 10, 460);
+            pdf.text(form.goals.value, 10, 470, { maxWidth: 180 });
+
+            let yOffset = 500;
+            if (imageFiles.length > 0) {
+                pdf.text('Images :', 10, yOffset);
+                imageFiles.forEach((file, index) => {
+                    const reader = new FileReader();
+                    reader.onload = () => {
+                        pdf.addImage(reader.result, 'JPEG', 10, yOffset + 10 + (index * 50), 50, 50);
+                        if (index === imageFiles.length - 1) {
+                            pdf.save('fiche_personnage.pdf');
+                        }
+                    };
+                    reader.readAsDataURL(file);
+                });
+            } else {
+                pdf.save('fiche_personnage.pdf');
+            }
+        });
+    </script>
+</body>
+</html>
