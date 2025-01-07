@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Écriture des Chapitres</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 20px;
+            padding: 0;
+            background-color: #f8f9fa;
+            color: #343a40;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: #ffffff;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+        }
+        h1 {
+            text-align: center;
+            color: #495057;
+            margin-bottom: 20px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+            display: flex;
+            flex-direction: column;
+        }
+        label {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        input, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ced4da;
+            border-radius: 5px;
+            background-color: #f8f9fa;
+            transition: border-color 0.3s, background-color 0.3s;
+            font-size: 16px;
+        }
+        input:focus, textarea:focus {
+            border-color: #80bdff;
+            outline: 0;
+            background-color: #ffffff;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.3s;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #0056b3;
+            transform: scale(1.05);
+        }
+        .chapter {
+            margin-bottom: 20px;
+        }
+        .chapter h2 {
+            color: #007bff;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Écriture des Chapitres</h1>
+        <div id="chapters">
+            <!-- Chapitres seront ajoutés ici -->
+        </div>
+        <button type="button" id="add-chapter">Ajouter un Chapitre</button>
+    </div>
+    <script>
+        const chaptersDiv = document.getElementById('chapters');
+        const addChapterButton = document.getElementById('add-chapter');
+
+        let chapterCount = 0;
+
+        addChapterButton.addEventListener('click', () => {
+            chapterCount++;
+            const chapterDiv = document.createElement('div');
+            chapterDiv.classList.add('chapter');
+            chapterDiv.innerHTML = `
+                <h2>Chapitre ${chapterCount}</h2>
+                <div class="form-group">
+                    <label for="chapter-title-${chapterCount}">Titre :</label>
+                    <input type="text" id="chapter-title-${chapterCount}" name="chapter-title-${chapterCount}">
+                </div>
+                <div class="form-group">
+                    <label for="chapter-content-${chapterCount}">Contenu :</label>
+                    <textarea id="chapter-content-${chapterCount}" name="chapter-content-${chapterCount}" rows="10"></textarea>
+                </div>
+            `;
+            chaptersDiv.appendChild(chapterDiv);
+        });
+    </script>
+</body>
+</html>
