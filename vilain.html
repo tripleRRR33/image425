@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fiche Vilain</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 0;
+            background-color: #f4f4f9;
+            color: #333;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #444;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+        }
+
+        input, textarea, select {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button {
+            background-color: #007BFF;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .image-preview {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .image-preview img {
+            max-width: 150px;
+            border-radius: 5px;
+        }
+
+        .download-pdf {
+            text-align: center;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Fiche Vilain</h1>
+        <form id="villain-form">
+            <div class="form-group">
+                <label for="name">Nom du vilain :</label>
+                <input type="text" id="name" name="name" required>
+            </div>
+
+            <div class="form-group">
+                <label for="alias">Alias :</label>
+                <input type="text" id="alias" name="alias">
+            </div>
+
+            <div class="form-group">
+                <label for="powers">Pouvoirs :</label>
+                <textarea id="powers" name="powers" rows="5"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="motivation">Motivation :</label>
+                <textarea id="motivation" name="motivation" rows="4"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="weaknesses">Faiblesses :</label>
+                <textarea id="weaknesses" name="weaknesses" rows="4"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="backstory">Origine/Histoire :</label>
+                <textarea id="backstory" name="backstory" rows="6"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="image-upload">Ajouter des images :</label>
+                <input type="file" id="image-upload" multiple accept="image/*">
+                <div class="image-preview" id="image-preview"></div>
+            </div>
+
+            <button type="button" id="download-pdf">Télécharger en PDF</button>
+        </form>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+    <script>
+        const imageUpload = document.getElementById('image-upload');
+        const imagePreview = document.getElementById('image-preview');
+        const form = document.getElementById('villain-form');
+
+        let imageFiles = [];
+
+        imageUpload.addEventListener('change', (event) => {
+            imagePreview.innerHTML = '';
+            imageFiles = Array.from(event.target.files);
+            imageFiles.forEach(file => {
+                const reader = new FileReader();
+                reader.onload = () => {
+                    const img = document.createElement('img');
+                    img.src = reader.result;
+                    imagePreview.appendChild(img);
+                };
+                reader.readAsDataURL(file);
+            });
+        });
+
+        document.getElementById('download-pdf').addEventListener('click', () => {
+            const { jsPDF } = window.jspdf;
+            const pdf = new jsPDF();
+
+            pdf.text('Fiche Vilain', 10, 10);
+            pdf.text(`Nom : ${form.name.value}`, 10, 20);
+            pdf.text(`Alias : ${form.alias.value}`, 10, 30);
+            pdf.text(`Pouvoirs :`, 10, 40);
+            pdf.text(form.powers.value, 10, 50, { maxWidth: 180 });
+            pdf.text(`Motivation :`, 10, 80);
+            pdf.text(form.motivation.value, 10, 90, { maxWidth: 180 });
+            pdf.text(`Faiblesses :`, 10, 120);
+            pdf.text(form.weaknesses.value, 10, 130, { maxWidth: 180 });
+            pdf.text(`Origine/Histoire :`, 10, 160);
+            pdf.text(form.backstory.value, 10, 170, { maxWidth: 180 });
+
+            let yOffset = 200;
+            if (imageFiles.length > 0) {
+                pdf.text('Images :', 10, yOffset);
+                imageFiles.forEach((file, index) => {
+                    const reader = new FileReader();
+                    reader.onload = () => {
+                        pdf.addImage(reader.result, 'JPEG', 10, yOffset + 10 + (index * 50), 50, 50);
+                        if (index === imageFiles.length - 1) {
+                            pdf.save('fiche_vilain.pdf');
+                        }
+                    };
+                    reader.readAsDataURL(file);
+                });
+            } else {
+                pdf.save('fiche_vilain.pdf');
+            }
+        });
+    </script>
+</body>
+</html>
