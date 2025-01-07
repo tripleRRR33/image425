@@ -43,6 +43,52 @@
         a:hover {
             text-decoration: underline;
         }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+        }
+
+        input, textarea, select {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button {
+            background-color: #007BFF;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .image-preview {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .image-preview img {
+            max-width: 150px;
+            border-radius: 5px;
+        }
+
+        .download-pdf {
+            text-align: center;
+            margin-top: 20px;
+        }
     </style>
 </head>
 <body>
@@ -51,6 +97,165 @@
         <div class="link">
             <a href="fiche_pays.html">Accéder à la fiche pays</a>
         </div>
+        <h1>Fiche Personnage Fantastique</h1>
+        <form id="character-form">
+            <div class="form-group">
+                <label for="name">Nom du personnage :</label>
+                <input type="text" id="name" name="name" required>
+            </div>
+
+            <div class="form-group">
+                <label for="race">Race :</label>
+                <input type="text" id="race" name="race">
+            </div>
+
+            <div class="form-group">
+                <label for="class">Classe :</label>
+                <input type="text" id="class" name="class">
+            </div>
+
+            <div class="form-group">
+                <label for="age">Âge :</label>
+                <input type="number" id="age" name="age">
+            </div>
+
+            <div class="form-group">
+                <label for="description">Description :</label>
+                <textarea id="description" name="description" rows="5"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="abilities">Pouvoirs/Capacités :</label>
+                <textarea id="abilities" name="abilities" rows="4"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="background">Histoire/Origine :</label>
+                <textarea id="background" name="background" rows="6"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="equipment">Équipement :</label>
+                <textarea id="equipment" name="equipment" rows="4"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="allies">Alliés :</label>
+                <textarea id="allies" name="allies" rows="4"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="enemies">Ennemis :</label>
+                <textarea id="enemies" name="enemies" rows="4"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="quests">Quêtes/Aventures :</label>
+                <textarea id="quests" name="quests" rows="6"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="relations">Relations :</label>
+                <textarea id="relations" name="relations" rows="4"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="traits">Traits de personnalité :</label>
+                <textarea id="traits" name="traits" rows="4"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="fears">Peurs et faiblesses :</label>
+                <textarea id="fears" name="fears" rows="4"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="goals">Objectifs :</label>
+                <textarea id="goals" name="goals" rows="4"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="image-upload">Ajouter des images :</label>
+                <input type="file" id="image-upload" multiple accept="image/*">
+                <div class="image-preview" id="image-preview"></div>
+            </div>
+
+            <button type="button" id="download-pdf">Télécharger en PDF</button>
+        </form>
+        <p>Chemin d'accès : <a href="https://github.com/tripleRRR33/image425/blob/main/index.html">index.html</a></p>
     </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+    <script>
+        const imageUpload = document.getElementById('image-upload');
+        const imagePreview = document.getElementById('image-preview');
+        const form = document.getElementById('character-form');
+
+        let imageFiles = [];
+
+        imageUpload.addEventListener('change', (event) => {
+            imagePreview.innerHTML = '';
+            imageFiles = Array.from(event.target.files);
+            imageFiles.forEach(file => {
+                const reader = new FileReader();
+                reader.onload = () => {
+                    const img = document.createElement('img');
+                    img.src = reader.result;
+                    imagePreview.appendChild(img);
+                };
+                reader.readAsDataURL(file);
+            });
+        });
+
+        document.getElementById('download-pdf').addEventListener('click', () => {
+            const { jsPDF } = window.jspdf;
+            const pdf = new jsPDF();
+
+            pdf.text('Fiche Personnage Fantastique', 10, 10);
+            pdf.text(`Nom : ${form.name.value}`, 10, 20);
+            pdf.text(`Race : ${form.race.value}`, 10, 30);
+            pdf.text(`Classe : ${form.class.value}`, 10, 40);
+            pdf.text(`Âge : ${form.age.value}`, 10, 50);
+            pdf.text(`Description :`, 10, 60);
+            pdf.text(form.description.value, 10, 70, { maxWidth: 180 });
+            pdf.text(`Pouvoirs/Capacités :`, 10, 100);
+            pdf.text(form.abilities.value, 10, 110, { maxWidth: 180 });
+            pdf.text(`Histoire/Origine :`, 10, 140);
+            pdf.text(form.background.value, 10, 150, { maxWidth: 180 });
+            pdf.text(`Équipement :`, 10, 180);
+            pdf.text(form.equipment.value, 10, 190, { maxWidth: 180 });
+            pdf.text(`Alliés :`, 10, 220);
+            pdf.text(form.allies.value, 10, 230, { maxWidth: 180 });
+            pdf.text(`Ennemis :`, 10, 260);
+            pdf.text(form.enemies.value, 10, 270, { maxWidth: 180 });
+            pdf.text(`Quêtes/Aventures :`, 10, 300);
+            pdf.text(form.quests.value, 10, 310, { maxWidth: 180 });
+            pdf.text(`Relations :`, 10, 340);
+            pdf.text(form.relations.value, 10, 350, { maxWidth: 180 });
+            pdf.text(`Traits de personnalité :`, 10, 380);
+            pdf.text(form.traits.value, 10, 390, { maxWidth: 180 });
+            pdf.text(`Peurs et faiblesses :`, 10, 420);
+            pdf.text(form.fears.value, 10, 430, { maxWidth: 180 });
+            pdf.text(`Objectifs :`, 10, 460);
+            pdf.text(form.goals.value, 10, 470, { maxWidth: 180 });
+
+            let yOffset = 500;
+            if (imageFiles.length > 0) {
+                pdf.text('Images :', 10, yOffset);
+                imageFiles.forEach((file, index) => {
+                    const reader = new FileReader();
+                    reader.onload = () => {
+                        pdf.addImage(reader.result, 'JPEG', 10, yOffset + 10 + (index * 50), 50, 50);
+                        if (index === imageFiles.length - 1) {
+                            pdf.save('fiche_personnage.pdf');
+                        }
+                    };
+                    reader.readAsDataURL(file);
+                });
+            } else {
+                pdf.save('fiche_personnage.pdf');
+            }
+        });
+    </script>
 </body>
 </html>
