@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Générateur de Cartes Aléatoires</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 20px;
+            padding: 0;
+            background-color: #f8f9fa;
+            color: #343a40;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: #ffffff;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+        }
+        h1 {
+            text-align: center;
+            color: #495057;
+            margin-bottom: 20px;
+        }
+        canvas {
+            display: block;
+            margin: 0 auto;
+            border: 1px solid #ced4da;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        button {
+            display: block;
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.3s;
+            font-size: 16px;
+            margin: 20px auto;
+        }
+        button:hover {
+            background-color: #0056b3;
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Générateur de Cartes Aléatoires</h1>
+        <canvas id="mapCanvas" width="600" height="400"></canvas>
+        <button id="generateMap">Générer une Nouvelle Carte</button>
+    </div>
+    <script>
+        const canvas = document.getElementById('mapCanvas');
+        const context = canvas.getContext('2d');
+        const generateMapButton = document.getElementById('generateMap');
+
+        function getRandomInt(min, max) {
+            return Math.floor(Math.random() * (max - min + 1)) + min;
+        }
+
+        function drawMap() {
+            context.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Draw background
+            context.fillStyle = '#87CEEB';
+            context.fillRect(0, 0, canvas.width, canvas.height);
+
+            // Draw islands
+            const numberOfIslands = getRandomInt(5, 15);
+            for (let i = 0; i < numberOfIslands; i++) {
+                const x = getRandomInt(0, canvas.width);
+                const y = getRandomInt(0, canvas.height);
+                const width = getRandomInt(50, 150);
+                const height = getRandomInt(50, 150);
+                context.fillStyle = '#228B22';
+                context.beginPath();
+                context.ellipse(x, y, width, height, Math.random() * Math.PI, 0, 2 * Math.PI);
+                context.fill();
+            }
+        }
+
+        generateMapButton.addEventListener('click', drawMap);
+
+        // Generate an initial map
+        drawMap();
+    </script>
+</body>
+</html>
