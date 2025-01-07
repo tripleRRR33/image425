@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Outil de Brainstorming</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 20px;
+            padding: 0;
+            background-color: #f8f9fa;
+            color: #343a40;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: #ffffff;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+        }
+        h1 {
+            text-align: center;
+            color: #495057;
+            margin-bottom: 20px;
+        }
+        #brainstorming-board {
+            width: 100%;
+            height: 500px;
+            border: 1px solid #ced4da;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            background-color: #fff;
+            overflow: auto;
+            padding: 10px;
+        }
+        .idea {
+            background: #e9ecef;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .idea input {
+            flex: 1;
+            margin-right: 10px;
+        }
+        .idea button {
+            background-color: red;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .idea button:hover {
+            background-color: darkred;
+        }
+        #add-idea {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.3s;
+            font-size: 16px;
+            margin-top: 20px;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        #add-idea:hover {
+            background-color: #0056b3;
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Outil de Brainstorming</h1>
+        <div id="brainstorming-board"></div>
+        <button id="add-idea">Ajouter une idée</button>
+    </div>
+    <script>
+        const brainstormingBoard = document.getElementById('brainstorming-board');
+        const addIdeaButton = document.getElementById('add-idea');
+
+        function createIdeaElement() {
+            const ideaDiv = document.createElement('div');
+            ideaDiv.className = 'idea';
+
+            const input = document.createElement('input');
+            input.type = 'text';
+            input.placeholder = 'Nouvelle idée...';
+
+            const removeButton = document.createElement('button');
+            removeButton.textContent = 'Supprimer';
+            removeButton.onclick = () => {
+                brainstormingBoard.removeChild(ideaDiv);
+            };
+
+            ideaDiv.appendChild(input);
+            ideaDiv.appendChild(removeButton);
+
+            return ideaDiv;
+        }
+
+        addIdeaButton.addEventListener('click', () => {
+            const ideaElement = createIdeaElement();
+            brainstormingBoard.appendChild(ideaElement);
+        });
+    </script>
+</body>
+</html>
