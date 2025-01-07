@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fiche Pays</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 0;
+            background-color: #f4f4f9;
+            color: #333;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #444;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+        }
+
+        input, textarea, select {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button {
+            background-color: #007BFF;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .image-preview {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .image-preview img {
+            max-width: 150px;
+            border-radius: 5px;
+        }
+
+        .download-pdf {
+            text-align: center;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Fiche Pays</h1>
+        <form id="country-form">
+            <div class="form-group">
+                <label for="name">Nom du pays :</label>
+                <input type="text" id="name" name="name" required>
+            </div>
+
+            <div class="form-group">
+                <label for="capital">Capitale :</label>
+                <input type="text" id="capital" name="capital">
+            </div>
+
+            <div class="form-group">
+                <label for="population">Population :</label>
+                <input type="number" id="population" name="population">
+            </div>
+
+            <div class="form-group">
+                <label for="area">Superficie (km²) :</label>
+                <input type="number" id="area" name="area">
+            </div>
+
+            <div class="form-group">
+                <label for="language">Langue officielle :</label>
+                <input type="text" id="language" name="language">
+            </div>
+
+            <div class="form-group">
+                <label for="currency">Monnaie :</label>
+                <input type="text" id="currency" name="currency">
+            </div>
+
+            <div class="form-group">
+                <label for="description">Description :</label>
+                <textarea id="description" name="description" rows="5"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="background">Histoire :</label>
+                <textarea id="background" name="background" rows="6"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="economy">Économie :</label>
+                <textarea id="economy" name="economy" rows="4"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="culture">Culture :</label>
+                <textarea id="culture" name="culture" rows="4"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="tourism">Tourisme :</label>
+                <textarea id="tourism" name="tourism" rows="4"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="image-upload">Ajouter des images :</label>
+                <input type="file" id="image-upload" multiple accept="image/*">
+                <div class="image-preview" id="image-preview"></div>
+            </div>
+
+            <button type="button" id="download-pdf">Télécharger en PDF</button>
+        </form>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+    <script>
+        const imageUpload = document.getElementById('image-upload');
+        const imagePreview = document.getElementById('image-preview');
+        const form = document.getElementById('country-form');
+
+        let imageFiles = [];
+
+        imageUpload.addEventListener('change', (event) => {
+            imagePreview.innerHTML = '';
+            imageFiles = Array.from(event.target.files);
+            imageFiles.forEach(file => {
+                const reader = new FileReader();
+                reader.onload = () => {
+                    const img = document.createElement('img');
+                    img.src = reader.result;
+                    imagePreview.appendChild(img);
+                };
+                reader.readAsDataURL(file);
+            });
+        });
+
+        document.getElementById('download-pdf').addEventListener('click', () => {
+            const { jsPDF } = window.jspdf;
+            const pdf = new jsPDF();
+
+            pdf.text('Fiche Pays', 10, 10);
+            pdf.text(`Nom : ${form.name.value}`, 10, 20);
+            pdf.text(`Capitale : ${form.capital.value}`, 10, 30);
+            pdf.text(`Population : ${form.population.value}`, 10, 40);
+            pdf.text(`Superficie : ${form.area.value} km²`, 10, 50);
+            pdf.text(`Langue officielle : ${form.language.value}`, 10, 60);
+            pdf.text(`Monnaie : ${form.currency.value}`, 10, 70);
+            pdf.text(`Description :`, 10, 80);
+            pdf.text(form.description.value, 10, 90, { maxWidth: 180 });
+            pdf.text(`Histoire :`, 10, 120);
+            pdf.text(form.background.value, 10, 130, { maxWidth: 180 });
+            pdf.text(`Économie :`, 10, 160);
+            pdf.text(form.economy.value, 10, 170, { maxWidth: 180 });
+            pdf.text(`Culture :`, 10, 200);
+            pdf.text(form.culture.value, 10, 210, { maxWidth: 180 });
+            pdf.text(`Tourisme :`, 10, 240);
+            pdf.text(form.tourism.value, 10, 250, { maxWidth: 180 });
+
+            let yOffset = 280;
+            if (imageFiles.length > 0) {
+                pdf.text('Images :', 10, yOffset);
+                imageFiles.forEach((file, index) => {
+                    const reader = new FileReader();
+                    reader.onload = () => {
+                        pdf.addImage(reader.result, 'JPEG', 10, yOffset + 10 + (index * 50), 50, 50);
+                        if (index === imageFiles.length - 1) {
+                            pdf.save('fiche_pays.pdf');
+                        }
+                    };
+                    reader.readAsDataURL(file);
+                });
+            } else {
+                pdf.save('fiche_pays.pdf');
+            }
+        });
+    </script>
+</body>
+</html>
