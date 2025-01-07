@@ -7,25 +7,26 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 20px;
             padding: 0;
-            background-color: #f4f4f9;
-            color: #333;
+            background-color: #e9ecef;
+            color: #343a40;
         }
 
         .container {
             max-width: 800px;
             margin: 0 auto;
-            background: #fff;
+            background: #ffffff;
             padding: 20px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             border-radius: 10px;
         }
 
         h1 {
             text-align: center;
-            color: #444;
+            color: #495057;
+            margin-bottom: 20px;
         }
 
         .link {
@@ -33,14 +34,18 @@
             margin-top: 20px;
         }
 
-        a {
+        .link a {
+            display: inline-block;
+            margin: 5px 10px;
             color: #007BFF;
             text-decoration: none;
             font-weight: bold;
             font-size: 18px;
+            transition: color 0.3s;
         }
 
-        a:hover {
+        .link a:hover {
+            color: #0056b3;
             text-decoration: underline;
         }
 
@@ -51,23 +56,33 @@
         label {
             display: block;
             font-weight: bold;
+            margin-bottom: 5px;
         }
 
         input, textarea, select {
             width: 100%;
             padding: 10px;
             margin-top: 5px;
-            border: 1px solid #ccc;
+            border: 1px solid #ced4da;
             border-radius: 5px;
+            background-color: #f8f9fa;
+            transition: border-color 0.3s, background-color 0.3s;
+        }
+
+        input:focus, textarea:focus, select:focus {
+            border-color: #80bdff;
+            outline: 0;
+            background-color: #ffffff;
         }
 
         button {
-            background-color: #007BFF;
+            background-color: #007bff;
             color: white;
             padding: 10px 20px;
             border: none;
             border-radius: 5px;
             cursor: pointer;
+            transition: background-color 0.3s;
         }
 
         button:hover {
@@ -78,11 +93,13 @@
             display: flex;
             flex-wrap: wrap;
             gap: 10px;
+            margin-top: 10px;
         }
 
         .image-preview img {
             max-width: 150px;
             border-radius: 5px;
+            border: 1px solid #ced4da;
         }
 
         .download-pdf {
@@ -96,15 +113,15 @@
         <h1>Accueil</h1>
         <div class="link">
             <a href="pays.html">Accéder à la fiche pays</a>
-            <a href="intrigue.html">Accéder a fiche intrigue</a>
-            <a href="divinite.html">Accéder a fiche divinitée</a>
-            <a href="monstre.html">Accéder a fiche monstre</a>
-            <a href="artefact.html">Accéder a fiche artefact</a>
-            <a href="malediction.html">Accéder a la fiche malediction</a>
-            <a href="peuple.html">Accéder a la fiche peuple</a>
-            <a href="vilain.html">Accéder a la fiche vilain</a>
-            <a href="organisation">Accéder a la fiche organisation</a>
-                </div>
+            <a href="intrigue.html">Accéder à la fiche intrigue</a>
+            <a href="divinite.html">Accéder à la fiche divinité</a>
+            <a href="monstre.html">Accéder à la fiche monstre</a>
+            <a href="artefact.html">Accéder à la fiche artefact</a>
+            <a href="malediction.html">Accéder à la fiche malédiction</a>
+            <a href="peuple.html">Accéder à la fiche peuple</a>
+            <a href="vilain.html">Accéder à la fiche vilain</a>
+            <a href="organisation.html">Accéder à la fiche organisation</a>
+        </div>
         <h1>Fiche Personnage Fantastique</h1>
         <form id="character-form">
             <div class="form-group">
