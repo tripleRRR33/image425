@@ -7,138 +7,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        body {
-            font-family: 'Roboto', sans-serif;
-            margin: 20px;
-            padding: 0;
-            background-color: #f8f9fa;
-            color: #343a40;
-        }
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            background: #ffffff;
-            padding: 20px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            border-radius: 10px;
-        }
-        h1 {
-            text-align: center;
-            color: #495057;
-            margin-bottom: 20px;
-        }
-        .timeline {
-            position: relative;
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-        .timeline::after {
-            content: '';
-            position: absolute;
-            width: 6px;
-            background-color: #007bff;
-            top: 0;
-            bottom: 0;
-            left: 50%;
-            margin-left: -3px;
-        }
-        .timeline-item {
-            padding: 10px 40px;
-            position: relative;
-            background-color: inherit;
-            width: 50%;
-        }
-        .timeline-item::after {
-            content: '';
-            position: absolute;
-            width: 25px;
-            height: 25px;
-            right: -17px;
-            background-color: white;
-            border: 4px solid #007bff;
-            top: 15px;
-            border-radius: 50%;
-            z-index: 1;
-        }
-        .left {
-            left: 0;
-        }
-        .right {
-            left: 50%;
-        }
-        .left::before {
-            content: " ";
-            height: 0;
-            position: absolute;
-            top: 22px;
-            width: 0;
-            z-index: 1;
-            right: 30px;
-            border: medium solid #007bff;
-            border-width: 10px 0 10px 10px;
-            border-color: transparent transparent transparent #007bff;
-        }
-        .right::before {
-            content: " ";
-            height: 0;
-            position: absolute;
-            top: 22px;
-            width: 0;
-            z-index: 1;
-            left: 30px;
-            border: medium solid #007bff;
-            border-width: 10px 10px 10px 0;
-            border-color: transparent #007bff transparent transparent;
-        }
-        .right::after {
-            left: -16px;
-        }
-        .content {
-            padding: 20px 30px;
-            background-color: white;
-            position: relative;
-            border-radius: 6px;
-        }
-        .container .timeline-item {
-            margin-bottom: 10px;
-        }
-        .form-group {
-            margin-bottom: 15px;
-        }
-        label {
-            font-weight: bold;
-            margin-bottom: 5px;
-        }
-        input, textarea {
-            width: 100%;
-            padding: 10px;
-            margin-top: 5px;
-            border: 1px solid #ced4da;
-            border-radius: 5px;
-            background-color: #f8f9fa;
-            transition: border-color 0.3s, background-color 0.3s;
-            font-size: 16px;
-        }
-        input:focus, textarea:focus {
-            border-color: #80bdff;
-            outline: 0;
-            background-color: #ffffff;
-        }
-        button {
-            background-color: #007bff;
-            color: white;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s, transform 0.3s;
-            font-size: 16px;
-        }
-        button:hover {
-            background-color: #0056b3;
-            transform: scale(1.05);
-        }
+        /* Styles existants */
     </style>
 </head>
 <body>
@@ -149,45 +18,37 @@
             <input type="text" id="event-title">
         </div>
         <div class="form-group">
+            <label for="event-date">Date de l'événement :</label>
+            <input type="date" id="event-date">
+        </div>
+        <div class="form-group">
             <label for="event-description">Description de l'événement :</label>
             <textarea id="event-description" rows="4"></textarea>
         </div>
         <button id="add-event">Ajouter un événement</button>
+        <button id="download-pdf">Télécharger en PDF</button>
         <div class="timeline" id="timeline">
-            <div class="timeline-item left">
-                <div class="content">
-                    <h2>Événement 1</h2>
-                    <p>Description de l'événement 1.</p>
-                    <button class="edit-event">Modifier</button>
-                    <button class="delete-event">Supprimer</button>
-                </div>
-            </div>
-            <div class="timeline-item right">
-                <div class="content">
-                    <h2>Événement 2</h2>
-                    <p>Description de l'événement 2.</p>
-                    <button class="edit-event">Modifier</button>
-                    <button class="delete-event">Supprimer</button>
-                </div>
-            </div>
-            <!-- Ajoutez d'autres éléments de chronologie ici -->
+            <!-- Exemples de chronologie -->
         </div>
     </div>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
     <script>
         document.getElementById('add-event').addEventListener('click', function() {
             const title = document.getElementById('event-title').value;
+            const date = document.getElementById('event-date').value;
             const description = document.getElementById('event-description').value;
-            if (title && description) {
+            if (title && date && description) {
                 const timeline = document.getElementById('timeline');
                 const newEvent = document.createElement('div');
                 newEvent.className = 'timeline-item ' + (timeline.children.length % 2 === 0 ? 'left' : 'right');
-                newEvent.innerHTML = '<div class="content"><h2>' + title + '</h2><p>' + description + '</p><button class="edit-event">Modifier</button><button class="delete-event">Supprimer</button></div>';
+                newEvent.innerHTML = '<div class="content"><h2>' + title + ' (' + date + ')</h2><p>' + description + '</p><button class="edit-event">Modifier</button><button class="delete-event">Supprimer</button></div>';
                 timeline.appendChild(newEvent);
                 document.getElementById('event-title').value = '';
+                document.getElementById('event-date').value = '';
                 document.getElementById('event-description').value = '';
             } else {
-                alert('Veuillez remplir les deux champs.');
+                alert('Veuillez remplir tous les champs.');
             }
         });
 
@@ -198,10 +59,24 @@
                 const item = event.target.closest('.timeline-item');
                 const title = item.querySelector('h2').textContent;
                 const description = item.querySelector('p').textContent;
-                document.getElementById('event-title').value = title;
+                const date = title.match(/\((.*?)\)/)[1];
+                document.getElementById('event-title').value = title.replace(` (${date})`, '');
+                document.getElementById('event-date').value = date;
                 document.getElementById('event-description').value = description;
                 item.remove();
             }
+        });
+
+        document.getElementById('download-pdf').addEventListener('click', function() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            const events = document.querySelectorAll('.timeline-item .content');
+            events.forEach((event, index) => {
+                const title = event.querySelector('h2').textContent;
+                const description = event.querySelector('p').textContent;
+                doc.text(10, 10 + (index * 10), `${title}: ${description}`);
+            });
+            doc.save('chronologie.pdf');
         });
     </script>
 </body>
