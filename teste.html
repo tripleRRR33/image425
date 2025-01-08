@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Map Generator</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -11,26 +12,8 @@
             padding: 0;
         }
         #map {
-            position: relative;
-            width: 100%;
             height: 600px;
-            background: url('https://via.placeholder.com/1200x600') no-repeat center center;
-            background-size: cover;
             border: 2px solid #333;
-        }
-        .city, .terrain {
-            position: absolute;
-            padding: 5px;
-            border-radius: 3px;
-            cursor: pointer;
-        }
-        .city {
-            background-color: red;
-            color: white;
-        }
-        .terrain {
-            background-color: green;
-            color: white;
         }
         #controls {
             margin: 10px;
@@ -52,78 +35,39 @@
             <input type="text" id="cityName" placeholder="Enter city name">
         </label>
         <button id="addCity">Add City</button>
-        <label>
-            Terrain Type:
-            <input type="text" id="terrainType" placeholder="Enter terrain type">
-        </label>
-        <button id="addTerrain">Add Terrain</button>
     </div>
 
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
     <script>
-        const map = document.getElementById('map');
+        // Initialize the map
+        const map = L.map('map').setView([51.505, -0.09], 13);
+
+        // Add OpenStreetMap tiles
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+
+        // Add city marker functionality
         const addCityButton = document.getElementById('addCity');
         const cityNameInput = document.getElementById('cityName');
-        const addTerrainButton = document.getElementById('addTerrain');
-        const terrainTypeInput = document.getElementById('terrainType');
 
-        map.addEventListener('click', (event) => {
+        map.on('click', (event) => {
             const cityName = cityNameInput.value.trim();
-            const terrainType = terrainTypeInput.value.trim();
 
-            if (!cityName && !terrainType) {
-                alert('Please enter a city name or terrain type first!');
+            if (!cityName) {
+                alert('Please enter a city name first!');
                 return;
             }
 
-            const rect = map.getBoundingClientRect();
-            const x = event.clientX - rect.left;
-            const y = event.clientY - rect.top;
+            const marker = L.marker([event.latlng.lat, event.latlng.lng]).addTo(map)
+                .bindPopup(cityName)
+                .openPopup();
 
-            if (cityName) {
-                const cityElement = document.createElement('div');
-                cityElement.className = 'city';
-                cityElement.style.left = `${x}px`;
-                cityElement.style.top = `${y}px`;
-                cityElement.textContent = cityName;
-
-                cityElement.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    const newName = prompt('Edit city name:', cityElement.textContent);
-                    if (newName) {
-                        cityElement.textContent = newName;
-                    }
-                });
-
-                map.appendChild(cityElement);
-                cityNameInput.value = '';
-            }
-
-            if (terrainType) {
-                const terrainElement = document.createElement('div');
-                terrainElement.className = 'terrain';
-                terrainElement.style.left = `${x}px`;
-                terrainElement.style.top = `${y}px`;
-                terrainElement.textContent = terrainType;
-
-                terrainElement.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    const newType = prompt('Edit terrain type:', terrainElement.textContent);
-                    if (newType) {
-                        terrainElement.textContent = newType;
-                    }
-                });
-
-                map.appendChild(terrainElement);
-                terrainTypeInput.value = '';
-            }
+            cityNameInput.value = '';
         });
 
         addCityButton.addEventListener('click', () => {
             alert('Click on the map to place your city!');
-        });
-
-        addTerrainButton.addEventListener('click', () => {
-            alert('Click on the map to place your terrain!');
         });
     </script>
 </body>
