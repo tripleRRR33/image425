@@ -158,12 +158,16 @@
                 <div class="content">
                     <h2>Événement 1</h2>
                     <p>Description de l'événement 1.</p>
+                    <button class="edit-event">Modifier</button>
+                    <button class="delete-event">Supprimer</button>
                 </div>
             </div>
             <div class="timeline-item right">
                 <div class="content">
                     <h2>Événement 2</h2>
                     <p>Description de l'événement 2.</p>
+                    <button class="edit-event">Modifier</button>
+                    <button class="delete-event">Supprimer</button>
                 </div>
             </div>
             <!-- Ajoutez d'autres éléments de chronologie ici -->
@@ -178,12 +182,25 @@
                 const timeline = document.getElementById('timeline');
                 const newEvent = document.createElement('div');
                 newEvent.className = 'timeline-item ' + (timeline.children.length % 2 === 0 ? 'left' : 'right');
-                newEvent.innerHTML = '<div class="content"><h2>' + title + '</h2><p>' + description + '</p></div>';
+                newEvent.innerHTML = '<div class="content"><h2>' + title + '</h2><p>' + description + '</p><button class="edit-event">Modifier</button><button class="delete-event">Supprimer</button></div>';
                 timeline.appendChild(newEvent);
                 document.getElementById('event-title').value = '';
                 document.getElementById('event-description').value = '';
             } else {
                 alert('Veuillez remplir les deux champs.');
+            }
+        });
+
+        document.getElementById('timeline').addEventListener('click', function(event) {
+            if (event.target.classList.contains('delete-event')) {
+                event.target.closest('.timeline-item').remove();
+            } else if (event.target.classList.contains('edit-event')) {
+                const item = event.target.closest('.timeline-item');
+                const title = item.querySelector('h2').textContent;
+                const description = item.querySelector('p').textContent;
+                document.getElementById('event-title').value = title;
+                document.getElementById('event-description').value = description;
+                item.remove();
             }
         });
     </script>
