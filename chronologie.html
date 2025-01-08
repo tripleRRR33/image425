@@ -103,12 +103,57 @@
         .container .timeline-item {
             margin-bottom: 10px;
         }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        input, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ced4da;
+            border-radius: 5px;
+            background-color: #f8f9fa;
+            transition: border-color 0.3s, background-color 0.3s;
+            font-size: 16px;
+        }
+        input:focus, textarea:focus {
+            border-color: #80bdff;
+            outline: 0;
+            background-color: #ffffff;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.3s;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #0056b3;
+            transform: scale(1.05);
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>Chronologie Interactive</h1>
-        <div class="timeline">
+        <div class="form-group">
+            <label for="event-title">Titre de l'événement :</label>
+            <input type="text" id="event-title">
+        </div>
+        <div class="form-group">
+            <label for="event-description">Description de l'événement :</label>
+            <textarea id="event-description" rows="4"></textarea>
+        </div>
+        <button id="add-event">Ajouter un événement</button>
+        <div class="timeline" id="timeline">
             <div class="timeline-item left">
                 <div class="content">
                     <h2>Événement 1</h2>
@@ -124,5 +169,23 @@
             <!-- Ajoutez d'autres éléments de chronologie ici -->
         </div>
     </div>
+
+    <script>
+        document.getElementById('add-event').addEventListener('click', function() {
+            const title = document.getElementById('event-title').value;
+            const description = document.getElementById('event-description').value;
+            if (title && description) {
+                const timeline = document.getElementById('timeline');
+                const newEvent = document.createElement('div');
+                newEvent.className = 'timeline-item ' + (timeline.children.length % 2 === 0 ? 'left' : 'right');
+                newEvent.innerHTML = '<div class="content"><h2>' + title + '</h2><p>' + description + '</p></div>';
+                timeline.appendChild(newEvent);
+                document.getElementById('event-title').value = '';
+                document.getElementById('event-description').value = '';
+            } else {
+                alert('Veuillez remplir les deux champs.');
+            }
+        });
+    </script>
 </body>
 </html>
