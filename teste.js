@@ -20,28 +20,28 @@ let startPoint = null;
 
 // Create an object to store emoji images
 const emojiImages = {
-    '🏠': 'image/house.png',
-    '🏰': 'image/castle.png',
-    '⚓': 'image/port.png',
-    '🗡️': 'image/sword.png',
-    '🛡️': 'image/shield.png',
-    '🐉': 'image/dragon.png',
-    '🧙‍♂️': 'image/wizard.png',
-    '🧝‍♂️': 'image/elf.png',
-    '🧙‍♀️': 'image/witch.png',
-    '🐎': 'image/horse.png',
-    '🏹': 'image/bow.png',
-    '⚔️': 'image/crossedSwords.png',
-    '🏯': 'image/fortress.png',
-    '🪄': 'image/magicWand.png',
-    '🗺️': 'image/map.png',
-    '🔮': 'image/crystalBall.png',
-    '🏺': 'image/amphora.png',
-    '🧛‍♂️': 'image/vampire.png',
-    '🧞': 'image/genie.png',
-    '🧜‍♀️': 'image/mermaid.png',
-    '🧟': 'image/zombie.png',
-    '🏅': 'image/medallion.png'
+    '🏠': 'images/house.png',
+    '🏰': 'images/castle.png',
+    '⚓': 'images/port.png',
+    '🗡️': 'images/sword.png',
+    '🛡️': 'images/shield.png',
+    '🐉': 'images/dragon.png',
+    '🧙‍♂️': 'images/wizard.png',
+    '🧝‍♂️': 'images/elf.png',
+    '🧙‍♀️': 'images/witch.png',
+    '🐎': 'images/horse.png',
+    '🏹': 'images/bow.png',
+    '⚔️': 'images/crossedSwords.png',
+    '🏯': 'images/fortress.png',
+    '🪄': 'images/magicWand.png',
+    '🗺️': 'images/map.png',
+    '🔮': 'images/crystalBall.png',
+    '🏺': 'images/amphora.png',
+    '🧛‍♂️': 'images/vampire.png',
+    '🧞': 'images/genie.png',
+    '🧜‍♀️': 'images/mermaid.png',
+    '🧟': 'images/zombie.png',
+    '🏅': 'images/medallion.png'
 };
 
 // Load emoji images
@@ -119,8 +119,12 @@ function drawElements() {
         }
         if (el.type === 'emoji') {
             const img = loadedEmojiImages[el.emoji];
-            if (img) {
+            if (img.complete) {
                 ctx.drawImage(img, el.x - el.size / 2, el.y - el.size / 2, el.size, el.size);
+            } else {
+                img.onload = () => {
+                    ctx.drawImage(img, el.x - el.size / 2, el.y - el.size / 2, el.size, el.size);
+                };
             }
         }
     });
