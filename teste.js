@@ -84,7 +84,7 @@ function drawElements() {
             ctx.fillRect(el.x - el.size / 2, el.y - el.size / 2, el.size, el.size);
         }
         if (el.type === 'emoji') {
-            ctx.font = `${el.size}px Arial`;
+            ctx.font = `${el.size}px "Segoe UI Emoji"`;
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
             ctx.fillText(el.emoji, el.x, el.y);
