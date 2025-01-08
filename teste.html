@@ -42,8 +42,14 @@
     <div id="ui">
         <button id="addTown">Add Town</button>
         <button id="addRoad">Add Road</button>
+        <button id="addTile">Add Tile</button>
         <button id="removeElement">Remove Element</button>
         <button id="reset">Reset Map</button>
+        <select id="tileType">
+            <option value="water">Water</option>
+            <option value="forest">Forest</option>
+            <option value="mountain">Mountain</option>
+        </select>
     </div>
     <canvas id="mapCanvas"></canvas>
 
@@ -92,6 +98,12 @@
                     ctx.lineTo(el.endX, el.endY);
                     ctx.stroke();
                 }
+                if (el.type === 'tile') {
+                    if (el.tileType === 'water') ctx.fillStyle = 'lightblue';
+                    if (el.tileType === 'forest') ctx.fillStyle = 'green';
+                    if (el.tileType === 'mountain') ctx.fillStyle = 'gray';
+                    ctx.fillRect(el.x - gridSize / 2, el.y - gridSize / 2, gridSize, gridSize);
+                }
             });
         }
 
@@ -111,6 +123,11 @@
             currentTool = 'addRoad';
         });
 
+        // Add a tile
+        document.getElementById('addTile').addEventListener('click', () => {
+            currentTool = 'addTile';
+        });
+
         // Remove an element
         document.getElementById('removeElement').addEventListener('click', () => {
             currentTool = 'remove';
@@ -123,7 +140,7 @@
         });
 
         let startPoint = null;
-        
+
         canvas.addEventListener('click', (event) => {
             const rect = canvas.getBoundingClientRect();
             const x = Math.floor(event.clientX / gridSize) * gridSize + gridSize / 2;
@@ -148,9 +165,24 @@
                 }
             }
 
+            if (currentTool === 'addTile') {
+                const tileType = document.getElementById('tileType').value;
+                elements.push({ type: 'tile', x, y, tileType });
+            }
+
             if (currentTool === 'remove') {
-                const index = elements.findIndex(el => 
+                const index = elements.findIndex(el =>
                     (el.type === 'town' && Math.hypot(el.x - x, el.y - y) < 10) ||
-                    (el.type === 'road' && ctx.isPointInStroke({
-                        moveTo: { x: el.startX, y: el.sxk }
-                    }))) {return.render render(); ]]
+                    (el.type === 'road' && Math.hypot((el.startX + el.endX) / 2 - x, (el.startY + el.endY) / 2 - y) < 20) ||
+                    (el.type === 'tile' && el.x === x && el.y === y)
+                );
+                if (index !== -1) elements.splice(index, 1);
+            }
+
+            render();
+        });
+
+        render();
+    </script>
+</body>
+</html>
