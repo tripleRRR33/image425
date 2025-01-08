@@ -1,6 +1,3 @@
-Voici le code complet que tu peux copier-coller directement dans une nouvelle page HTML :
-
-```html
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -65,11 +62,35 @@ Voici le code complet que tu peux copier-coller directement dans une nouvelle pa
             return traits[Math.floor(Math.random() * traits.length)];
         }
 
+        function genererEquipement() {
+            const equipements = ["Épée magique", "Bouclier enchanté", "Cape d'invisibilité", "Anneau de force", "Bâton de sorcier"];
+            return equipements[Math.floor(Math.random() * equipements.length)];
+        }
+
+        function genererAllie() {
+            const allies = ["Elfe", "Nain", "Sorcier", "Guerrier", "Dragon"];
+            return allies[Math.floor(Math.random() * allies.length)];
+        }
+
+        function genererEnnemi() {
+            const ennemis = ["Orc", "Troll", "Vampire", "Loup-garou", "Démon"];
+            return ennemis[Math.floor(Math.random() * ennemis.length)];
+        }
+
+        function genererQuete() {
+            const quetes = ["Trouver l'épée légendaire", "Sauver la princesse", "Détruire l'anneau maléfique", "Explorer le donjon", "Défendre le royaume"];
+            return quetes[Math.floor(Math.random() * quetes.length)];
+        }
+
         function genererPersonnage() {
             const nom = genererNom();
             const capacite = genererCapacite();
             const trait = genererTrait();
-            return `Nom: ${nom}, Capacité: ${capacite}, Trait: ${trait}`;
+            const equipement = genererEquipement();
+            const allie = genererAllie();
+            const ennemi = genererEnnemi();
+            const quete = genererQuete();
+            return `Nom: ${nom}, Capacité: ${capacite}, Trait: ${trait}, Équipement: ${equipement}, Allié: ${allie}, Ennemi: ${ennemi}, Quête: ${quete}`;
         }
 
         function afficherPersonnage() {
@@ -78,7 +99,3 @@ Voici le code complet que tu peux copier-coller directement dans une nouvelle pa
     </script>
 </body>
 </html>
-```
-
-Copie ce code dans un fichier nommé, par exemple, `generateur.html`, et ouvre-le dans un navigateur pour tester directement !
-
