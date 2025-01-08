@@ -45,6 +45,16 @@
             transition: background-color 0.2s;
         }
 
+        .point {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: red;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            cursor: pointer;
+        }
+
         .controls {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -175,6 +185,7 @@
             <button onclick="saveAsJpeg()">Sauvegarder JPEG</button>
             <button onclick="toggleDrawing()">Mode dessin: OFF</button>
             <button onclick="generateTiles()">Générer des Tuiles</button>
+            <button onclick="togglePointMode()">Mode Points: OFF</button>
         </div>
 
         <div class="map-container" id="mapContainer">
@@ -219,11 +230,13 @@
         let selectedTerrain = 'plains';
         let isDrawing = false;
         let isMouseDown = false;
+        let isPointMode = false;
 
         // Initialiser la grille
         const mapContainer = document.getElementById('mapContainer');
         const gridSize = { width: 40, height: 30 };
         const terrainData = Array(gridSize.height).fill().map(() => Array(gridSize.width).fill(''));
+        const points = [];
 
         function generateTiles() {
             mapContainer.innerHTML = ''; // Clear existing tiles
@@ -235,6 +248,14 @@
                     tileElement.dataset.y = y;
                     mapContainer.appendChild(tileElement);
                 });
+            });
+            // Replacer les points après la génération des tuiles
+            points.forEach(point => {
+                const pointElement = document.createElement('div');
+                pointElement.className = 'point';
+                pointElement.style.left = point.x + 'px';
+                pointElement.style.top = point.y + 'px';
+                mapContainer.appendChild(pointElement);
             });
         }
 
@@ -250,11 +271,15 @@
             });
         });
 
-        // Gestion du dessin
+        // Gestion du dessin et des points
         mapContainer.addEventListener('mousedown', (e) => {
             isMouseDown = true;
             if (e.target.classList.contains('tile')) {
-                paintTile(e.target);
+                if (isPointMode) {
+                    placePoint(e);
+                } else {
+                    paintTile(e.target);
+                }
             }
         });
 
@@ -287,16 +312,37 @@
             btn.textContent = `Mode dessin: ${isDrawing ? 'ON' : 'OFF'}`;
         }
 
+        function togglePointMode() {
+            isPointMode = !isPointMode;
+            const btn = document.querySelector('button:last-child');
+            btn.textContent = `Mode Points: ${isPointMode ? 'ON' : 'OFF'}`;
+        }
+
+        function placePoint(e) {
+            const x = e.clientX - mapContainer.offsetLeft;
+            const y = e.clientY - mapContainer.offsetTop;
+            const point = { x, y };
+            points.push(point);
+            const pointElement = document.createElement('div');
+            pointElement.className = 'point';
+            pointElement.style.left = x + 'px';
+            pointElement.style.top = y + 'px';
+            mapContainer.appendChild(pointElement);
+        }
+
         function clearMap() {
             document.querySelectorAll('.tile').forEach(tile => {
                 tile.className = 'tile';
             });
             terrainData.forEach(row => row.fill(''));
+            document.querySelectorAll('.point').forEach(point => point.remove());
+            points.length = 0;
         }
 
         function saveMap() {
             const mapData = {
                 terrain: terrainData,
+                points,
                 width: gridSize.width,
                 height: gridSize.height,
                 timestamp: new Date().toISOString()
