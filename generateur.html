@@ -50,13 +50,20 @@
             width: 100%;
             word-wrap: break-word;
         }
+        .card {
+            background: rgba(0, 0, 0, 0.7);
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.5);
+        }
     </style>
 </head>
 <body>
     <h1>Générateur de Personnages Fantastiques</h1>
     <div id="generateur">
         <button onclick="afficherPersonnage()">Générer un personnage</button>
-        <p id="resultat"></p>
+        <div id="resultat" class="card"></div>
     </div>
 
     <script>
@@ -116,6 +123,31 @@
             return quetes[Math.floor(Math.random() * quetes.length)];
         }
 
+        function genererProfession() {
+            const professions = [
+                "Guerrier", "Mage", "Voleur", "Ranger", "Sorcier",
+                "Clerc", "Paladin", "Druide", "Barbare", "Assassin"
+            ];
+            return professions[Math.floor(Math.random() * professions.length)];
+        }
+
+        function genererAlignement() {
+            const alignements = [
+                "Loyal Bon", "Neutre Bon", "Chaotique Bon",
+                "Loyal Neutre", "Neutre", "Chaotique Neutre",
+                "Loyal Mauvais", "Neutre Mauvais", "Chaotique Mauvais"
+            ];
+            return alignements[Math.floor(Math.random() * alignements.length)];
+        }
+
+        function genererLieuOrigine() {
+            const lieux = [
+                "Forêt Enchantée", "Montagnes Mystiques", "Désert Aride", "Royaume Souterrain", "Île Perdue",
+                "Cité Antique", "Village Caché", "Temple Abandonné", "Ruines Oubliées", "Château Maudit"
+            ];
+            return lieux[Math.floor(Math.random() * lieux.length)];
+        }
+
         function genererPersonnage() {
             const nom = genererNom();
             const capacite = genererCapacite();
@@ -124,11 +156,25 @@
             const allie = genererAllie();
             const ennemi = genererEnnemi();
             const quete = genererQuete();
-            return `Nom: ${nom}, Capacité: ${capacite}, Trait: ${trait}, Équipement: ${equipement}, Allié: ${allie}, Ennemi: ${ennemi}, Quête: ${quete}`;
+            const profession = genererProfession();
+            const alignement = genererAlignement();
+            const lieuOrigine = genererLieuOrigine();
+            return `
+                <div><strong>Nom:</strong> ${nom}</div>
+                <div><strong>Profession:</strong> ${profession}</div>
+                <div><strong>Alignement:</strong> ${alignement}</div>
+                <div><strong>Lieu d'origine:</strong> ${lieuOrigine}</div>
+                <div><strong>Capacité:</strong> ${capacite}</div>
+                <div><strong>Trait:</strong> ${trait}</div>
+                <div><strong>Équipement:</strong> ${equipement}</div>
+                <div><strong>Allié:</strong> ${allie}</div>
+                <div><strong>Ennemi:</strong> ${ennemi}</div>
+                <div><strong>Quête:</strong> ${quete}</div>
+            `;
         }
 
         function afficherPersonnage() {
-            document.getElementById('resultat').textContent = genererPersonnage();
+            document.getElementById('resultat').innerHTML = genererPersonnage();
         }
     </script>
 </body>
