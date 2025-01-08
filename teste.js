@@ -18,6 +18,40 @@ let isDragging = false;
 let startDragOffset = { x: 0, y: 0 };
 let startPoint = null;
 
+// Create an object to store emoji images
+const emojiImages = {
+    '🏠': 'image/house.png',
+    '🏰': 'image/castle.png',
+    '⚓': 'image/port.png',
+    '🗡️': 'image/sword.png',
+    '🛡️': 'image/shield.png',
+    '🐉': 'image/dragon.png',
+    '🧙‍♂️': 'image/wizard.png',
+    '🧝‍♂️': 'image/elf.png',
+    '🧙‍♀️': 'image/witch.png',
+    '🐎': 'image/horse.png',
+    '🏹': 'image/bow.png',
+    '⚔️': 'image/crossedSwords.png',
+    '🏯': 'image/fortress.png',
+    '🪄': 'image/magicWand.png',
+    '🗺️': 'image/map.png',
+    '🔮': 'image/crystalBall.png',
+    '🏺': 'image/amphora.png',
+    '🧛‍♂️': 'image/vampire.png',
+    '🧞': 'image/genie.png',
+    '🧜‍♀️': 'image/mermaid.png',
+    '🧟': 'image/zombie.png',
+    '🏅': 'image/medallion.png'
+};
+
+// Load emoji images
+const loadedEmojiImages = {};
+for (const emoji in emojiImages) {
+    const img = new Image();
+    img.src = emojiImages[emoji];
+    loadedEmojiImages[emoji] = img;
+}
+
 // Draw the grid
 function drawGrid() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -84,10 +118,10 @@ function drawElements() {
             ctx.fillRect(el.x - el.size / 2, el.y - el.size / 2, el.size, el.size);
         }
         if (el.type === 'emoji') {
-            ctx.font = `${el.size}px "Segoe UI Emoji", "Noto Color Emoji"`;
-            ctx.textAlign = 'center';
-            ctx.textBaseline = 'middle';
-            ctx.fillText(el.emoji, el.x, el.y);
+            const img = loadedEmojiImages[el.emoji];
+            if (img) {
+                ctx.drawImage(img, el.x - el.size / 2, el.y - el.size / 2, el.size, el.size);
+            }
         }
     });
     ctx.restore();
