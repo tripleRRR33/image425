@@ -3,110 +3,167 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chronologie Interactive</title>
+    <title>Événements</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         body {
-            font-family: 'Roboto', sans-serif;
-            background-color: #f4f4f4;
-            margin: 0;
+            background-image: url('https://i.imgur.com/FI9t6z9.jpeg');
+            background-size: cover;
+            background-attachment: fixed;
+            color: #f4f4f4;
+            font-family: 'Cinzel', serif;
+        }
+        header {
+            background: rgba(0, 0, 0, 0.8);
+            color: #fff;
             padding: 20px;
+            text-align: center;
+            font-size: 2rem;
+            border-bottom: 3px solid #9d6c34;
+        }
+        button {
+            background: #6b4226;
+            color: #fff;
+            border: 2px solid #9d6c34;
+            padding: 10px 20px;
+            font-size: 1.2rem;
+            border-radius: 5px;
+            transition: 0.3s ease-in-out;
+        }
+        button:hover {
+            background: #9d6c34;
+            transform: scale(1.1);
+        }
+        .card {
+            background: rgba(0, 0, 0, 0.7);
+            border: 1px solid #9d6c34;
+            padding: 20px;
+            margin: 20px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+        }
+        h1, h2, h3 {
+            font-family: 'Cormorant', serif;
+            color: #ffd700;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.8);
+        }
+        .nav-menu {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            margin: 20px 0;
+        }
+        .nav-menu a {
+            text-decoration: none;
+            color: #ffd700;
+            padding: 10px 20px;
+            border: 1px solid #9d6c34;
+            border-radius: 5px;
+            transition: background-color 0.3s, color 0.3s;
+            display: flex;
+            align-items: center;
+        }
+        .nav-menu a:hover {
+            background-color: #9d6c34;
+            color: #fff;
+        }
+        .nav-menu a i {
+            margin-right: 10px;
         }
         .container {
             max-width: 800px;
             margin: 0 auto;
-            background: #fff;
+            background: rgba(0, 0, 0, 0.7);
             padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-        h1 {
-            text-align: center;
-            color: #333;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
         }
         .form-group {
             margin-bottom: 15px;
+            display: flex;
+            flex-direction: column;
         }
-        .form-group label {
-            display: block;
-            margin-bottom: 5px;
+        label {
             font-weight: bold;
+            margin-bottom: 5px;
         }
-        .form-group input,
-        .form-group textarea {
+        input, textarea {
             width: 100%;
             padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
+            margin-top: 5px;
+            border: 1px solid #ced4da;
+            border-radius: 5px;
+            background-color: #f8f9fa;
+            transition: border-color 0.3s, background-color 0.3s;
+            font-size: 16px;
         }
-        .form-group textarea {
-            resize: vertical;
-        }
-        button {
-            background-color: #007bff;
-            color: white;
-            border: none;
-            padding: 10px 15px;
-            border-radius: 4px;
-            cursor: pointer;
-            margin-top: 10px;
-        }
-        button:disabled {
-            background-color: #ccc;
+        input:focus, textarea:focus {
+            border-color: #80bdff;
+            outline: 0;
+            background-color: #ffffff;
         }
         .timeline {
             margin-top: 20px;
         }
         .timeline-item {
             background: #e9ecef;
-            margin-bottom: 10px;
             padding: 10px;
-            border-radius: 4px;
+            border-radius: 5px;
+            margin-bottom: 10px;
             position: relative;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
-        .timeline-item.left::before {
-            content: '';
-            position: absolute;
-            left: -10px;
-            top: 10px;
-            width: 0;
-            height: 0;
-            border-top: 10px solid transparent;
-            border-bottom: 10px solid transparent;
-            border-right: 10px solid #e9ecef;
+        .timeline-item.left {
+            margin-left: 0;
         }
-        .timeline-item.right::before {
-            content: '';
-            position: absolute;
-            right: -10px;
-            top: 10px;
-            width: 0;
-            height: 0;
-            border-top: 10px solid transparent;
-            border-bottom: 10px solid transparent;
-            border-left: 10px solid #e9ecef;
+        .timeline-item.right {
+            margin-left: 0;
         }
         .timeline-item .content {
-            display: flex;
-            flex-direction: column;
-        }
-        .timeline-item h2 {
-            margin: 0;
-            color: #333;
-        }
-        .timeline-item p {
-            margin: 5px 0;
+            margin-left: 20px;
         }
         .timeline-item button {
-            align-self: flex-end;
+            background-color: red;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-right: 5px;
+        }
+        .timeline-item button:hover {
+            background-color: darkred;
         }
     </style>
 </head>
 <body>
+    <header>Événements</header>
+    <div class="nav-menu">
+        <a href="index.html"><i class="fa fa-home"></i> Accueil</a>
+        <a href="pays.html"><i class="fa fa-globe"></i> Fiche Pays</a>
+        <a href="intrigue.html"><i class="fa fa-book"></i> Fiche Intrigue</a>
+        <a href="divinite.html"><i class="fa fa-god"></i> Fiche Divinité</a>
+        <a href="monstre.html"><i class="fa fa-monster"></i> Fiche Monstre</a>
+        <a href="artefact.html"><i class="fa fa-gem"></i> Fiche Artefact</a>
+        <a href="malediction.html"><i class="fa fa-skull"></i> Fiche Malédiction</a>
+        <a href="peuple.html"><i class="fa fa-users"></i> Fiche Peuple</a>
+        <a href="vilain.html"><i class="fa fa-user-ninja"></i> Fiche Vilain</a>
+        <a href="organisation.html"><i class="fa fa-sitemap"></i> Fiche Organisation</a>
+        <a href="alliance.html"><i class="fa fa-handshake"></i> Fiche Alliance</a>
+        <a href="technologie.html"><i class="fa fa-cogs"></i> Fiche Technologie</a>
+        <a href="gouvernement.html"><i class="fa fa-landmark"></i> Fiche Gouvernement</a>
+        <a href="chapitre.html"><i class="fa fa-bookmark"></i> Chapitre</a>
+        <a href="map.html"><i class="fa fa-map"></i> Map</a>
+        <a href="brainstorming.html"><i class="fa fa-lightbulb"></i> Brainstorming</a>
+        <a href="chronologie.html"><i class="fa fa-hourglass"></i> Chronologie</a>
+        <a href="batail_maison.html"><i class="fa fa-shield-alt"></i> Bataille et Noble</a>
+        <a href="evenement.html"><i class="fa fa-calendar-alt"></i> Événement</a>
+        <a href="generateur.html"><i class="fa fa-cog"></i> Générateur</a>
+        <a href="test.html"><i class="fa fa-file-alt"></i> Dico</a>
+    </div>
     <div class="container">
         <h1>Chronologie Interactive</h1>
-        
         <!-- Fiche de Prophétie -->
         <div class="form-group">
             <label for="prophecy-title">Titre de la prophétie :</label>
@@ -130,7 +187,6 @@
         </div>
         <button id="add-prophecy">Ajouter la prophétie</button>
         <button id="download-prophecy">Télécharger la prophétie en PDF</button>
-        
         <!-- Fiche de Rébellion -->
         <div class="form-group">
             <label for="rebellion-name">Nom de la rébellion :</label>
@@ -154,7 +210,6 @@
         </div>
         <button id="add-rebellion">Ajouter la rébellion</button>
         <button id="download-rebellion">Télécharger la rébellion en PDF</button>
-        
         <!-- Fiche de Festivité -->
         <div class="form-group">
             <label for="festivity-name">Nom de la festivité :</label>
@@ -178,7 +233,6 @@
         </div>
         <button id="add-festivity">Ajouter la festivité</button>
         <button id="download-festivity">Télécharger la festivité en PDF</button>
-        
         <!-- Fiche de Traité de Paix -->
         <div class="form-group">
             <label for="treaty-name">Nom du traité :</label>
@@ -202,12 +256,10 @@
         </div>
         <button id="add-treaty">Ajouter le traité</button>
         <button id="download-treaty">Télécharger le traité en PDF</button>
-        
         <div class="timeline" id="timeline">
             <!-- Exemples de chronologie -->
         </div>
     </div>
-
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
     <script>
         document.getElementById('add-prophecy').addEventListener('click', function() {
@@ -304,76 +356,4 @@
                 doc.text(10, 10, `Rébellion: ${name}`);
                 doc.text(10, 20, `Causes: ${causes}`);
                 doc.text(10, 30, `Leaders: ${leaders}`);
-                doc.text(10, 40, `Batailles majeures: ${battles}`);
-                doc.text(10, 50, `Conséquences: ${consequences}`);
-                doc.save('rébellion.pdf');
-            } else {
-                alert('Veuillez remplir tous les champs.');
-            }
-        });
-
-        document.getElementById('add-festivity').addEventListener('click', function() {
-            const name = document.getElementById('festivity-name').value;
-            const date = document.getElementById('festivity-date').value;
-            const traditions = document.getElementById('festivity-traditions').value;
-            const importance = document.getElementById('festivity-importance').value;
-            const activities = document.getElementById('festivity-activities').value;
-            
-            if (name && date && traditions && importance && activities) {
-                const timeline = document.getElementById('timeline');
-                const newFestivity = document.createElement('div');
-                newFestivity.className = 'timeline-item ' + (timeline.children.length % 2 === 0 ? 'left' : 'right');
-                newFestivity.innerHTML = `<div class="content"><h2>Festivité: ${name}</h2>
-                                          <p>Date: ${date}</p>
-                                          <p>Traditions: ${traditions}</p>
-                                          <p>Importance culturelle: ${importance}</p>
-                                          <p>Activités et célébrations: ${activities}</p>
-                                          <button class="edit-event">Modifier</button>
-                                          <button class="delete-event">Supprimer</button></div>`;
-                timeline.appendChild(newFestivity);
-                
-                document.getElementById('festivity-name').value = '';
-                document.getElementById('festivity-date').value = '';
-                document.getElementById('festivity-traditions').value = '';
-                document.getElementById('festivity-importance').value = '';
-                document.getElementById('festivity-activities').value = '';
-            } else {
-                alert('Veuillez remplir tous les champs.');
-            }
-        });
-        
-        document.getElementById('download-festivity').addEventListener('click', function() {
-            const { jsPDF } = window.jspdf;
-            const doc = new jsPDF();
-            const name = document.getElementById('festivity-name').value;
-            const date = document.getElementById('festivity-date').value;
-            const traditions = document.getElementById('festivity-traditions').value;
-            const importance = document.getElementById('festivity-importance').value;
-            const activities = document.getElementById('festivity-activities').value;
-            
-            if (name && date && traditions && importance && activities) {
-                doc.text(10, 10, `Festivité: ${name}`);
-                doc.text(10, 20, `Date: ${date}`);
-                doc.text(10, 30, `Traditions: ${traditions}`);
-                doc.text(10, 40, `Importance culturelle: ${importance}`);
-                doc.text(10, 50, `Activités et célébrations: ${activities}`);
-                doc.save('festivité.pdf');
-            } else {
-                alert('Veuillez remplir tous les champs.');
-            }
-        });
-
-        document.getElementById('add-treaty').addEventListener('click', function() {
-            const name = document.getElementById('treaty-name').value;
-            const parties = document.getElementById('treaty-parties').value;
-            const conditions = document.getElementById('treaty-conditions').value;
-            const signatories = document.getElementById('treaty-signatories').value;
-            const impact = document.getElementById('treaty-impact').value;
-            
-            if (name && parties && conditions && signatories && impact) {
-                const timeline = document.getElementById('timeline');
-                const newTreaty = document.createElement('div');
-                newTreaty.className = 'timeline-item ' + (timeline.children.length % 2 === 0 ? 'left' : 'right');
-                newTreaty.innerHTML = `<div class="content"><h2>Traité de Paix: ${name}</h2>
-                                       <p>Parties impliquées: ${parties}</p>
-                                       <p>Conditions
+                doc.text(10, 40, `Bata
