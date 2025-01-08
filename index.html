@@ -6,105 +6,104 @@
     <title>Fiche Personnage Fantastique</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-   <style>
-     /* Fond avec une image fantasy */
-body {
-  background-image: url('https://i.imgur.com/FI9t6z9.jpeg');
-  background-size: cover;
-  background-attachment: fixed;
-  color: #f4f4f4;
-  font-family: 'Cinzel', serif;
-}
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 20px;
+            padding: 0;
+            background-color: #f8f9fa;
+            color: #343a40;
+        }
 
-/* Header style */
-header {
-  background: rgba(0, 0, 0, 0.8);
-  color: #fff;
-  padding: 20px;
-  text-align: center;
-  font-size: 2rem;
-  border-bottom: 3px solid #9d6c34;
-}
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: #ffffff;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+        }
 
-/* Boutons */
-button {
-  background: #6b4226;
-  color: #fff;
-  border: 2px solid #9d6c34;
-  padding: 10px 20px;
-  font-size: 1.2rem;
-  border-radius: 5px;
-  transition: 0.3s ease-in-out;
-}
+        h1 {
+            text-align: center;
+            color: #495057;
+            margin-bottom: 20px;
+        }
 
-button:hover {
-  background: #9d6c34;
-  transform: scale(1.1);
-}
+        .form-group {
+            margin-bottom: 15px;
+            display: flex;
+            flex-direction: column;
+        }
 
-/* Cartes ou conteneurs */
-.card {
-  background: rgba(0, 0, 0, 0.7);
-  border: 1px solid #9d6c34;
-  padding: 20px;
-  margin: 20px;
-  border-radius: 10px;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
-}
+        label {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
 
-/* Titres des sections */
-h1, h2, h3 {
-  font-family: 'Cormorant', serif;
-  color: #ffd700;
-  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.8);
-}
+        input, textarea, select {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ced4da;
+            border-radius: 5px;
+            background-color: #f8f9fa;
+            transition: border-color 0.3s, background-color 0.3s;
+            font-size: 16px;
+        }
 
-/* Navigation menu */
-.nav-menu {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  justify-content: center;
-  margin: 20px 0;
-}
+        input:focus, textarea:focus, select:focus {
+            border-color: #80bdff;
+            outline: 0;
+            background-color: #ffffff;
+        }
 
-.nav-menu a {
-  text-decoration: none;
-  color: #ffd700;
-  padding: 10px 20px;
-  border: 1px solid #9d6c34;
-  border-radius: 5px;
-  transition: background-color 0.3s, color 0.3s;
-  display: flex;
-  align-items: center;
-}
+        button {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.3s;
+            font-size: 16px;
+        }
 
-.nav-menu a:hover {
-  background-color: #9d6c34;
-  color: #fff;
-}
+        button:hover {
+            background-color: #0056b3;
+            transform: scale(1.05);
+        }
 
-.nav-menu a i {
-  margin-right: 10px;
-}
+        .image-preview {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 10px;
+        }
 
-/* Form fields */
-input, textarea, select {
-  width: 100%;
-  padding: 10px;
-  margin-top: 5px;
-  border: 1px solid #ced4da;
-  border-radius: 5px;
-  background-color: #f8f9fa;
-  transition: border-color 0.3s, background-color 0.3s;
-  font-size: 16px;
-}
+        .image-preview img {
+            max-width: 150px;
+            border-radius: 5px;
+            border: 1px solid #ced4da;
+        }
 
-input:focus, textarea:focus, select:focus {
-  border-color: #80bdff;
-  outline: 0;
-  background-color: #fff;
-}
+        .download-pdf {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .card {
+            padding: 20px;
+            background: #ffffff;
+            border: 1px solid #ced4da;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        .form-group i {
+            margin-right: 10px;
+        }
     </style>
 </head>
 <body>
@@ -130,7 +129,7 @@ input:focus, textarea:focus, select:focus {
             <a href="batail_maison.html"><i class="fa fa-shield-alt"></i> Bataille et Noble</a>
             <a href="evenement.html"><i class="fa fa-calendar-alt"></i> Événement</a>
             <a href="generateur.html"><i class="fa fa-cog"></i> Générateur</a>
-            <a href="test.html"><i class="fa fa-file-alt"></i> Dico</a> <!-- New path added -->
+            <a href="test.html"><i class="fa fa-file-alt"></i> Test</a> <!-- New path added -->
         </div>
         <h1>Fiche Personnage Fantastique</h1>
         <form id="character-form">
@@ -225,79 +224,80 @@ input:focus, textarea:focus, select:focus {
         <p>&copy; 2025 Personnages Fantastiques - Tous droits réservés</p>
     </footer>
 
-<script>
-    const imageUpload = document.getElementById('image-upload');
-    const imagePreview = document.getElementById('image-preview');
-    const form = document.getElementById('character-form');
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+    <script>
+        const imageUpload = document.getElementById('image-upload');
+        const imagePreview = document.getElementById('image-preview');
+        const form = document.getElementById('character-form');
 
-    let imageFiles = [];
+        let imageFiles = [];
 
-    imageUpload.addEventListener('change', (event) => {
-        imagePreview.innerHTML = '';
-        imageFiles = Array.from(event.target.files);
-        imageFiles.forEach(file => {
-            const reader = new FileReader();
-            reader.onload = () => {
-                const img = document.createElement('img');
-                img.src = reader.result;
-                imagePreview.appendChild(img);
-            };
-            reader.readAsDataURL(file);
-        });
-    });
-
-    document.getElementById('download-pdf').addEventListener('click', async () => {
-        const { jsPDF } = window.jspdf;
-        const pdf = new jsPDF();
-
-        pdf.setFontSize(18);
-        pdf.text('Fiche Personnage Fantastique', 10, 10);
-        
-        pdf.setFontSize(12);
-        pdf.text(`Nom : ${form.name.value}`, 10, 20);
-        pdf.text(`Race : ${form.race.value}`, 10, 30);
-        pdf.text(`Classe : ${form.class.value}`, 10, 40);
-        pdf.text(`Âge : ${form.age.value}`, 10, 50);
-        
-        let yOffset = 60;
-
-        const addText = (title, text, startY) => {
-            pdf.setFontSize(16);
-            pdf.text(title, 10, startY);
-            pdf.setFontSize(12);
-            pdf.text(text, 10, startY + 10, { maxWidth: 180 });
-            return startY + pdf.getTextDimensions(text).h + 20;
-        };
-
-        yOffset = addText('Description :', form.description.value, yOffset);
-        yOffset = addText('Pouvoirs/Capacités :', form.abilities.value, yOffset);
-        yOffset = addText('Histoire/Origine :', form.background.value, yOffset);
-        yOffset = addText('Équipement :', form.equipment.value, yOffset);
-        yOffset = addText('Alliés :', form.allies.value, yOffset);
-        yOffset = addText('Ennemis :', form.enemies.value, yOffset);
-        yOffset = addText('Quêtes/Aventures :', form.quests.value, yOffset);
-        yOffset = addText('Relations :', form.relations.value, yOffset);
-        yOffset = addText('Traits de personnalité :', form.traits.value, yOffset);
-        yOffset = addText('Peurs et faiblesses :', form.fears.value, yOffset);
-        yOffset = addText('Objectifs :', form.goals.value, yOffset);
-
-        if (imageFiles.length > 0) {
-            pdf.setFontSize(16);
-            pdf.text('Images :', 10, yOffset);
-            yOffset += 10;
-            for (const [index, file] of imageFiles.entries()) {
+        imageUpload.addEventListener('change', (event) => {
+            imagePreview.innerHTML = '';
+            imageFiles = Array.from(event.target.files);
+            imageFiles.forEach(file => {
                 const reader = new FileReader();
-                await new Promise((resolve) => {
-                    reader.onload = () => {
-                        pdf.addImage(reader.result, 'JPEG', 10, yOffset + (index * 60), 50, 50);
-                        resolve();
-                    };
-                    reader.readAsDataURL(file);
-                });
+                reader.onload = () => {
+                    const img = document.createElement('img');
+                    img.src = reader.result;
+                    imagePreview.appendChild(img);
+                };
+                reader.readAsDataURL(file);
+            });
+        });
+
+        document.getElementById('download-pdf').addEventListener('click', async () => {
+            const { jsPDF } = window.jspdf;
+            const pdf = new jsPDF();
+
+            pdf.setFontSize(18);
+            pdf.text('Fiche Personnage Fantastique', 10, 10);
+
+            pdf.setFontSize(12);
+            pdf.text(`Nom : ${form.name.value}`, 10, 20);
+            pdf.text(`Race : ${form.race.value}`, 10, 30);
+            pdf.text(`Classe : ${form.class.value}`, 10, 40);
+            pdf.text(`Âge : ${form.age.value}`, 10, 50);
+
+            let yOffset = 60;
+
+            const addText = (title, text, startY) => {
+                pdf.setFontSize(16);
+                pdf.text(title, 10, startY);
+                pdf.setFontSize(12);
+                pdf.text(text, 10, startY + 10, { maxWidth: 180 });
+                return startY + pdf.getTextDimensions(text).h + 20;
+            };
+
+            yOffset = addText('Description :', form.description.value, yOffset);
+            yOffset = addText('Pouvoirs/Capacités :', form.abilities.value, yOffset);
+            yOffset = addText('Histoire/Origine :', form.background.value, yOffset);
+            yOffset = addText('Équipement :', form.equipment.value, yOffset);
+            yOffset = addText('Alliés :', form.allies.value, yOffset);
+            yOffset = addText('Ennemis :', form.enemies.value, yOffset);
+            yOffset = addText('Quêtes/Aventures :', form.quests.value, yOffset);
+            yOffset = addText('Relations :', form.relations.value, yOffset);
+            yOffset = addText('Traits de personnalité :', form.traits.value, yOffset);
+            yOffset = addText('Peurs et faiblesses :', form.fears.value, yOffset);
+            yOffset = addText('Objectifs :', form.goals.value, yOffset);
+
+            if (imageFiles.length > 0) {
+                pdf.setFontSize(16);
+                pdf.text('Images :', 10, yOffset);
+                yOffset += 10;
+                for (const [index, file] of imageFiles.entries()) {
+                    const reader = new FileReader();
+                    await new Promise((resolve) => {
+                        reader.onload = () => {
+                            pdf.addImage(reader.result, 'JPEG', 10, yOffset + (index * 60), 50, 50);
+                            resolve();
+                        };
+                        reader.readAsDataURL(file);
+                    });
+                }
             }
-        }
-        pdf.save('fiche_personnage.pdf');
-    });
-</script>
+            pdf.save('fiche_personnage.pdf');
+        });
+    </script>
 </body>
 </html>
