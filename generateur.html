@@ -68,8 +68,8 @@
 
     <script>
         function genererNom() {
-            const prefixes = ["Ael", "Thar", "Zar", "Ery", "Lor", "Mel", "Fel", "Gal", "Sha", "Val"];
-            const suffixes = ["anor", "dil", "mir", "ith", "ion", "dor", "wyn", "thar", "gorn", "las"];
+            const prefixes = ["Ael", "Thar", "Zar", "Ery", "Lor", "Mel", "Fel", "Gal", "Sha", "Val", "Nor", "Drak", "Mor", "Ryn", "Sel"];
+            const suffixes = ["anor", "dil", "mir", "ith", "ion", "dor", "wyn", "thar", "gorn", "las", "lan", "sar", "gar", "lin", "dus"];
             const prefix = prefixes[Math.floor(Math.random() * prefixes.length)];
             const suffix = suffixes[Math.floor(Math.random() * suffixes.length)];
             return prefix + suffix;
@@ -78,7 +78,8 @@
         function genererCapacite() {
             const capacites = [
                 "Contrôle du feu", "Télépathie", "Manipulation du temps", "Force surhumaine", "Métamorphose",
-                "Invisibilité", "Contrôle de l'eau", "Vol", "Télékinésie", "Guérison accélérée"
+                "Invisibilité", "Contrôle de l'eau", "Vol", "Télékinésie", "Guérison accélérée",
+                "Contrôle de la terre", "Vision nocturne", "Contrôle de la glace", "Téléportation", "Intangibilité"
             ];
             return capacites[Math.floor(Math.random() * capacites.length)];
         }
@@ -86,7 +87,8 @@
         function genererTrait() {
             const traits = [
                 "Courageux", "Mystérieux", "Impulsif", "Calculateur", "Charismatique",
-                "Sage", "Loyal", "Méfiant", "Ambitieux", "Généreux"
+                "Sage", "Loyal", "Méfiant", "Ambitieux", "Généreux", 
+                "Sarcastique", "Patient", "Optimiste", "Pessimiste", "Déterminé"
             ];
             return traits[Math.floor(Math.random() * traits.length)];
         }
@@ -94,7 +96,8 @@
         function genererEquipement() {
             const equipements = [
                 "Épée magique", "Bouclier enchanté", "Cape d'invisibilité", "Anneau de force", "Bâton de sorcier",
-                "Arc légendaire", "Dague empoisonnée", "Armure de dragon", "Amulette protectrice", "Potion de puissance"
+                "Arc légendaire", "Dague empoisonnée", "Armure de dragon", "Amulette protectrice", "Potion de puissance",
+                "Casque de clairvoyance", "Bottes de vitesse", "Gants de force", "Pendentif de protection", "Hache de guerre"
             ];
             return equipements[Math.floor(Math.random() * equipements.length)];
         }
@@ -102,7 +105,8 @@
         function genererAllie() {
             const allies = [
                 "Elfe", "Nain", "Sorcier", "Guerrier", "Dragon",
-                "Fée", "Vampire", "Loup-garou", "Sirène", "Centaur"
+                "Fée", "Vampire", "Loup-garou", "Sirène", "Centaur",
+                "Gnome", "Gobelin", "Troll", "Esprit", "Phoenix"
             ];
             return allies[Math.floor(Math.random() * allies.length)];
         }
@@ -110,7 +114,8 @@
         function genererEnnemi() {
             const ennemis = [
                 "Orc", "Troll", "Vampire", "Loup-garou", "Démon",
-                "Sorcière", "Géant", "Garde royal", "Assassin", "Fantôme"
+                "Sorcière", "Géant", "Garde royal", "Assassin", "Fantôme",
+                "Goule", "Spectre", "Liche", "Nécromancien", "Banshee"
             ];
             return ennemis[Math.floor(Math.random() * ennemis.length)];
         }
@@ -118,7 +123,8 @@
         function genererQuete() {
             const quetes = [
                 "Trouver l'épée légendaire", "Sauver la princesse", "Détruire l'anneau maléfique", "Explorer le donjon", "Défendre le royaume",
-                "Trouver la pierre philosophale", "Assassiner le roi", "Voler le trésor caché", "Libérer les esclaves", "Survivre à l'apocalypse"
+                "Trouver la pierre philosophale", "Assassiner le roi", "Voler le trésor caché", "Libérer les esclaves", "Survivre à l'apocalypse",
+                "Voyager à travers les dimensions", "Déchiffrer le mystère antique", "Rassembler les artefacts", "Repousser l'invasion démoniaque", "Reprendre le trône usurpé"
             ];
             return quetes[Math.floor(Math.random() * quetes.length)];
         }
@@ -126,7 +132,8 @@
         function genererProfession() {
             const professions = [
                 "Guerrier", "Mage", "Voleur", "Ranger", "Sorcier",
-                "Clerc", "Paladin", "Druide", "Barbare", "Assassin"
+                "Clerc", "Paladin", "Druide", "Barbare", "Assassin",
+                "Alchimiste", "Chasseur", "Barde", "Moine", "Érudit"
             ];
             return professions[Math.floor(Math.random() * professions.length)];
         }
@@ -143,7 +150,8 @@
         function genererLieuOrigine() {
             const lieux = [
                 "Forêt Enchantée", "Montagnes Mystiques", "Désert Aride", "Royaume Souterrain", "Île Perdue",
-                "Cité Antique", "Village Caché", "Temple Abandonné", "Ruines Oubliées", "Château Maudit"
+                "Cité Antique", "Village Caché", "Temple Abandonné", "Ruines Oubliées", "Château Maudit",
+                "Fjord Glacial", "Jungle Luxuriante", "Canyon Aride", "Plateau Venteux", "Vallée Florissante"
             ];
             return lieux[Math.floor(Math.random() * lieux.length)];
         }
