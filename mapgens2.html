@@ -36,7 +36,6 @@
             grid-template-columns: repeat(40, 1fr);
             grid-template-rows: repeat(30, 1fr);
             cursor: pointer;
-            transform-origin: top left;
         }
 
         .tile {
@@ -112,11 +111,7 @@
         <div class="controls">
             <button onclick="clearMap()">Effacer la carte</button>
             <button onclick="saveMap()">Sauvegarder</button>
-            <button onclick="loadMap()">Charger</button>
             <button onclick="toggleDrawing()">Mode dessin: OFF</button>
-            <button onclick="zoomIn()">Zoomer</button>
-            <button onclick="zoomOut()">Dézoomer</button>
-            <input type="file" id="fileInput" style="display: none;" accept="application/json" onchange="handleFileSelect(event)" />
         </div>
 
         <div class="map-container" id="mapContainer">
@@ -128,7 +123,6 @@
         let selectedTerrain = 'plains';
         let isDrawing = false;
         let isMouseDown = false;
-        let zoomLevel = 1;
 
         // Initialiser la grille
         const mapContainer = document.getElementById('mapContainer');
@@ -174,7 +168,6 @@
         });
 
         function paintTile(tile) {
-            saveState();
             // Retirer les classes de terrain existantes
             tile.className = 'tile';
             tile.classList.add(`terrain-${selectedTerrain}`);
@@ -187,7 +180,7 @@
 
         function toggleDrawing() {
             isDrawing = !isDrawing;
-            const btn = document.querySelector('button:nth-child(4)');
+            const btn = document.querySelector('button:last-child');
             btn.textContent = `Mode dessin: ${isDrawing ? 'ON' : 'OFF'}`;
         }
 
@@ -217,81 +210,6 @@
             document.body.removeChild(a);
             URL.revokeObjectURL(url);
         }
-
-        function loadMap() {
-            document.getElementById('fileInput').click();
-        }
-
-        function handleFileSelect(event) {
-            const file = event.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    const mapData = JSON.parse(e.target.result);
-                    applyMapData(mapData);
-                };
-                reader.readAsText(file);
-            }
-        }
-
-        function applyMapData(mapData) {
-            terrainData.length = 0;
-            mapData.terrain.forEach(row => terrainData.push([...row]));
-            updateMap();
-        }
-
-        function updateMap() {
-            document.querySelectorAll('.tile').forEach(tile => {
-                const x = parseInt(tile.dataset.x);
-                const y = parseInt(tile.dataset.y);
-                tile.className = 'tile';
-                tile.classList.add(`terrain-${terrainData[y][x]}`);
-            });
-        }
-
-        function zoomIn() {
-            zoomLevel += 0.1;
-            updateZoom();
-        }
-
-        function zoomOut() {
-            zoomLevel -= 0.1;
-            updateZoom();
-        }
-
-        function updateZoom() {
-            mapContainer.style.transform = `scale(${zoomLevel})`;
-        }
-
-        // Initial save
-        saveState();
-        const history = [];
-        let currentStep = -1;
-
-        function saveState() {
-            history.splice(currentStep + 1);
-            history.push(JSON.stringify(terrainData));
-            currentStep++;
-        }
-
-        function undo() {
-            if (currentStep > 0) {
-                currentStep--;
-                terrainData = JSON.parse(history[currentStep]);
-                updateMap();
-            }
-        }
-
-        function redo() {
-            if (currentStep < history.length - 1) {
-                currentStep++;
-                terrainData = JSON.parse(history[currentStep]);
-                updateMap();
-            }
-        }
-
-        document.querySelector('button:nth-child(4)').addEventListener('click', undo);
-        document.querySelector('button:nth-child(5)').addEventListener('click', redo);
     </script>
 </body>
 </html>
