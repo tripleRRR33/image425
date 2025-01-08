@@ -49,6 +49,21 @@
             <option value="water">Water</option>
             <option value="forest">Forest</option>
             <option value="mountain">Mountain</option>
+            <option value="beach">Beach</option>
+            <option value="desert">Desert</option>
+            <option value="swamp">Swamp</option>
+            <option value="prairie">Prairie</option>
+            <option value="snow">Snow</option>
+            <option value="volcano">Volcano</option>
+            <option value="city">City</option>
+            <option value="riceField">Rice Field</option>
+            <option value="savanna">Savanna</option>
+            <option value="jungle">Jungle</option>
+            <option value="hills">Hills</option>
+            <option value="river">River</option>
+            <option value="cave">Cave</option>
+            <option value="field">Field</option>
+            <option value="glacier">Glacier</option>
         </select>
     </div>
     <canvas id="mapCanvas"></canvas>
@@ -99,9 +114,26 @@
                     ctx.stroke();
                 }
                 if (el.type === 'tile') {
-                    if (el.tileType === 'water') ctx.fillStyle = 'lightblue';
-                    if (el.tileType === 'forest') ctx.fillStyle = 'green';
-                    if (el.tileType === 'mountain') ctx.fillStyle = 'gray';
+                    switch (el.tileType) {
+                        case 'water': ctx.fillStyle = 'lightblue'; break;
+                        case 'forest': ctx.fillStyle = 'green'; break;
+                        case 'mountain': ctx.fillStyle = 'gray'; break;
+                        case 'beach': ctx.fillStyle = 'sandybrown'; break;
+                        case 'desert': ctx.fillStyle = 'khaki'; break;
+                        case 'swamp': ctx.fillStyle = 'darkgreen'; break;
+                        case 'prairie': ctx.fillStyle = 'lightgreen'; break;
+                        case 'snow': ctx.fillStyle = 'lightgray'; break;
+                        case 'volcano': ctx.fillStyle = 'darkred'; break;
+                        case 'city': ctx.fillStyle = 'darkgray'; break;
+                        case 'riceField': ctx.fillStyle = 'palegreen'; break;
+                        case 'savanna': ctx.fillStyle = 'goldenrod'; break;
+                        case 'jungle': ctx.fillStyle = 'darkolivegreen'; break;
+                        case 'hills': ctx.fillStyle = 'darkkhaki'; break;
+                        case 'river': ctx.fillStyle = 'skyblue'; break;
+                        case 'cave': ctx.fillStyle = 'dimgray'; break;
+                        case 'field': ctx.fillStyle = 'wheat'; break;
+                        case 'glacier': ctx.fillStyle = 'lightcyan'; break;
+                    }
                     ctx.fillRect(el.x - gridSize / 2, el.y - gridSize / 2, gridSize, gridSize);
                 }
             });
