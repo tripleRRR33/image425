@@ -116,10 +116,15 @@
             border: 1px solid #007bff;
             border-radius: 5px;
             transition: background-color 0.3s, color 0.3s;
+            display: flex;
+            align-items: center;
         }
         .nav-menu a:hover {
             background-color: #007bff;
             color: #ffffff;
+        }
+        .nav-menu a i {
+            margin-right: 10px;
         }
     </style>
 </head>
@@ -130,24 +135,24 @@
     <div class="container">
         <h1>Accueil</h1>
         <div class="nav-menu">
-            <a href="pays.html">Fiche Pays</a>
-            <a href="intrigue.html">Fiche Intrigue</a>
-            <a href="divinite.html">Fiche Divinité</a>
-            <a href="monstre.html">Fiche Monstre</a>
-            <a href="artefact.html">Fiche Artefact</a>
-            <a href="malediction.html">Fiche Malédiction</a>
-            <a href="peuple.html">Fiche Peuple</a>
-            <a href="vilain.html">Fiche Vilain</a>
-            <a href="organisation.html">Fiche Organisation</a>
-            <a href="alliance.html">Fiche Alliance</a>
-            <a href="technologie.html">Fiche Technologie</a>
-            <a href="gouvernement.html">Fiche Gouvernement</a>
-            <a href="chapitre.html">Chapitre</a>
-            <a href="map.html">Map</a>
-            <a href="brainstorming.html">Brainstorming</a>
-            <a href="chronologie.html">Chronologie</a>
-            <a href="batail_maison.html">Bataille et Noble</a>
-            <a href="evenement.html">Événement</a>
+            <a href="pays.html"><i class="fa fa-globe"></i> Fiche Pays</a>
+            <a href="intrigue.html"><i class="fa fa-book"></i> Fiche Intrigue</a>
+            <a href="divinite.html"><i class="fa fa-god"></i> Fiche Divinité</a>
+            <a href="monstre.html"><i class="fa fa-monster"></i> Fiche Monstre</a>
+            <a href="artefact.html"><i class="fa fa-gem"></i> Fiche Artefact</a>
+            <a href="malediction.html"><i class="fa fa-skull"></i> Fiche Malédiction</a>
+            <a href="peuple.html"><i class="fa fa-users"></i> Fiche Peuple</a>
+            <a href="vilain.html"><i class="fa fa-user-ninja"></i> Fiche Vilain</a>
+            <a href="organisation.html"><i class="fa fa-sitemap"></i> Fiche Organisation</a>
+            <a href="alliance.html"><i class="fa fa-handshake"></i> Fiche Alliance</a>
+            <a href="technologie.html"><i class="fa fa-cogs"></i> Fiche Technologie</a>
+            <a href="gouvernement.html"><i class="fa fa-landmark"></i> Fiche Gouvernement</a>
+            <a href="chapitre.html"><i class="fa fa-bookmark"></i> Chapitre</a>
+            <a href="map.html"><i class="fa fa-map"></i> Map</a>
+            <a href="brainstorming.html"><i class="fa fa-lightbulb"></i> Brainstorming</a>
+            <a href="chronologie.html"><i class="fa fa-hourglass"></i> Chronologie</a>
+            <a href="batail_maison.html"><i class="fa fa-shield-alt"></i> Bataille et Noble</a>
+            <a href="evenement.html"><i class="fa fa-calendar-alt"></i> Événement</a>
         </div>
         <h1>Fiche Personnage Fantastique</h1>
         <form id="character-form">
@@ -184,7 +189,7 @@
                     <textarea id="background" name="background" rows="6"></textarea>
                 </div>
                 <div class="form-group">
-                    <label for="strengths-weaknesses"><i class="fa fa-history"></i> Point faible point fort :</label>
+                    <label for="strengths-weaknesses"><i class="fa fa-balance-scale"></i> Point faible point fort :</label>
                     <textarea id="strengths-weaknesses" name="strengths-weaknesses" rows="6"></textarea>
                 </div>
             </div>
