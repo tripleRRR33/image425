@@ -50,6 +50,12 @@ for (const emoji in emojiImages) {
     const img = new Image();
     img.src = emojiImages[emoji];
     loadedEmojiImages[emoji] = img;
+    img.onload = () => {
+        console.log(`Image ${emojiImages[emoji]} loaded successfully`);
+    };
+    img.onerror = () => {
+        console.error(`Failed to load image ${emojiImages[emoji]}`);
+    };
 }
 
 // Draw the grid
