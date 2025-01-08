@@ -225,11 +225,10 @@ input:focus, textarea:focus, select:focus {
         <p>&copy; 2025 Personnages Fantastiques - Tous droits réservés</p>
     </footer>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
 <script>
     const imageUpload = document.getElementById('image-upload');
     const imagePreview = document.getElementById('image-preview');
-    const form = document.getElementById('villain-form');
+    const form = document.getElementById('character-form');
 
     let imageFiles = [];
 
@@ -252,27 +251,35 @@ input:focus, textarea:focus, select:focus {
         const pdf = new jsPDF();
 
         pdf.setFontSize(18);
-        pdf.text('Fiche Vilain', 10, 10);
+        pdf.text('Fiche Personnage Fantastique', 10, 10);
         
         pdf.setFontSize(12);
         pdf.text(`Nom : ${form.name.value}`, 10, 20);
-        pdf.text(`Alias : ${form.alias.value}`, 10, 30);
+        pdf.text(`Race : ${form.race.value}`, 10, 30);
+        pdf.text(`Classe : ${form.class.value}`, 10, 40);
+        pdf.text(`Âge : ${form.age.value}`, 10, 50);
         
-        let yOffset = 40;
+        let yOffset = 60;
 
         const addText = (title, text, startY) => {
             pdf.setFontSize(16);
             pdf.text(title, 10, startY);
             pdf.setFontSize(12);
-            const splitText = pdf.splitTextToSize(text, 180);
-            pdf.text(splitText, 10, startY + 10);
-            return startY + (splitText.length * 10) + 20;
+            pdf.text(text, 10, startY + 10, { maxWidth: 180 });
+            return startY + pdf.getTextDimensions(text).h + 20;
         };
 
-        yOffset = addText('Pouvoirs :', form.powers.value, yOffset);
-        yOffset = addText('Motivation :', form.motivation.value, yOffset);
-        yOffset = addText('Faiblesses :', form.weaknesses.value, yOffset);
-        yOffset = addText('Origine/Histoire :', form.backstory.value, yOffset);
+        yOffset = addText('Description :', form.description.value, yOffset);
+        yOffset = addText('Pouvoirs/Capacités :', form.abilities.value, yOffset);
+        yOffset = addText('Histoire/Origine :', form.background.value, yOffset);
+        yOffset = addText('Équipement :', form.equipment.value, yOffset);
+        yOffset = addText('Alliés :', form.allies.value, yOffset);
+        yOffset = addText('Ennemis :', form.enemies.value, yOffset);
+        yOffset = addText('Quêtes/Aventures :', form.quests.value, yOffset);
+        yOffset = addText('Relations :', form.relations.value, yOffset);
+        yOffset = addText('Traits de personnalité :', form.traits.value, yOffset);
+        yOffset = addText('Peurs et faiblesses :', form.fears.value, yOffset);
+        yOffset = addText('Objectifs :', form.goals.value, yOffset);
 
         if (imageFiles.length > 0) {
             pdf.setFontSize(16);
@@ -287,14 +294,9 @@ input:focus, textarea:focus, select:focus {
                     };
                     reader.readAsDataURL(file);
                 });
-                yOffset += 60;
-                if (yOffset > 270) {
-                    pdf.addPage();
-                    yOffset = 10;
-                }
             }
         }
-        pdf.save('fiche_vilain.pdf');
+        pdf.save('fiche_personnage.pdf');
     });
 </script>
 </body>
