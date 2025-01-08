@@ -45,40 +45,58 @@
 
     <script>
         function genererNom() {
-            const prefixes = ["Ael", "Thar", "Zar", "Ery", "Lor"];
-            const suffixes = ["anor", "dil", "mir", "ith", "ion"];
+            const prefixes = ["Ael", "Thar", "Zar", "Ery", "Lor", "Mel", "Fel", "Gal", "Sha", "Val"];
+            const suffixes = ["anor", "dil", "mir", "ith", "ion", "dor", "wyn", "thar", "gorn", "las"];
             const prefix = prefixes[Math.floor(Math.random() * prefixes.length)];
             const suffix = suffixes[Math.floor(Math.random() * suffixes.length)];
             return prefix + suffix;
         }
 
         function genererCapacite() {
-            const capacites = ["Contrôle du feu", "Télépathie", "Manipulation du temps", "Force surhumaine", "Métamorphose"];
+            const capacites = [
+                "Contrôle du feu", "Télépathie", "Manipulation du temps", "Force surhumaine", "Métamorphose",
+                "Invisibilité", "Contrôle de l'eau", "Vol", "Télékinésie", "Guérison accélérée"
+            ];
             return capacites[Math.floor(Math.random() * capacites.length)];
         }
 
         function genererTrait() {
-            const traits = ["Courageux", "Mystérieux", "Impulsif", "Calculateur", "Charismatique"];
+            const traits = [
+                "Courageux", "Mystérieux", "Impulsif", "Calculateur", "Charismatique",
+                "Sage", "Loyal", "Méfiant", "Ambitieux", "Généreux"
+            ];
             return traits[Math.floor(Math.random() * traits.length)];
         }
 
         function genererEquipement() {
-            const equipements = ["Épée magique", "Bouclier enchanté", "Cape d'invisibilité", "Anneau de force", "Bâton de sorcier"];
+            const equipements = [
+                "Épée magique", "Bouclier enchanté", "Cape d'invisibilité", "Anneau de force", "Bâton de sorcier",
+                "Arc légendaire", "Dague empoisonnée", "Armure de dragon", "Amulette protectrice", "Potion de puissance"
+            ];
             return equipements[Math.floor(Math.random() * equipements.length)];
         }
 
         function genererAllie() {
-            const allies = ["Elfe", "Nain", "Sorcier", "Guerrier", "Dragon"];
+            const allies = [
+                "Elfe", "Nain", "Sorcier", "Guerrier", "Dragon",
+                "Fée", "Vampire", "Loup-garou", "Sirène", "Centaur"
+            ];
             return allies[Math.floor(Math.random() * allies.length)];
         }
 
         function genererEnnemi() {
-            const ennemis = ["Orc", "Troll", "Vampire", "Loup-garou", "Démon"];
+            const ennemis = [
+                "Orc", "Troll", "Vampire", "Loup-garou", "Démon",
+                "Sorcière", "Géant", "Garde royal", "Assassin", "Fantôme"
+            ];
             return ennemis[Math.floor(Math.random() * ennemis.length)];
         }
 
         function genererQuete() {
-            const quetes = ["Trouver l'épée légendaire", "Sauver la princesse", "Détruire l'anneau maléfique", "Explorer le donjon", "Défendre le royaume"];
+            const quetes = [
+                "Trouver l'épée légendaire", "Sauver la princesse", "Détruire l'anneau maléfique", "Explorer le donjon", "Défendre le royaume",
+                "Trouver la pierre philosophale", "Assassiner le roi", "Voler le trésor caché", "Libérer les esclaves", "Survivre à l'apocalypse"
+            ];
             return quetes[Math.floor(Math.random() * quetes.length)];
         }
 
