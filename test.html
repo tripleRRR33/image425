@@ -15,11 +15,11 @@
             margin-bottom: 20px;
         }
 
-        #searchBar {
+        #searchBar, #termName, #termDefinition, #termContext {
             display: block;
             width: 100%;
             padding: 10px;
-            margin-bottom: 20px;
+            margin-bottom: 10px;
             border: 1px solid #ccc;
             border-radius: 5px;
         }
@@ -40,12 +40,31 @@
         .term h2 {
             margin-top: 0;
         }
+
+        #addTerm {
+            background-color: #007bff;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        #addTerm:hover {
+            background-color: #0056b3;
+        }
     </style>
 </head>
 <body>
     <h1>Dictionnaire de Termes</h1>
     <input type="text" id="searchBar" placeholder="Rechercher un terme..." onkeyup="searchTerm()">
     
+    <input type="text" id="termName" placeholder="Nom du terme">
+    <input type="text" id="termDefinition" placeholder="Définition">
+    <input type="text" id="termContext" placeholder="Contexte d'utilisation">
+    <button id="addTerm" onclick="addTerm()">Ajouter un terme</button>
+
     <div id="dictionary">
         <div class="term" id="terme1">
             <h2>Terme 1</h2>
@@ -72,6 +91,39 @@
                 } else {
                     terms[i].style.display = "none";
                 }
+            }
+        }
+
+        function addTerm() {
+            const name = document.getElementById("termName").value;
+            const definition = document.getElementById("termDefinition").value;
+            const context = document.getElementById("termContext").value;
+
+            if (name && definition && context) {
+                const dictionary = document.getElementById("dictionary");
+
+                const termDiv = document.createElement("div");
+                termDiv.className = "term";
+
+                const termName = document.createElement("h2");
+                termName.innerText = name;
+                termDiv.appendChild(termName);
+
+                const termDefinition = document.createElement("p");
+                termDefinition.innerHTML = `<strong>Définition :</strong> ${definition}`;
+                termDiv.appendChild(termDefinition);
+
+                const termContext = document.createElement("p");
+                termContext.innerHTML = `<strong>Contexte d'utilisation :</strong> ${context}`;
+                termDiv.appendChild(termContext);
+
+                dictionary.appendChild(termDiv);
+
+                document.getElementById("termName").value = "";
+                document.getElementById("termDefinition").value = "";
+                document.getElementById("termContext").value = "";
+            } else {
+                alert("Veuillez remplir tous les champs.");
             }
         }
     </script>
