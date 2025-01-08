@@ -1,269 +1,90 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fiche Personnage Fantastique</title>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <title>Map Generator</title>
     <style>
         body {
-            font-family: 'Roboto', sans-serif;
-            margin: 20px;
+            font-family: Arial, sans-serif;
+            margin: 0;
             padding: 0;
-            background-color: #f8f9fa;
-            color: #343a40;
         }
-
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            background: #ffffff;
-            padding: 20px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            border-radius: 10px;
-        }
-
-        h1 {
-            text-align: center;
-            color: #495057;
-            margin-bottom: 20px;
-        }
-
-        .form-group {
-            margin-bottom: 15px;
-            display: flex;
-            flex-direction: column;
-        }
-
-        label {
-            font-weight: bold;
-            margin-bottom: 5px;
-        }
-
-        input, textarea, select {
+        #map {
+            position: relative;
             width: 100%;
-            padding: 10px;
-            margin-top: 5px;
-            border: 1px solid #ced4da;
-            border-radius: 5px;
-            background-color: #f8f9fa;
-            transition: border-color 0.3s, background-color 0.3s;
-            font-size: 16px;
+            height: 600px;
+            background: url('https://via.placeholder.com/1200x600') no-repeat center center;
+            background-size: cover;
+            border: 2px solid #333;
         }
-
-        input:focus, textarea:focus, select:focus {
-            border-color: #80bdff;
-            outline: 0;
-            background-color: #ffffff;
-        }
-
-        button {
-            background-color: #007bff;
+        .city {
+            position: absolute;
+            background-color: red;
             color: white;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
+            padding: 5px;
+            border-radius: 3px;
             cursor: pointer;
-            transition: background-color 0.3s, transform 0.3s;
-            font-size: 16px;
         }
-
-        button:hover {
-            background-color: #0056b3;
-            transform: scale(1.05);
+        #controls {
+            margin: 10px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            background-color: #f9f9f9;
         }
-
-        .image-preview {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin-top: 10px;
-        }
-
-        .image-preview img {
-            max-width: 150px;
-            border-radius: 5px;
-            border: 1px solid #ced4da;
-        }
-
-        .download-pdf {
-            text-align: center;
-            margin-top: 20px;
-        }
-
-        .card {
-            padding: 20px;
-            background: #ffffff;
-            border: 1px solid #ced4da;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            margin-bottom: 20px;
-        }
-
-        .form-group i {
-            margin-right: 10px;
+        #controls label {
+            display: block;
+            margin-bottom: 5px;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Fiche Personnage Fantastique</h1>
-        <form id="character-form">
-            <div class="card">
-                <div class="form-group">
-                    <label for="name"><i class="fa fa-user"></i> Nom du personnage :</label>
-                    <input type="text" id="name" name="name" required>
-                </div>
-                <div class="form-group">
-                    <label for="race"><i class="fa fa-users"></i> Race :</label>
-                    <input type="text" id="race" name="race">
-                </div>
-                <div class="form-group">
-                    <label for="class"><i class="fa fa-book"></i> Classe :</label>
-                    <input type="text" id="class" name="class">
-                </div>
-                <div class="form-group">
-                    <label for="age"><i class="fa fa-calendar"></i> Âge :</label>
-                    <input type="number" id="age" name="age">
-                </div>
-            </div>
-
-            <div class="card">
-                <div class="form-group">
-                    <label for="description"><i class="fa fa-align-left"></i> Description :</label>
-                    <textarea id="description" name="description" rows="5"></textarea>
-                </div>
-                <div class="form-group">
-                    <label for="abilities"><i class="fa fa-magic"></i> Pouvoirs/Capacités :</label>
-                    <textarea id="abilities" name="abilities" rows="4"></textarea>
-                </div>
-                <div class="form-group">
-                    <label for="background"><i class="fa fa-history"></i> Histoire/Origine :</label>
-                    <textarea id="background" name="background" rows="6"></textarea>
-                </div>
-            </div>
-
-            <div class="card">
-                <div class="form-group">
-                    <label for="equipment"><i class="fa fa-shield-alt"></i> Équipement :</label>
-                    <textarea id="equipment" name="equipment" rows="4"></textarea>
-                </div>
-                <div class="form-group">
-                    <label for="allies"><i class="fa fa-handshake"></i> Alliés :</label>
-                    <textarea id="allies" name="allies" rows="4"></textarea>
-                </div>
-                <div class="form-group">
-                    <label for="enemies"><i class="fa fa-skull-crossbones"></i> Ennemis :</label>
-                    <textarea id="enemies" name="enemies" rows="4"></textarea>
-                </div>
-            </div>
-
-            <div class="card">
-                <div class="form-group">
-                    <label for="quests"><i class="fa fa-map"></i> Quêtes/Aventures :</label>
-                    <textarea id="quests" name="quests" rows="6"></textarea>
-                </div>
-                <div class="form-group">
-                    <label for="relations"><i class="fa fa-heart"></i> Relations :</label>
-                    <textarea id="relations" name="relations" rows="4"></textarea>
-                </div>
-                <div class="form-group">
-                    <label for="traits"><i class="fa fa-star"></i> Traits de personnalité :</label>
-                    <textarea id="traits" name="traits" rows="4"></textarea>
-                </div>
-                <div class="form-group">
-                    <label for="fears"><i class="fa fa-exclamation-triangle"></i> Peurs et faiblesses :</label>
-                    <textarea id="fears" name="fears" rows="4"></textarea>
-                </div>
-                <div class="form-group">
-                    <label for="goals"><i class="fa fa-bullseye"></i> Objectifs :</label>
-                    <textarea id="goals" name="goals" rows="4"></textarea>
-                </div>
-            </div>
-
-            <div class="card">
-                <div class="form-group">
-                    <label for="image-upload"><i class="fa fa-image"></i> Ajouter des images :</label>
-                    <input type="file" id="image-upload" multiple accept="image/*">
-                    <div class="image-preview" id="image-preview"></div>
-                </div>
-            </div>
-
-            <button type="button" id="download-pdf">Télécharger en PDF</button>
-        </form>
+    <div id="map"></div>
+    <div id="controls">
+        <label>
+            City Name:
+            <input type="text" id="cityName" placeholder="Enter city name">
+        </label>
+        <button id="addCity">Add City</button>
     </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
     <script>
-        const imageUpload = document.getElementById('image-upload');
-        const imagePreview = document.getElementById('image-preview');
-        const form = document.getElementById('character-form');
+        const map = document.getElementById('map');
+        const addCityButton = document.getElementById('addCity');
+        const cityNameInput = document.getElementById('cityName');
 
-        let imageFiles = [];
+        map.addEventListener('click', (event) => {
+            const cityName = cityNameInput.value.trim();
 
-        imageUpload.addEventListener('change', (event) => {
-            imagePreview.innerHTML = '';
-            imageFiles = Array.from(event.target.files);
-            imageFiles.forEach(file => {
-                const reader = new FileReader();
-                reader.onload = () => {
-                    const img = document.createElement('img');
-                    img.src = reader.result;
-                    imagePreview.appendChild(img);
-                };
-                reader.readAsDataURL(file);
+            if (!cityName) {
+                alert('Please enter a city name first!');
+                return;
+            }
+
+            const rect = map.getBoundingClientRect();
+            const x = event.clientX - rect.left;
+            const y = event.clientY - rect.top;
+
+            const cityElement = document.createElement('div');
+            cityElement.className = 'city';
+            cityElement.style.left = `${x}px`;
+            cityElement.style.top = `${y}px`;
+            cityElement.textContent = cityName;
+
+            cityElement.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const newName = prompt('Edit city name:', cityElement.textContent);
+                if (newName) {
+                    cityElement.textContent = newName;
+                }
             });
+
+            map.appendChild(cityElement);
+            cityNameInput.value = '';
         });
 
-        document.getElementById('download-pdf').addEventListener('click', () => {
-            const { jsPDF } = window.jspdf;
-            const pdf = new jsPDF();
-
-            pdf.text('Fiche Personnage Fantastique', 10, 10);
-            pdf.text(`Nom : ${form.name.value}`, 10, 20);
-            pdf.text(`Race : ${form.race.value}`, 10, 30);
-            pdf.text(`Classe : ${form.class.value}`, 10, 40);
-            pdf.text(`Âge : ${form.age.value}`, 10, 50);
-            pdf.text(`Description :`, 10, 60);
-            pdf.text(form.description.value, 10, 70, { maxWidth: 180 });
-            pdf.text(`Pouvoirs/Capacités :`, 10, 100);
-            pdf.text(form.abilities.value, 10, 110, { maxWidth: 180 });
-            pdf.text(`Histoire/Origine :`, 10, 140);
-            pdf.text(form.background.value, 10, 150, { maxWidth: 180 });
-            pdf.text(`Équipement :`, 10, 180);
-            pdf.text(form.equipment.value, 10, 190, { maxWidth: 180 });
-            pdf.text(`Alliés :`, 10, 220);
-            pdf.text(form.allies.value, 10, 230, { maxWidth: 180 });
-            pdf.text(`Ennemis :`, 10, 260);
-            pdf.text(form.enemies.value, 10, 270, { maxWidth: 180 });
-            pdf.text(`Quêtes/Aventures :`, 10, 300);
-            pdf.text(form.quests.value, 10, 310, { maxWidth: 180 });
-            pdf.text(`Relations :`, 10, 340);
-            pdf.text(form.relations.value, 10, 350, { maxWidth: 180 });
-            pdf.text(`Traits de personnalité :`, 10, 380);
-            pdf.text(form.traits.value, 10, 390, { maxWidth: 180 });
-            pdf.text(`Peurs et faiblesses :`, 10, 420);
-            pdf.text(form.fears.value, 10, 430, { maxWidth: 180 });
-            pdf.text(`Objectifs :`, 10, 460);
-            pdf.text(form.goals.value, 10, 470, { maxWidth: 180 });
-
-            let yOffset = 500;
-            if (imageFiles.length > 0) {
-                pdf.text('Images :', 10, yOffset);
-                imageFiles.forEach((file, index) => {
-                    const reader = new FileReader();
-                    reader.onload = () => {
-                        pdf.addImage(reader.result, 'JPEG', 10, yOffset + 10 + (index * 50), 50, 50);
-                        if (index === imageFiles.length - 1) {
-                            pdf.save('fiche_personnage.pdf');
-                        }
-                    };
-                    reader.readAsDataURL(file);
-                });
-            } else {
-                pdf.save('fiche_personnage.pdf');
-            }
+        addCityButton.addEventListener('click', () => {
+            alert('Click on the map to place your city!');
         });
     </script>
 </body>
