@@ -6,105 +6,105 @@
     <title>Fiche Personnage Fantastique</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-   <style>
-    body {
-    font-family: 'Roboto', sans-serif;
-    margin: 20px;
-    padding: 0;
-    background-color: #f8f9fa;
-    color: #343a40;
-}
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 20px;
+            padding: 0;
+            background-color: #f8f9fa;
+            color: #343a40;
+        }
 
-.container {
-    max-width: 800px;
-    margin: 0 auto;
-    background: #ffffff;
-    padding: 20px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    border-radius: 10px;
-}
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: #ffffff;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+        }
 
-h1 {
-    text-align: center;
-    color: #495057;
-    margin-bottom: 20px;
-}
+        h1 {
+            text-align: center;
+            color: #495057;
+            margin-bottom: 20px;
+        }
 
-.form-group {
-    margin-bottom: 15px;
-    display: flex;
-    flex-direction: column;
-}
+        .form-group {
+            margin-bottom: 15px;
+            display: flex;
+            flex-direction: column;
+        }
 
-label {
-    font-weight: bold;
-    margin-bottom: 5px;
-}
+        label {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
 
-input, textarea, select {
-    width: 100%;
-    padding: 10px;
-    margin-top: 5px;
-    border: 1px solid #ced4da;
-    border-radius: 5px;
-    background-color: #f8f9fa;
-    transition: border-color 0.3s, background-color 0.3s;
-    font-size: 16px;
-}
+        input, textarea, select {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ced4da;
+            border-radius: 5px;
+            background-color: #f8f9fa;
+            transition: border-color 0.3s, background-color 0.3s;
+            font-size: 16px;
+        }
 
-input:focus, textarea:focus, select:focus {
-    border-color: #80bdff;
-    outline: 0;
-    background-color: #ffffff;
-}
+        input:focus, textarea:focus, select:focus {
+            border-color: #80bdff;
+            outline: 0;
+            background-color: #ffffff;
+        }
 
-button {
-    background-color: #007bff;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s, transform 0.3s;
-    font-size: 16px;
-}
+        button {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.3s;
+            font-size: 16px;
+        }
 
-button:hover {
-    background-color: #0056b3;
-    transform: scale(1.05);
-}
+        button:hover {
+            background-color: #0056b3;
+            transform: scale(1.05);
+        }
 
-.image-preview {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    margin-top: 10px;
-}
+        .image-preview {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 10px;
+        }
 
-.image-preview img {
-    max-width: 150px;
-    border-radius: 5px;
-    border: 1px solid #ced4da;
-}
+        .image-preview img {
+            max-width: 150px;
+            border-radius: 5px;
+            border: 1px solid #ced4da;
+        }
 
-.download-pdf {
-    text-align: center;
-    margin-top: 20px;
-}
+        .download-pdf {
+            text-align: center;
+            margin-top: 20px;
+        }
 
-.card {
-    padding: 20px;
-    background: #ffffff;
-    border: 1px solid #ced4da;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    margin-bottom: 20px;
-}
+        .card {
+            padding: 20px;
+            background: #ffffff;
+            border: 1px solid #ced4da;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
 
-.form-group i {
-    margin-right: 10px;
-}
-       </style>
+        .form-group i {
+            margin-right: 10px;
+        }
+    </style>
 </head>
 <body>
     <div class="container">
@@ -128,7 +128,7 @@ button:hover {
             <a href="chronologie.html">chronologie</a>
             <a href="batail_maison.html">bataille et noble</a>
             <a href="evenement.html">évenement</a>
-        </div
+        </div>
         <h1>Fiche Personnage Fantastique</h1>
         <form id="character-form">
             <div class="card">
@@ -237,7 +237,7 @@ button:hover {
             });
         });
 
-        document.getElementById('download-pdf').addEventListener('click', () => {
+        document.getElementById('download-pdf').addEventListener('click', async () => {
             const { jsPDF } = window.jspdf;
             const pdf = new jsPDF();
 
@@ -272,19 +272,18 @@ button:hover {
             let yOffset = 500;
             if (imageFiles.length > 0) {
                 pdf.text('Images :', 10, yOffset);
-                imageFiles.forEach((file, index) => {
+                for (const [index, file] of imageFiles.entries()) {
                     const reader = new FileReader();
-                    reader.onload = () => {
-                        pdf.addImage(reader.result, 'JPEG', 10, yOffset + 10 + (index * 50), 50, 50);
-                        if (index === imageFiles.length - 1) {
-                            pdf.save('fiche_personnage.pdf');
-                        }
-                    };
-                    reader.readAsDataURL(file);
-                });
-            } else {
-                pdf.save('fiche_personnage.pdf');
+                    await new Promise((resolve) => {
+                        reader.onload = () => {
+                            pdf.addImage(reader.result, 'JPEG', 10, yOffset + 10 + (index * 50), 50, 50);
+                            resolve();
+                        };
+                        reader.readAsDataURL(file);
+                    });
+                }
             }
+            pdf.save('fiche_personnage.pdf');
         });
     </script>
 </body>
