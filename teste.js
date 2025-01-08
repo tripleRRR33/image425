@@ -1,10 +1,14 @@
 const canvas = document.getElementById('mapCanvas');
 const ctx = canvas.getContext('2d');
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
+
+function resizeCanvas() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    render();
+}
 
 // Adjust gridSize based on canvas size
-const gridSize = Math.min(canvas.width, canvas.height) / 20; 
+let gridSize = Math.min(canvas.width, canvas.height) / 20; 
 let elements = [];
 let currentTool = null;
 let zoomLevel = 1;
@@ -173,4 +177,62 @@ canvas.addEventListener('click', (event) => {
                 endX: x,
                 endY: y
             });
-            startPoint = null
+            startPoint = null;
+        }
+    }
+
+    if (currentTool === 'addTile') {
+        const tileType = document.getElementById('tileType').value;
+        const size = parseInt(document.getElementById('tileSize').value);
+        elements.push({ type: 'tile', x, y, tileType, size });
+    }
+
+    if (currentTool === 'remove') {
+        const index = elements.findIndex(el =>
+            (el.type === 'town' && Math.hypot(el.x - x, el.y - y) < 10) ||
+            (el.type === 'road' && Math.hypot((el.startX + el.endX) / 2 - x, (el.startY + el.endY) / 2 - y) < 20) ||
+            (el.type === 'tile' && el.x === x && el.y === y) ||
+            (el.type === 'emoji' && Math.hypot(el.x - x, el.y - y) < el.size / 2)
+        );
+        if (index !== -1) elements.splice(index, 1);
+    }
+
+    if (currentTool === 'emoji') {
+        const emoji = document.getElementById('tileType').value;
+        const size = parseInt(document.getElementById('tileSize').value);
+        elements.push({ type: 'emoji', x, y, emoji, size });
+    }
+
+    render();
+});
+
+// Update tile coordinates and size
+document.getElementById('tileX').addEventListener('input', () => {
+    if (currentTool === 'addTile' || currentTool === 'emoji') {
+        elements[elements.length - 1].x = parseInt(document.getElementById('tileX').value);
+        render();
+    }
+});
+
+document.getElementById('tileY').addEventListener('input', () => {
+    if (currentTool === 'addTile' || currentTool === 'emoji') {
+        elements[elements.length - 1].y = parseInt(document.getElementById('tileY').value);
+        render();
+    }
+});
+
+document.getElementById('tileSize').addEventListener('input', () => {
+    if (currentTool === 'addTile' || currentTool === 'emoji') {
+        elements[elements.length - 1].size = parseInt(document.getElementById('tileSize').value);
+        render();
+    }
+});
+
+// Resize the canvas when the window is resized
+window.addEventListener('resize', resizeCanvas);
+
+// Initial canvas size setup
+resizeCanvas();
+
+// Initial render
+render();
