@@ -49,7 +49,7 @@
             position: absolute;
             width: 10px;
             height: 10px;
-            background-color: red;
+            background: red;
             border-radius: 50%;
             transform: translate(-50%, -50%);
             cursor: pointer;
@@ -185,7 +185,9 @@
             <button onclick="saveAsJpeg()">Sauvegarder JPEG</button>
             <button onclick="toggleDrawing()">Mode dessin: OFF</button>
             <button onclick="generateTiles()">Générer des Tuiles</button>
-            <button onclick="togglePointMode()">Mode Points: OFF</button>
+            <button onclick="togglePointMode()">Ajouter Points: OFF</button>
+            <button onclick="uploadImage()">Uploader Image</button>
+            <input type="file" id="imageUploader" style="display:none" accept="image/*">
         </div>
 
         <div class="map-container" id="mapContainer">
@@ -229,14 +231,13 @@
     <script>
         let selectedTerrain = 'plains';
         let isDrawing = false;
-        let isMouseDown = false;
         let isPointMode = false;
+        let isMouseDown = false;
 
         // Initialiser la grille
         const mapContainer = document.getElementById('mapContainer');
         const gridSize = { width: 40, height: 30 };
         const terrainData = Array(gridSize.height).fill().map(() => Array(gridSize.width).fill(''));
-        const points = [];
 
         function generateTiles() {
             mapContainer.innerHTML = ''; // Clear existing tiles
@@ -248,14 +249,6 @@
                     tileElement.dataset.y = y;
                     mapContainer.appendChild(tileElement);
                 });
-            });
-            // Replacer les points après la génération des tuiles
-            points.forEach(point => {
-                const pointElement = document.createElement('div');
-                pointElement.className = 'point';
-                pointElement.style.left = point.x + 'px';
-                pointElement.style.top = point.y + 'px';
-                mapContainer.appendChild(pointElement);
             });
         }
 
@@ -271,12 +264,12 @@
             });
         });
 
-        // Gestion du dessin et des points
+        // Gestion du dessin
         mapContainer.addEventListener('mousedown', (e) => {
             isMouseDown = true;
             if (e.target.classList.contains('tile')) {
                 if (isPointMode) {
-                    placePoint(e);
+                    addPoint(e.target);
                 } else {
                     paintTile(e.target);
                 }
@@ -306,43 +299,39 @@
             terrainData[y][x] = selectedTerrain;
         }
 
+        function addPoint(tile) {
+            const point = document.createElement('div');
+            point.className = 'point';
+            point.style.left = `${tile.offsetLeft + tile.offsetWidth / 2}px`;
+            point.style.top = `${tile.offsetTop + tile.offsetHeight / 2}px`;
+            mapContainer.appendChild(point);
+        }
+
         function toggleDrawing() {
             isDrawing = !isDrawing;
-            const btn = document.querySelector('button:nth-last-child(2)');
+            const btn = document.querySelector('button:nth-last-child(3)');
             btn.textContent = `Mode dessin: ${isDrawing ? 'ON' : 'OFF'}`;
         }
 
         function togglePointMode() {
             isPointMode = !isPointMode;
-            const btn = document.querySelector('button:last-child');
-            btn.textContent = `Mode Points: ${isPointMode ? 'ON' : 'OFF'}`;
-        }
-
-        function placePoint(e) {
-            const x = e.clientX - mapContainer.offsetLeft;
-            const y = e.clientY - mapContainer.offsetTop;
-            const point = { x, y };
-            points.push(point);
-            const pointElement = document.createElement('div');
-            pointElement.className = 'point';
-            pointElement.style.left = x + 'px';
-            pointElement.style.top = y + 'px';
-            mapContainer.appendChild(pointElement);
+            const btn = document.querySelector('button:nth-last-child(2)');
+            btn.textContent = `Ajouter Points: ${isPointMode ? 'ON' : 'OFF'}`;
         }
 
         function clearMap() {
             document.querySelectorAll('.tile').forEach(tile => {
                 tile.className = 'tile';
             });
+            document.querySelectorAll('.point').forEach(point => {
+                point.remove();
+            });
             terrainData.forEach(row => row.fill(''));
-            document.querySelectorAll('.point').forEach(point => point.remove());
-            points.length = 0;
         }
 
         function saveMap() {
             const mapData = {
                 terrain: terrainData,
-                points,
                 width: gridSize.width,
                 height: gridSize.height,
                 timestamp: new Date().toISOString()
@@ -368,6 +357,29 @@
                 link.click();
             });
         }
+
+        function uploadImage() {
+            document.getElementById('imageUploader').click();
+        }
+
+        document.getElementById('imageUploader').addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    const img = document.createElement('img');
+                    img.src = event.target.result;
+                    img.style.position = 'absolute';
+                    img.style.left = '0';
+                    img.style.top = '0';
+                    img.style.width = '100%';
+                    img.style.height = '100%';
+                    img.style.pointerEvents = 'none';
+                    mapContainer.appendChild(img);
+                };
+                reader.readAsDataURL(file);
+            }
+        });
     </script>
 </body>
 </html>
