@@ -54,6 +54,21 @@
         #addTerm:hover {
             background-color: #0056b3;
         }
+
+        #saveTerms {
+            background-color: #28a745;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin-top: 10px;
+        }
+
+        #saveTerms:hover {
+            background-color: #218838;
+        }
     </style>
 </head>
 <body>
@@ -64,6 +79,7 @@
     <input type="text" id="termDefinition" placeholder="Définition">
     <input type="text" id="termContext" placeholder="Contexte d'utilisation">
     <button id="addTerm" onclick="addTerm()">Ajouter un terme</button>
+    <button id="saveTerms" onclick="saveTerms()">Sauvegarder les termes</button>
 
     <div id="dictionary">
         <div class="term" id="terme1">
@@ -124,6 +140,51 @@
                 document.getElementById("termContext").value = "";
             } else {
                 alert("Veuillez remplir tous les champs.");
+            }
+        }
+
+        function saveTerms() {
+            const terms = document.getElementsByClassName("term");
+            const termsData = [];
+
+            for (let i = 0; i < terms.length; i++) {
+                const termName = terms[i].getElementsByTagName("h2")[0].innerText;
+                const termDefinition = terms[i].getElementsByTagName("p")[0].innerText.replace("Définition :", "").trim();
+                const termContext = terms[i].getElementsByTagName("p")[1].innerText.replace("Contexte d'utilisation :", "").trim();
+
+                termsData.push({
+                    name: termName,
+                    definition: termDefinition,
+                    context: termContext
+                });
+            }
+
+            localStorage.setItem("terms", JSON.stringify(termsData));
+            alert("Termes sauvegardés !");
+        }
+
+        window.onload = function() {
+            const savedTerms = JSON.parse(localStorage.getItem("terms"));
+            if (savedTerms) {
+                const dictionary = document.getElementById("dictionary");
+                for (const term of savedTerms) {
+                    const termDiv = document.createElement("div");
+                    termDiv.className = "term";
+
+                    const termName = document.createElement("h2");
+                    termName.innerText = term.name;
+                    termDiv.appendChild(termName);
+
+                    const termDefinition = document.createElement("p");
+                    termDefinition.innerHTML = `<strong>Définition :</strong> ${term.definition}`;
+                    termDiv.appendChild(termDefinition);
+
+                    const termContext = document.createElement("p");
+                    termContext.innerHTML = `<strong>Contexte d'utilisation :</strong> ${term.context}`;
+                    termDiv.appendChild(termContext);
+
+                    dictionary.appendChild(termDiv);
+                }
             }
         }
     </script>
