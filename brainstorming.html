@@ -113,7 +113,7 @@
         .idea button:hover {
             background-color: darkred;
         }
-        #add-idea {
+        #add-idea, #save-ideas, #download-pdf {
             background-color: #007bff;
             color: white;
             padding: 10px 20px;
@@ -127,7 +127,7 @@
             margin-left: auto;
             margin-right: auto;
         }
-        #add-idea:hover {
+        #add-idea:hover, #save-ideas:hover, #download-pdf:hover {
             background-color: #0056b3;
             transform: scale(1.05);
         }
@@ -162,18 +162,24 @@
         <h1>Outil de Brainstorming</h1>
         <div id="brainstorming-board"></div>
         <button id="add-idea">Ajouter une idée</button>
+        <button id="save-ideas">Sauvegarder les Idées</button>
+        <button id="download-pdf">Télécharger en PDF</button>
     </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
     <script>
         const brainstormingBoard = document.getElementById('brainstorming-board');
         const addIdeaButton = document.getElementById('add-idea');
+        const saveIdeasButton = document.getElementById('save-ideas');
+        const downloadPdfButton = document.getElementById('download-pdf');
 
-        function createIdeaElement() {
+        function createIdeaElement(ideaText = '') {
             const ideaDiv = document.createElement('div');
             ideaDiv.className = 'idea';
 
             const input = document.createElement('input');
             input.type = 'text';
             input.placeholder = 'Nouvelle idée...';
+            input.value = ideaText;
 
             const removeButton = document.createElement('button');
             removeButton.textContent = 'Supprimer';
@@ -190,6 +196,35 @@
         addIdeaButton.addEventListener('click', () => {
             const ideaElement = createIdeaElement();
             brainstormingBoard.appendChild(ideaElement);
+        });
+
+        saveIdeasButton.addEventListener('click', () => {
+            const ideas = [];
+            document.querySelectorAll('.idea input').forEach(input => {
+                ideas.push(input.value);
+            });
+            localStorage.setItem('brainstormingIdeas', JSON.stringify(ideas));
+            alert('Idées sauvegardées.');
+        });
+
+        downloadPdfButton.addEventListener('click', async () => {
+            const { jsPDF } = window.jspdf;
+            const pdf = new jsPDF();
+
+            document.querySelectorAll('.idea input').forEach((input, index) => {
+                pdf.setFontSize(18);
+                pdf.text(`Idée ${index + 1}: ${input.value}`, 10, 10 + (index * 10));
+            });
+
+            pdf.save('brainstorming.pdf');
+        });
+
+        window.addEventListener('load', () => {
+            const savedIdeas = JSON.parse(localStorage.getItem('brainstormingIdeas')) || [];
+            savedIdeas.forEach(ideaText => {
+                const ideaElement = createIdeaElement(ideaText);
+                brainstormingBoard.appendChild(ideaElement);
+            });
         });
     </script>
 </body>
