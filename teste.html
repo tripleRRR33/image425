@@ -8,6 +8,7 @@
         body {
             margin: 0;
             overflow: hidden;
+            display: flex;
         }
         canvas {
             display: block;
@@ -17,6 +18,15 @@
             position: absolute;
             top: 10px;
             left: 10px;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        #legend {
+            position: absolute;
+            top: 10px;
+            right: 10px;
             background: rgba(255, 255, 255, 0.9);
             padding: 10px;
             border-radius: 5px;
@@ -44,6 +54,16 @@
             margin: 5px 0;
             padding: 5px;
             font-size: 14px;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 5px;
+        }
+        .legend-color {
+            width: 20px;
+            height: 20px;
+            margin-right: 10px;
         }
     </style>
 </head>
@@ -82,6 +102,26 @@
             <option value="field">Field</option>
             <option value="glacier">Glacier</option>
         </select>
+    </div>
+    <div id="legend">
+        <div class="legend-item"><div class="legend-color" style="background-color: lightblue;"></div>Water</div>
+        <div class="legend-item"><div class="legend-color" style="background-color: green;"></div>Forest</div>
+        <div class="legend-item"><div class="legend-color" style="background-color: gray;"></div>Mountain</div>
+        <div class="legend-item"><div class="legend-color" style="background-color: sandybrown;"></div>Beach</div>
+        <div class="legend-item"><div class="legend-color" style="background-color: khaki;"></div>Desert</div>
+        <div class="legend-item"><div class="legend-color" style="background-color: darkgreen;"></div>Swamp</div>
+        <div class="legend-item"><div class="legend-color" style="background-color: lightgreen;"></div>Prairie</div>
+        <div class="legend-item"><div class="legend-color" style="background-color: lightgray;"></div>Snow</div>
+        <div class="legend-item"><div class="legend-color" style="background-color: darkred;"></div>Volcano</div>
+        <div class="legend-item"><div class="legend-color" style="background-color: darkgray;"></div>City</div>
+        <div class="legend-item"><div class="legend-color" style="background-color: palegreen;"></div>Rice Field</div>
+        <div class="legend-item"><div class="legend-color" style="background-color: goldenrod;"></div>Savanna</div>
+        <div class="legend-item"><div class="legend-color" style="background-color: darkolivegreen;"></div>Jungle</div>
+        <div class="legend-item"><div class="legend-color" style="background-color: darkkhaki;"></div>Hills</div>
+        <div class="legend-item"><div class="legend-color" style="background-color: skyblue;"></div>River</div>
+        <div class="legend-item"><div class="legend-color" style="background-color: dimgray;"></div>Cave</div>
+        <div class="legend-item"><div class="legend-color" style="background-color: wheat;"></div>Field</div>
+        <div class="legend-item"><div class="legend-color" style="background-color: lightcyan;"></div>Glacier</div>
     </div>
     <canvas id="mapCanvas"></canvas>
 
