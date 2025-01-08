@@ -9,14 +9,20 @@
     <style>
         body {
             font-family: 'Roboto', sans-serif;
-            margin: 20px;
+            margin: 0;
             padding: 0;
-            background-color: #f8f9fa;
+            background-color: #f4f4f9;
             color: #343a40;
+        }
+        header, footer {
+            background-color: #007bff;
+            color: #ffffff;
+            text-align: center;
+            padding: 10px 0;
         }
         .container {
             max-width: 800px;
-            margin: 0 auto;
+            margin: 20px auto;
             background: #ffffff;
             padding: 20px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -91,13 +97,12 @@
         .form-group i {
             margin-right: 10px;
         }
-        /* New styles for navigation menu */
         .nav-menu {
             display: flex;
             flex-direction: column;
             position: fixed;
             right: 20px;
-            top: 20px;
+            top: 100px;
             gap: 10px;
         }
         .nav-menu a {
@@ -115,6 +120,9 @@
     </style>
 </head>
 <body>
+    <header>
+        <h1>Bienvenue sur le site de Personnages Fantastiques</h1>
+    </header>
     <div class="container">
         <h1>Accueil</h1>
         <div class="nav-menu">
@@ -222,118 +230,123 @@
             <button type="button" id="download-pdf">Télécharger en PDF</button>
         </form>
     </div>
+    <footer>
+        <p>&copy; 2025 Personnages Fantastiques - Tous droits réservés</p>
+    </footer>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
-<script>
-    const imageUpload = document.getElementById('image-upload');
-    const imagePreview = document.getElementById('image-preview');
-    const form = document.getElementById('character-form');
+    <script>
+        const imageUpload = document.getElementById('image-upload');
+        const imagePreview = document.getElementById('image-preview');
+        const form = document.getElementById('character-form');
 
-    let imageFiles = [];
+        let imageFiles = [];
 
-    imageUpload.addEventListener('change', (event) => {
-        imagePreview.innerHTML = '';
-        imageFiles = Array.from(event.target.files);
-        imageFiles.forEach(file => {
-            const reader = new FileReader();
-            reader.onload = () => {
-                const img = document.createElement('img');
-                img.src = reader.result;
-                imagePreview.appendChild(img);
-            };
-            reader.readAsDataURL(file);
-        });
-    });
-
-    document.getElementById('download-pdf').addEventListener('click', async () => {
-        const { jsPDF } = window.jspdf;
-        const pdf = new jsPDF();
-
-        pdf.setFontSize(18);
-        pdf.text('Fiche Personnage Fantastique', 10, 10);
-        pdf.setFontSize(12);
-        pdf.text(`Nom : ${form.name.value}`, 10, 20);
-        pdf.text(`Race : ${form.race.value}`, 10, 30);
-        pdf.text(`Classe : ${form.class.value}`, 10, 40);
-        pdf.text(`Âge : ${form.age.value}`, 10, 50);
-        
-        pdf.setFontSize(16);
-        pdf.text(`Description :`, 10, 60);
-        pdf.setFontSize(12);
-        pdf.text(form.description.value, 10, 70, { maxWidth: 180 });
-        
-        pdf.setFontSize(16);
-        pdf.text(`Pouvoirs/Capacités :`, 10, 100);
-        pdf.setFontSize(12);
-        pdf.text(form.abilities.value, 10, 110, { maxWidth: 180 });
-        
-        pdf.setFontSize(16);
-        pdf.text(`Histoire/Origine :`, 10, 140);
-        pdf.setFontSize(12);
-        pdf.text(form.background.value, 10, 150, { maxWidth: 180 });
-        
-        pdf.setFontSize(16);
-        pdf.text(`Équipement :`, 10, 180);
-        pdf.setFontSize(12);
-        pdf.text(form.equipment.value, 10, 190, { maxWidth: 180 });
-        
-        pdf.setFontSize(16);
-        pdf.text(`Alliés :`, 10, 220);
-        pdf.setFontSize(12);
-        pdf.text(form.allies.value, 10, 230, { maxWidth: 180 });
-        
-        pdf.setFontSize(16);
-        pdf.text(`Ennemis :`, 10, 260);
-        pdf.setFontSize(12);
-        pdf.text(form.enemies.value, 10, 270, { maxWidth: 180 });
-        
-        pdf.setFontSize(16);
-        pdf.text(`Quêtes/Aventures :`, 10, 300);
-        pdf.setFontSize(12);
-        pdf.text(form.quests.value, 10, 310, { maxWidth: 180 });
-        
-        pdf.setFontSize(16);
-        pdf.text(`Relations :`, 10, 340);
-        pdf.setFontSize(12);
-        pdf.text(form.relations.value, 10, 350, { maxWidth: 180 });
-        
-        pdf.setFontSize(16);
-        pdf.text(`Traits de personnalité :`, 10, 380);
-        pdf.setFontSize(12);
-        pdf.text(form.traits.value, 10, 390, { maxWidth: 180 });
-        
-        pdf.setFontSize(16);
-        pdf.text(`Peurs et faiblesses :`, 10, 420);
-        pdf.setFontSize(12);
-        pdf.text(form.fears.value, 10, 430, { maxWidth: 180 });
-        
-        pdf.setFontSize(16);
-        pdf.text(`Objectifs :`, 10, 460);
-        pdf.setFontSize(12);
-        pdf.text(form.goals.value, 10, 470, { maxWidth: 180 });
-
-        // Ensure three-page PDF
-        if (pdf.internal.getNumberOfPages() < 3) {
-            while (pdf.internal.getNumberOfPages() < 3) {
-                pdf.addPage();
-            }
-        }
-
-        let yOffset = 500;
-        if (imageFiles.length > 0) {
-            pdf.setFontSize(16);
-            pdf.text('Images :', 10, yOffset);
-            for (const [index, file] of imageFiles.entries()) {
+        imageUpload.addEventListener('change', (event) => {
+            imagePreview.innerHTML = '';
+            imageFiles = Array.from(event.target.files);
+            imageFiles.forEach(file => {
                 const reader = new FileReader();
-                await new Promise((resolve) => {
-                    reader.onload = () => {
-                        pdf.addImage(reader.result, 'JPEG', 10, yOffset + 10 + (index * 50), 50, 50);
-                        resolve();
-                    };
-                    reader.readAsDataURL(file);
-                });
+                reader.onload = () => {
+                    const img = document.createElement('img');
+                    img.src = reader.result;
+                    imagePreview.appendChild(img);
+                };
+                reader.readAsDataURL(file);
+            });
+        });
+
+        document.getElementById('download-pdf').addEventListener('click', async () => {
+            const { jsPDF } = window.jspdf;
+            const pdf = new jsPDF();
+
+            pdf.setFontSize(18);
+            pdf.text('Fiche Personnage Fantastique', 10, 10);
+            pdf.setFontSize(12);
+            pdf.text(`Nom : ${form.name.value}`, 10, 20);
+            pdf.text(`Race : ${form.race.value}`, 10, 30);
+            pdf.text(`Classe : ${form.class.value}`, 10, 40);
+            pdf.text(`Âge : ${form.age.value}`, 10, 50);
+            
+            pdf.setFontSize(16);
+            pdf.text(`Description :`, 10, 60);
+            pdf.setFontSize(12);
+            pdf.text(form.description.value, 10, 70, { maxWidth: 180 });
+            
+            pdf.setFontSize(16);
+            pdf.text(`Pouvoirs/Capacités :`, 10, 100);
+            pdf.setFontSize(12);
+            pdf.text(form.abilities.value, 10, 110, { maxWidth: 180 });
+            
+            pdf.setFontSize(16);
+            pdf.text(`Histoire/Origine :`, 10, 140);
+            pdf.setFontSize(12);
+            pdf.text(form.background.value, 10, 150, { maxWidth: 180 });
+            
+            pdf.setFontSize(16);
+            pdf.text(`Équipement :`, 10, 180);
+            pdf.setFontSize(12);
+            pdf.text(form.equipment.value, 10, 190, { maxWidth: 180 });
+            
+            pdf.setFontSize(16);
+            pdf.text(`Alliés :`, 10, 220);
+            pdf.setFontSize(12);
+            pdf.text(form.allies.value, 10, 230, { maxWidth: 180 });
+            
+            pdf.setFontSize(16);
+            pdf.text(`Ennemis :`, 10, 260);
+            pdf.setFontSize(12);
+            pdf.text(form.enemies.value, 10, 270, { maxWidth: 180 });
+            
+            pdf.setFontSize(16);
+            pdf.text(`Quêtes/Aventures :`, 10, 300);
+            pdf.setFontSize(12);
+            pdf.text(form.quests.value, 10, 310, { maxWidth: 180 });
+            
+            pdf.setFontSize(16);
+            pdf.text(`Relations :`, 10, 340);
+            pdf.setFontSize(12);
+            pdf.text(form.relations.value, 10, 350, { maxWidth: 180 });
+            
+            pdf.setFontSize(16);
+            pdf.text(`Traits de personnalité :`, 10, 380);
+            pdf.setFontSize(12);
+            pdf.text(form.traits.value, 10, 390, { maxWidth: 180 });
+            
+            pdf.setFontSize(16);
+            pdf.text(`Peurs et faiblesses :`, 10, 420);
+            pdf.setFontSize(12);
+            pdf.text(form.fears.value, 10, 430, { maxWidth: 180 });
+            
+            pdf.setFontSize(16);
+            pdf.text(`Objectifs :`, 10, 460);
+            pdf.setFontSize(12);
+            pdf.text(form.goals.value, 10, 470, { maxWidth: 180 });
+
+            // Ensure three-page PDF
+            if (pdf.internal.getNumberOfPages() < 3) {
+                while (pdf.internal.getNumberOfPages() < 3) {
+                    pdf.addPage();
+                }
             }
-        }
-        pdf.save('fiche_personnage.pdf');
-    });
-</script>
+
+            let yOffset = 500;
+            if (imageFiles.length > 0) {
+                pdf.setFontSize(16);
+                pdf.text('Images :', 10, yOffset);
+                for (const [index, file] of imageFiles.entries()) {
+                    const reader = new FileReader();
+                    await new Promise((resolve) => {
+                        reader.onload = () => {
+                            pdf.addImage(reader.result, 'JPEG', 10, yOffset + 10 + (index * 50), 50, 50);
+                            resolve();
+                        };
+                        reader.readAsDataURL(file);
+                    });
+                }
+            }
+            pdf.save('fiche_personnage.pdf');
+        });
+    </script>
+</body>
+</html>
