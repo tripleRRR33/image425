@@ -271,3 +271,80 @@
             if (isMouseDown && isDrawing && e.target.classList.contains('tile')) {
                 paintTile(e.target);
             }
+// Terminer la fonction de dessin des tuiles
+        function draw(e) {
+            if (isMouseDown && isDrawing && e.target.classList.contains('tile')) {
+                paintTile(e.target);
+            }
+        }
+
+        // Arrêter le dessin
+        function stopDrawing() {
+            isMouseDown = false;
+        }
+
+        // Peindre la tuile
+        function paintTile(tile) {
+            const x = tile.dataset.x;
+            const y = tile.dataset.y;
+            terrainData[y][x] = selectedTerrain;
+            tile.className = `tile terrain-${selectedTerrain}`;
+        }
+
+        // Effacer la carte
+        function clearMap() {
+            terrainData.forEach((row, y) => {
+                row.forEach((tile, x) => {
+                    terrainData[y][x] = 'plains';
+                });
+            });
+            createGrid();
+        }
+
+        // Sauvegarder la carte
+        function saveMap() {
+            const savedData = JSON.stringify(terrainData);
+            localStorage.setItem('savedMap', savedData);
+            alert('Carte sauvegardée!');
+        }
+
+        // Charger la carte
+        function loadMap() {
+            const savedData = localStorage.getItem('savedMap');
+            if (savedData) {
+                const parsedData = JSON.parse(savedData);
+                parsedData.forEach((row, y) => {
+                    row.forEach((tile, x) => {
+                        terrainData[y][x] = tile;
+                        const tileDiv = document.querySelector(`.tile[data-x="${x}"][data-y="${y}"]`);
+                        tileDiv.className = `tile terrain-${tile}`;
+                    });
+                });
+                alert('Carte chargée!');
+            } else {
+                alert('Aucune carte sauvegardée trouvée.');
+            }
+        }
+
+        // Basculer le mode de dessin
+        function toggleDrawing() {
+            isDrawing = !isDrawing;
+            const drawingButton = document.getElementById('drawingMode');
+            drawingButton.textContent = `Mode dessin: ${isDrawing ? 'ON' : 'OFF'}`;
+        }
+
+        // Générer une carte aléatoire
+        function generateRandomMap() {
+            terrainData.forEach((row, y) => {
+                row.forEach((tile, x) => {
+                    const terrainTypes = Object.keys(TERRAIN_TYPES);
+                    const randomTerrain = terrainTypes[Math.floor(Math.random() * terrainTypes.length)];
+                    terrainData[y][x] = randomTerrain;
+                    const tileDiv = document.querySelector(`.tile[data-x="${x}"][data-y="${y}"]`);
+                    tileDiv.className = `tile terrain-${randomTerrain}`;
+                });
+            });
+        }
+    </script>
+</body>
+</html>
