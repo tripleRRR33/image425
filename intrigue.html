@@ -4,78 +4,145 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fiche Intrigue</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-            padding: 0;
-            background-color: #f4f4f9;
-            color: #333;
+            background-image: url('https://i.imgur.com/FI9t6z9.jpeg');
+            background-size: cover;
+            background-attachment: fixed;
+            color: #f4f4f4;
+            font-family: 'Cinzel', serif;
         }
-
+        header {
+            background: rgba(0, 0, 0, 0.8);
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+            font-size: 2rem;
+            border-bottom: 3px solid #9d6c34;
+        }
+        button {
+            background: #6b4226;
+            color: #fff;
+            border: 2px solid #9d6c34;
+            padding: 10px 20px;
+            font-size: 1.2rem;
+            border-radius: 5px;
+            transition: 0.3s ease-in-out;
+            margin-top: 20px;
+        }
+        button:hover {
+            background: #9d6c34;
+            transform: scale(1.1);
+        }
+        .card {
+            background: rgba(0, 0, 0, 0.7);
+            border: 1px solid #9d6c34;
+            padding: 20px;
+            margin: 20px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+        }
+        h1, h2, h3 {
+            font-family: 'Cormorant', serif;
+            color: #ffd700;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.8);
+        }
+        .nav-menu {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            margin: 20px 0;
+        }
+        .nav-menu a {
+            text-decoration: none;
+            color: #ffd700;
+            padding: 10px 20px;
+            border: 1px solid #9d6c34;
+            border-radius: 5px;
+            transition: background-color 0.3s, color 0.3s;
+            display: flex;
+            align-items: center;
+        }
+        .nav-menu a:hover {
+            background-color: #9d6c34;
+            color: #fff;
+        }
+        .nav-menu a i {
+            margin-right: 10px;
+        }
         .container {
             max-width: 800px;
             margin: 0 auto;
-            background: #fff;
+            background: rgba(0, 0, 0, 0.7);
             padding: 20px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             border-radius: 10px;
         }
-
-        h1 {
-            text-align: center;
-            color: #444;
-        }
-
         .form-group {
             margin-bottom: 15px;
+            display: flex;
+            flex-direction: column;
         }
-
         label {
-            display: block;
             font-weight: bold;
+            margin-bottom: 5px;
         }
-
         input, textarea, select {
             width: 100%;
             padding: 10px;
             margin-top: 5px;
-            border: 1px solid #ccc;
+            border: 1px solid #ced4da;
             border-radius: 5px;
+            background-color: #f8f9fa;
+            transition: border-color 0.3s, background-color 0.3s;
+            font-size: 16px;
         }
-
-        button {
-            background-color: #007BFF;
-            color: white;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
+        input:focus, textarea:focus, select:focus {
+            border-color: #80bdff;
+            outline: 0;
+            background-color: #fff;
         }
-
-        button:hover {
-            background-color: #0056b3;
-        }
-
         .image-preview {
             display: flex;
             flex-wrap: wrap;
             gap: 10px;
+            margin-top: 10px;
         }
-
         .image-preview img {
             max-width: 150px;
             border-radius: 5px;
-        }
-
-        .download-pdf {
-            text-align: center;
-            margin-top: 20px;
+            border: 1px solid #ced4da;
         }
     </style>
 </head>
 <body>
+    <header>Fiche Intrigue</header>
+    <div class="nav-menu">
+        <a href="index.html"><i class="fa fa-home"></i> Accueil</a>
+        <a href="pays.html"><i class="fa fa-globe"></i> Fiche Pays</a>
+        <a href="intrigue.html"><i class="fa fa-book"></i> Fiche Intrigue</a>
+        <a href="divinite.html"><i class="fa fa-god"></i> Fiche Divinité</a>
+        <a href="monstre.html"><i class="fa fa-monster"></i> Fiche Monstre</a>
+        <a href="artefact.html"><i class="fa fa-gem"></i> Fiche Artefact</a>
+        <a href="malediction.html"><i class="fa fa-skull"></i> Fiche Malédiction</a>
+        <a href="peuple.html"><i class="fa fa-users"></i> Fiche Peuple</a>
+        <a href="vilain.html"><i class="fa fa-user-ninja"></i> Fiche Vilain</a>
+        <a href="organisation.html"><i class="fa fa-sitemap"></i> Fiche Organisation</a>
+        <a href="alliance.html"><i class="fa fa-handshake"></i> Fiche Alliance</a>
+        <a href="technologie.html"><i class="fa fa-cogs"></i> Fiche Technologie</a>
+        <a href="gouvernement.html"><i class="fa fa-landmark"></i> Fiche Gouvernement</a>
+        <a href="chapitre.html"><i class="fa fa-bookmark"></i> Chapitre</a>
+        <a href="map.html"><i class="fa fa-map"></i> Map</a>
+        <a href="brainstorming.html"><i class="fa fa-lightbulb"></i> Brainstorming</a>
+        <a href="chronologie.html"><i class="fa fa-hourglass"></i> Chronologie</a>
+        <a href="batail_maison.html"><i class="fa fa-shield-alt"></i> Bataille et Noble</a>
+        <a href="evenement.html"><i class="fa fa-calendar-alt"></i> Événement</a>
+        <a href="generateur.html"><i class="fa fa-cog"></i> Générateur</a>
+        <a href="test.html"><i class="fa fa-file-alt"></i> Dico</a>
+    </div>
     <div class="container">
         <h1>Fiche Intrigue</h1>
         <form id="plot-form">
@@ -83,67 +150,54 @@
                 <label for="title">Titre de l'intrigue :</label>
                 <input type="text" id="title" name="title" required>
             </div>
-
             <div class="form-group">
                 <label for="summary">Résumé :</label>
                 <textarea id="summary" name="summary" rows="6"></textarea>
             </div>
-
             <div class="form-group">
                 <label for="setting">Cadre/Univers :</label>
                 <textarea id="setting" name="setting" rows="4"></textarea>
             </div>
-
             <div class="form-group">
                 <label for="main-characters">Personnages principaux :</label>
                 <textarea id="main-characters" name="main-characters" rows="4"></textarea>
             </div>
-
             <div class="form-group">
                 <label for="antagonists">Antagonistes :</label>
                 <textarea id="antagonists" name="antagonists" rows="4"></textarea>
             </div>
-
             <div class="form-group">
                 <label for="conflicts">Conflits majeurs :</label>
                 <textarea id="conflicts" name="conflicts" rows="4"></textarea>
             </div>
-
             <div class="form-group">
                 <label for="themes">Thèmes abordés :</label>
                 <textarea id="themes" name="themes" rows="4"></textarea>
             </div>
-
             <div class="form-group">
                 <label for="events">Événements clés :</label>
                 <textarea id="events" name="events" rows="6"></textarea>
             </div>
-
             <div class="form-group">
                 <label for="twists">Rebondissements :</label>
                 <textarea id="twists" name="twists" rows="4"></textarea>
             </div>
-
             <div class="form-group">
                 <label for="ending">Conclusion :</label>
                 <textarea id="ending" name="ending" rows="4"></textarea>
             </div>
-
             <div class="form-group">
                 <label for="notes">Notes supplémentaires :</label>
                 <textarea id="notes" name="notes" rows="4"></textarea>
             </div>
-
             <div class="form-group">
                 <label for="image-upload">Ajouter des images :</label>
                 <input type="file" id="image-upload" multiple accept="image/*">
                 <div class="image-preview" id="image-preview"></div>
             </div>
-
             <button type="button" id="download-pdf">Télécharger en PDF</button>
         </form>
     </div>
-
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
     <script>
         const imageUpload = document.getElementById('image-upload');
