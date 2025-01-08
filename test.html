@@ -35,10 +35,27 @@
             padding: 15px;
             border: 1px solid #ddd;
             border-radius: 5px;
+            position: relative;
         }
 
         .term h2 {
             margin-top: 0;
+        }
+
+        .deleteButton {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            padding: 5px 10px;
+        }
+
+        .deleteButton:hover {
+            background-color: #c82333;
         }
 
         #addTerm {
@@ -86,11 +103,13 @@
             <h2>Terme 1</h2>
             <p><strong>Définition :</strong> Une brève définition du terme.</p>
             <p><strong>Contexte d'utilisation :</strong> Comment ce terme est utilisé dans l'univers.</p>
+            <button class="deleteButton" onclick="deleteTerm('terme1')">Effacer</button>
         </div>
         <div class="term" id="terme2">
             <h2>Terme 2</h2>
             <p><strong>Définition :</strong> Une autre définition.</p>
             <p><strong>Contexte d'utilisation :</strong> Exemple d'utilisation.</p>
+            <button class="deleteButton" onclick="deleteTerm('terme2')">Effacer</button>
         </div>
         <!-- Ajoute ici d'autres termes -->
     </div>
@@ -133,6 +152,12 @@
                 termContext.innerHTML = `<strong>Contexte d'utilisation :</strong> ${context}`;
                 termDiv.appendChild(termContext);
 
+                const deleteButton = document.createElement("button");
+                deleteButton.className = "deleteButton";
+                deleteButton.innerText = "Effacer";
+                deleteButton.onclick = () => deleteTerm(termDiv);
+                termDiv.appendChild(deleteButton);
+
                 dictionary.appendChild(termDiv);
 
                 document.getElementById("termName").value = "";
@@ -141,6 +166,10 @@
             } else {
                 alert("Veuillez remplir tous les champs.");
             }
+        }
+
+        function deleteTerm(term) {
+            term.remove();
         }
 
         function saveTerms() {
@@ -182,6 +211,12 @@
                     const termContext = document.createElement("p");
                     termContext.innerHTML = `<strong>Contexte d'utilisation :</strong> ${term.context}`;
                     termDiv.appendChild(termContext);
+
+                    const deleteButton = document.createElement("button");
+                    deleteButton.className = "deleteButton";
+                    deleteButton.innerText = "Effacer";
+                    deleteButton.onclick = () => deleteTerm(termDiv);
+                    termDiv.appendChild(deleteButton);
 
                     dictionary.appendChild(termDiv);
                 }
