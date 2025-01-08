@@ -133,55 +133,61 @@ input:focus, textarea:focus, select:focus {
             <a href="batail_maison.html"><i class="fa fa-shield-alt"></i> Bataille et Noble</a>
             <a href="evenement.html"><i class="fa fa-calendar-alt"></i> Événement</a>
             <a href="generateur.html"><i class="fa fa-cog"></i> Générateur</a>
-            <a href="test.html"><i class="fa fa-file-alt"></i> Test</a>
+            <a href="test.html"><i class="fa fa-file-alt"></i> dico</a>
         </div>
         
         <!-- Fiche de Maison Nobles -->
-        <div class="form-group">
-            <label for="house-name">Nom de la maison :</label>
-            <input type="text" id="house-name">
-        </div>
-        <div class="form-group">
-            <label for="house-sigil">Blason et devise :</label>
-            <textarea id="house-sigil" rows="2"></textarea>
-        </div>
-        <div class="form-group">
-            <label for="house-history">Histoire de la maison :</label>
-            <textarea id="house-history" rows="4"></textarea>
-        </div>
-        <div class="form-group">
-            <label for="house-members">Membres clés :</label>
-            <textarea id="house-members" rows="3"></textarea>
-        </div>
-        <div class="form-group">
-            <label for="house-alliances">Alliances et rivalités :</label>
-            <textarea id="house-alliances" rows="3"></textarea>
+        <div class="noble-section">
+            <h2>Fiche de Maison Nobles</h2>
+            <div class="form-group">
+                <label for="house-name">Nom de la maison :</label>
+                <input type="text" id="house-name">
+            </div>
+            <div class="form-group">
+                <label for="house-sigil">Blason et devise :</label>
+                <textarea id="house-sigil" rows="2"></textarea>
+            </div>
+            <div class="form-group">
+                <label for="house-history">Histoire de la maison :</label>
+                <textarea id="house-history" rows="4"></textarea>
+            </div>
+            <div class="form-group">
+                <label for="house-members">Membres clés :</label>
+                <textarea id="house-members" rows="3"></textarea>
+            </div>
+            <div class="form-group">
+                <label for="house-alliances">Alliances et rivalités :</label>
+                <textarea id="house-alliances" rows="3"></textarea>
+            </div>
+            <button id="download-noble-pdf">Télécharger Fiche Noble en PDF</button>
         </div>
         
         <!-- Fiche de Bataille -->
-        <div class="form-group">
-            <label for="battle-name">Nom de la bataille :</label>
-            <input type="text" id="battle-name">
+        <div class="bataille-section">
+            <h2>Fiche de Bataille</h2>
+            <div class="form-group">
+                <label for="battle-name">Nom de la bataille :</label>
+                <input type="text" id="battle-name">
+            </div>
+            <div class="form-group">
+                <label for="battle-date">Date et lieu :</label>
+                <input type="text" id="battle-date">
+            </div>
+            <div class="form-group">
+                <label for="battle-armies">Armées impliquées :</label>
+                <textarea id="battle-armies" rows="3"></textarea>
+            </div>
+            <div class="form-group">
+                <label for="battle-summary">Résumé de la bataille :</label>
+                <textarea id="battle-summary" rows="4"></textarea>
+            </div>
+            <div class="form-group">
+                <label for="battle-consequences">Conséquences :</label>
+                <textarea id="battle-consequences" rows="3"></textarea>
+            </div>
+            <button id="download-bataille-pdf">Télécharger Fiche Bataille en PDF</button>
         </div>
-        <div class="form-group">
-            <label for="battle-date">Date et lieu :</label>
-            <input type="text" id="battle-date">
-        </div>
-        <div class="form-group">
-            <label for="battle-armies">Armées impliquées :</label>
-            <textarea id="battle-armies" rows="3"></textarea>
-        </div>
-        <div class="form-group">
-            <label for="battle-summary">Résumé de la bataille :</label>
-            <textarea id="battle-summary" rows="4"></textarea>
-        </div>
-        <div class="form-group">
-            <label for="battle-consequences">Conséquences :</label>
-            <textarea id="battle-consequences" rows="3"></textarea>
-        </div>
-        
-        <button id="add-event">Ajouter un événement</button>
-        <button id="download-pdf">Télécharger en PDF</button>
+
         <div class="timeline" id="timeline">
             <!-- Exemples de chronologie -->
         </div>
@@ -189,73 +195,38 @@ input:focus, textarea:focus, select:focus {
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
     <script>
-        document.getElementById('add-event').addEventListener('click', function() {
-            const houseName = document.getElementById('house-name').value;
-            const houseSigil = document.getElementById('house-sigil').value;
-            const houseHistory = document.getElementById('house-history').value;
-            const houseMembers = document.getElementById('house-members').value;
-            const houseAlliances = document.getElementById('house-alliances').value;
-
-            const battleName = document.getElementById('battle-name').value;
-            const battleDate = document.getElementById('battle-date').value;
-            const battleArmies = document.getElementById('battle-armies').value;
-            const battleSummary = document.getElementById('battle-summary').value;
-            const battleConsequences = document.getElementById('battle-consequences').value;
-
-            const timeline = document.getElementById('timeline');
-
-            if (houseName && houseSigil && houseHistory && houseMembers && houseAlliances) {
-                const newHouse = document.createElement('div');
-                newHouse.className = 'timeline-item ' + (timeline.children.length % 2 === 0 ? 'left' : 'right');
-                newHouse.innerHTML = '<div class="content"><h2>Maison: ' + houseName + '</h2><p>Blason et devise: ' + houseSigil + '</p><p>Histoire: ' + houseHistory + '</p><p>Membres clés: ' + houseMembers + '</p><p>Alliances et rivalités: ' + houseAlliances + '</p></div>';
-                timeline.appendChild(newHouse);
-            }
-
-            if (battleName && battleDate && battleArmies && battleSummary && battleConsequences) {
-                const newBattle = document.createElement('div');
-                newBattle.className = 'timeline-item ' + (timeline.children.length % 2 === 0 ? 'left' : 'right');
-                newBattle.innerHTML = '<div class="content"><h2>Bataille: ' + battleName + '</h2><p>Date et lieu: ' + battleDate + '</p><p>Armées impliquées: ' + battleArmies + '</p><p>Résumé: ' + battleSummary + '</p><p>Conséquences: ' + battleConsequences + '</p></div>';
-                timeline.appendChild(newBattle);
-            }
-
-            document.getElementById('house-name').value = '';
-            document.getElementById('house-sigil').value = '';
-            document.getElementById('house-history').value = '';
-            document.getElementById('house-members').value = '';
-            document.getElementById('house-alliances').value = '';
-
-            document.getElementById('battle-name').value = '';
-            document.getElementById('battle-date').value = '';
-            document.getElementById('battle-armies').value = '';
-            document.getElementById('battle-summary').value = '';
-            document.getElementById('battle-consequences').value = '';
-        });
-
-        document.getElementById('timeline').addEventListener('click', function(event) {
-            if (event.target.classList.contains('delete-event')) {
-                event.target.closest('.timeline-item').remove();
-            } else if (event.target.classList.contains('edit-event')) {
-                const item = event.target.closest('.timeline-item');
-                const title = item.querySelector('h2').textContent;
-                const description = item.querySelector('p').textContent;
-                const date = title.match(/\((.*?)\)/)[1];
-                document.getElementById('event-title').value = title.replace(` (${date})`, '');
-                document.getElementById('event-date').value = date;
-                document.getElementById('event-description').value = description;
-                item.remove();
-            }
-        });
-
-        document.getElementById('download-pdf').addEventListener('click', function() {
+        document.getElementById('download-noble-pdf').addEventListener('click', function() {
             const { jsPDF } = window.jspdf;
             const doc = new jsPDF();
-            const events = document.querySelectorAll('.timeline-item .content');
-            events.forEach((event, index) => {
-                const title = event.querySelector('h2').textContent;
-                const description = event.querySelector('p').textContent;
-                doc.text(10, 10 + (index * 10), `${title}: ${description}`);
-            });
-            doc.save('chronologie.pdf');
+            const name = document.getElementById('house-name').value;
+            const sigil = document.getElementById('house-sigil').value;
+            const history = document.getElementById('house-history').value;
+            const members = document.getElementById('house-members').value;
+            const alliances = document.getElementById('house-alliances').value;
+
+            doc.text(10, 10, `Nom de la maison: ${name}`);
+            doc.text(10, 20, `Blason et devise: ${sigil}`);
+            doc.text(10, 30, `Histoire de la maison: ${history}`);
+            doc.text(10, 40, `Membres clés: ${members}`);
+            doc.text(10, 50, `Alliances et rivalités: ${alliances}`);
+            doc.save('fiche_noble.pdf');
+        });
+
+        document.getElementById('download-bataille-pdf').addEventListener('click', function() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            const name = document.getElementById('battle-name').value;
+            const date = document.getElementById('battle-date').value;
+            const armies = document.getElementById('battle-armies').value;
+            const summary = document.getElementById('battle-summary').value;
+            const consequences = document.getElementById('battle-consequences').value;
+
+            doc.text(10, 10, `Nom de la bataille: ${name}`);
+            doc.text(10, 20, `Date et lieu: ${date}`);
+            doc.text(10, 30, `Armées impliquées: ${armies}`);
+            doc.text(10, 40, `Résumé de la bataille: ${summary}`);
+            doc.text(10, 50, `Conséquences: ${consequences}`);
+            doc.save('fiche_bataille.pdf');
         });
     </script>
 </body>
