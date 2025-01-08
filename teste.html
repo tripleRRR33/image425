@@ -1,72 +1,142 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Créateur de Carte</title>
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <title>Advanced Map Generator</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
             margin: 0;
-            padding: 0;
+            overflow: hidden;
         }
-        #map {
-            height: 600px;
-            border: 2px solid #333;
-        }
-        #controls {
-            margin: 10px;
-            padding: 10px;
-            border: 1px solid #ccc;
-            background-color: #f9f9f9;
-        }
-        #controls label {
+        canvas {
             display: block;
-            margin-bottom: 5px;
+        }
+        #ui {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: rgba(255, 255, 255, 0.8);
+            padding: 10px;
+            border-radius: 5px;
         }
     </style>
 </head>
 <body>
-    <div id="map"></div>
-    <div id="controls">
-        <label>
-            City Name:
-            <input type="text" id="cityName" placeholder="Enter city name">
-        </label>
-        <button id="addCity">Add City</button>
+    <div id="ui">
+        <button id="addTown">Add Town</button>
+        <button id="addRoad">Add Road</button>
+        <button id="reset">Reset Map</button>
     </div>
+    <canvas id="mapCanvas"></canvas>
 
-    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
-    <script src="https://unpkg.com/fantasy-map-generator/dist/fantasy-map-generator.min.js"></script>
     <script>
-        // Initialize the map
-        const map = L.map('map').setView([0, 0], 2);
+        const canvas = document.getElementById('mapCanvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
 
-        // Add Fantasy Map Generator tiles
-        fantasyMapGenerator(map);
+        const gridSize = 50;
+        const elements = [];
 
-        // Add city marker functionality
-        const addCityButton = document.getElementById('addCity');
-        const cityNameInput = document.getElementById('cityName');
-
-        map.on('click', (event) => {
-            const cityName = cityNameInput.value.trim();
-
-            if (!cityName) {
-                alert('Please enter a city name first!');
-                return;
+        // Draw the grid
+        function drawGrid() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.strokeStyle = '#ccc';
+            for (let x = 0; x < canvas.width; x += gridSize) {
+                ctx.beginPath();
+                ctx.moveTo(x, 0);
+                ctx.lineTo(x, canvas.height);
+                ctx.stroke();
             }
+            for (let y = 0; y < canvas.height; y += gridSize) {
+                ctx.beginPath();
+                ctx.moveTo(0, y);
+                ctx.lineTo(canvas.width, y);
+                ctx.stroke();
+            }
+        }
 
-            const marker = L.marker([event.latlng.lat, event.latlng.lng]).addTo(map)
-                .bindPopup(cityName)
-                .openPopup();
+        // Draw all elements on the map
+        function drawElements() {
+            elements.forEach(el => {
+                if (el.type === 'town') {
+                    ctx.fillStyle = 'blue';
+                    ctx.beginPath();
+                    ctx.arc(el.x, el.y, 10, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+                if (el.type === 'road') {
+                    ctx.strokeStyle = 'brown';
+                    ctx.lineWidth = 5;
+                    ctx.beginPath();
+                    ctx.moveTo(el.startX, el.startY);
+                    ctx.lineTo(el.endX, el.endY);
+                    ctx.stroke();
+                }
+            });
+        }
 
-            cityNameInput.value = '';
+        // Re-render the entire map
+        function render() {
+            drawGrid();
+            drawElements();
+        }
+
+        // Add a town
+        document.getElementById('addTown').addEventListener('click', () => {
+            canvas.addEventListener('click', function placeTown(event) {
+                const rect = canvas.getBoundingClientRect();
+                const x = Math.floor(event.clientX / gridSize) * gridSize + gridSize / 2;
+                const y = Math.floor(event.clientY / gridSize) * gridSize + gridSize / 2;
+                elements.push({ type: 'town', x, y });
+                render();
+                canvas.removeEventListener('click', placeTown);
+            });
         });
 
-        addCityButton.addEventListener('click', () => {
-            alert('Click on the map to place your city!');
+        // Add a road
+        document.getElementById('addRoad').addEventListener('click', () => {
+            let startPoint = null;
+
+            function placeRoad(event) {
+                const rect = canvas.getBoundingClientRect();
+                const x = Math.floor(event.clientX / gridSize) * gridSize + gridSize / 2;
+                const y = Math.floor(event.clientY / gridSize) * gridSize + gridSize / 2;
+
+                if (!startPoint) {
+                    startPoint = { x, y };
+                } else {
+                    elements.push({
+                        type: 'road',
+                        startX: startPoint.x,
+                        startY: startPoint.y,
+                        endX: x,
+                        endY: y
+                    });
+                    startPoint = null;
+                    render();
+                    canvas.removeEventListener('click', placeRoad);
+                }
+            }
+
+            canvas.addEventListener('click', placeRoad);
+        });
+
+        // Reset the map
+        document.getElementById('reset').addEventListener('click', () => {
+            elements.length = 0;
+            render();
+        });
+
+        // Initial render
+        render();
+
+        // Resize canvas on window resize
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            render();
         });
     </script>
 </body>
