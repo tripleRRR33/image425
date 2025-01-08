@@ -240,6 +240,26 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
     <script>
+    const imageUpload = document.getElementById('image-upload');
+    const imagePreview = document.getElementById('image-preview');
+    const form = document.getElementById('character-form');
+
+    let imageFiles = [];
+
+    imageUpload.addEventListener('change', (event) => {
+        imagePreview.innerHTML = '';
+        imageFiles = Array.from(event.target.files);
+        imageFiles.forEach(file => {
+            const reader = new FileReader();
+            reader.onload = () => {
+                const img = document.createElement('img');
+                img.src = reader.result;
+                imagePreview.appendChild(img);
+            };
+            reader.readAsDataURL(file);
+        });
+    });
+
     document.getElementById('download-pdf').addEventListener('click', async () => {
         const { jsPDF } = window.jspdf;
         const pdf = new jsPDF();
