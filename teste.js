@@ -85,7 +85,9 @@ function drawElements() {
         }
         if (el.type === 'emoji') {
             ctx.font = `${el.size}px Arial`;
-            ctx.fillText(el.emoji, el.x - el.size / 2, el.y + el.size / 2);
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(el.emoji, el.x, el.y);
         }
     });
     ctx.restore();
@@ -95,6 +97,11 @@ function drawElements() {
 function render() {
     drawGrid();
     drawElements();
+}
+
+// Function to find a tile at a given position
+function getTileAtPosition(x, y) {
+    return elements.find(el => el.type === 'tile' && Math.abs(el.x - x) < el.size / 2 && Math.abs(el.y - y) < el.size / 2);
 }
 
 // Add event listeners for buttons
@@ -199,9 +206,13 @@ canvas.addEventListener('click', (event) => {
     }
 
     if (currentTool === 'emoji') {
-        const emoji = document.getElementById('tileType').value;
-        const size = parseInt(document.getElementById('tileSize').value);
-        elements.push({ type: 'emoji', x, y, emoji, size });
+        // Vérifier si l'émoji peut être placé sur une tuile existante
+        const tile = getTileAtPosition(x, y);
+        if (tile) {
+            const emoji = document.getElementById('tileType').value;
+            const size = tile.size; // Utiliser la taille de la tuile
+            elements.push({ type: 'emoji', x: tile.x, y: tile.y, emoji, size });
+        }
     }
 
     render();
@@ -229,14 +240,7 @@ document.getElementById('tileSize').addEventListener('input', () => {
     }
 });
 
-// Resize the canvas when the window is resized
-window.addEventListener('resize', resizeCanvas);
-
-// Initial canvas size setup
-resizeCanvas();
-
-// Initial render
-render();
+// Function to download canvas as JPEG
 function downloadCanvasAsJPEG() {
     const link = document.createElement('a');
     link.href = canvas.toDataURL('image/jpeg', 1.0); // Convertir le canvas en JPEG
@@ -247,3 +251,11 @@ function downloadCanvasAsJPEG() {
 // Ajouter un gestionnaire d'événements pour le bouton de téléchargement
 document.getElementById('downloadCanvas').addEventListener('click', downloadCanvasAsJPEG);
 
+// Resize the canvas when the window is resized
+window.addEventListener('resize', resizeCanvas);
+
+// Initial canvas size setup
+resizeCanvas();
+
+// Initial render
+render();
