@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dictionnaire de Termes</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        #searchBar {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        #dictionary {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .term {
+            background-color: #f9f9f9;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        .term h2 {
+            margin-top: 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>Dictionnaire de Termes</h1>
+    <input type="text" id="searchBar" placeholder="Rechercher un terme..." onkeyup="searchTerm()">
+    
+    <div id="dictionary">
+        <div class="term" id="terme1">
+            <h2>Terme 1</h2>
+            <p><strong>Définition :</strong> Une brève définition du terme.</p>
+            <p><strong>Contexte d'utilisation :</strong> Comment ce terme est utilisé dans l'univers.</p>
+        </div>
+        <div class="term" id="terme2">
+            <h2>Terme 2</h2>
+            <p><strong>Définition :</strong> Une autre définition.</p>
+            <p><strong>Contexte d'utilisation :</strong> Exemple d'utilisation.</p>
+        </div>
+        <!-- Ajoute ici d'autres termes -->
+    </div>
+
+    <script>
+        function searchTerm() {
+            const input = document.getElementById("searchBar").value.toLowerCase();
+            const terms = document.getElementsByClassName("term");
+
+            for (let i = 0; i < terms.length; i++) {
+                const termName = terms[i].getElementsByTagName("h2")[0].innerText.toLowerCase();
+                if (termName.includes(input)) {
+                    terms[i].style.display = "";
+                } else {
+                    terms[i].style.display = "none";
+                }
+            }
+        }
+    </script>
+</body>
+</html>
