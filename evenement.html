@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chronologie Interactive</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .form-group textarea {
+            resize: vertical;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        button:disabled {
+            background-color: #ccc;
+        }
+        .timeline {
+            margin-top: 20px;
+        }
+        .timeline-item {
+            background: #e9ecef;
+            margin-bottom: 10px;
+            padding: 10px;
+            border-radius: 4px;
+            position: relative;
+        }
+        .timeline-item.left::before {
+            content: '';
+            position: absolute;
+            left: -10px;
+            top: 10px;
+            width: 0;
+            height: 0;
+            border-top: 10px solid transparent;
+            border-bottom: 10px solid transparent;
+            border-right: 10px solid #e9ecef;
+        }
+        .timeline-item.right::before {
+            content: '';
+            position: absolute;
+            right: -10px;
+            top: 10px;
+            width: 0;
+            height: 0;
+            border-top: 10px solid transparent;
+            border-bottom: 10px solid transparent;
+            border-left: 10px solid #e9ecef;
+        }
+        .timeline-item .content {
+            display: flex;
+            flex-direction: column;
+        }
+        .timeline-item h2 {
+            margin: 0;
+            color: #333;
+        }
+        .timeline-item p {
+            margin: 5px 0;
+        }
+        .timeline-item button {
+            align-self: flex-end;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Chronologie Interactive</h1>
+        
+        <!-- Fiche de Prophétie -->
+        <div class="form-group">
+            <label for="prophecy-title">Titre de la prophétie :</label>
+            <input type="text" id="prophecy-title">
+        </div>
+        <div class="form-group">
+            <label for="prophecy-text">Texte de la prophétie :</label>
+            <textarea id="prophecy-text" rows="4"></textarea>
+        </div>
+        <div class="form-group">
+            <label for="prophecy-interpretations">Interprétations possibles :</label>
+            <textarea id="prophecy-interpretations" rows="3"></textarea>
+        </div>
+        <div class="form-group">
+            <label for="prophecy-characters">Personnages concernés :</label>
+            <textarea id="prophecy-characters" rows="3"></textarea>
+        </div>
+        <div class="form-group">
+            <label for="prophecy-fulfillment">Réalisations attendues :</label>
+            <textarea id="prophecy-fulfillment" rows="3"></textarea>
+        </div>
+        <button id="add-prophecy">Ajouter la prophétie</button>
+        <button id="download-prophecy">Télécharger la prophétie en PDF</button>
+        
+        <!-- Fiche de Rébellion -->
+        <div class="form-group">
+            <label for="rebellion-name">Nom de la rébellion :</label>
+            <input type="text" id="rebellion-name">
+        </div>
+        <div class="form-group">
+            <label for="rebellion-causes">Causes :</label>
+            <textarea id="rebellion-causes" rows="3"></textarea>
+        </div>
+        <div class="form-group">
+            <label for="rebellion-leaders">Leaders :</label>
+            <textarea id="rebellion-leaders" rows="3"></textarea>
+        </div>
+        <div class="form-group">
+            <label for="rebellion-battles">Batailles majeures :</label>
+            <textarea id="rebellion-battles" rows="3"></textarea>
+        </div>
+        <div class="form-group">
+            <label for="rebellion-consequences">Conséquences :</label>
+            <textarea id="rebellion-consequences" rows="3"></textarea>
+        </div>
+        <button id="add-rebellion">Ajouter la rébellion</button>
+        <button id="download-rebellion">Télécharger la rébellion en PDF</button>
+        
+        <!-- Fiche de Festivité -->
+        <div class="form-group">
+            <label for="festivity-name">Nom de la festivité :</label>
+            <input type="text" id="festivity-name">
+        </div>
+        <div class="form-group">
+            <label for="festivity-date">Date :</label>
+            <input type="text" id="festivity-date">
+        </div>
+        <div class="form-group">
+            <label for="festivity-traditions">Tradition et coutumes :</label>
+            <textarea id="festivity-traditions" rows="3"></textarea>
+        </div>
+        <div class="form-group">
+            <label for="festivity-importance">Importance culturelle :</label>
+            <textarea id="festivity-importance" rows="3"></textarea>
+        </div>
+        <div class="form-group">
+            <label for="festivity-activities">Activités et célébrations :</label>
+            <textarea id="festivity-activities" rows="3"></textarea>
+        </div>
+        <button id="add-festivity">Ajouter la festivité</button>
+        <button id="download-festivity">Télécharger la festivité en PDF</button>
+        
+        <!-- Fiche de Traité de Paix -->
+        <div class="form-group">
+            <label for="treaty-name">Nom du traité :</label>
+            <input type="text" id="treaty-name">
+        </div>
+        <div class="form-group">
+            <label for="treaty-parties">Parties impliquées :</label>
+            <textarea id="treaty-parties" rows="3"></textarea>
+        </div>
+        <div class="form-group">
+            <label for="treaty-conditions">Conditions :</label>
+            <textarea id="treaty-conditions" rows="3"></textarea>
+        </div>
+        <div class="form-group">
+            <label for="treaty-signatories">Signataires :</label>
+            <textarea id="treaty-signatories" rows="3"></textarea>
+        </div>
+        <div class="form-group">
+            <label for="treaty-impact">Impact sur l’histoire :</label>
+            <textarea id="treaty-impact" rows="3"></textarea>
+        </div>
+        <button id="add-treaty">Ajouter le traité</button>
+        <button id="download-treaty">Télécharger le traité en PDF</button>
+        
+        <div class="timeline" id="timeline">
+            <!-- Exemples de chronologie -->
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+    <script>
+        document.getElementById('add-prophecy').addEventListener('click', function() {
+            const title = document.getElementById('prophecy-title').value;
+            const text = document.getElementById('prophecy-text').value;
+            const interpretations = document.getElementById('prophecy-interpretations').value;
+            const characters = document.getElementById('prophecy-characters').value;
+            const fulfillment = document.getElementById('prophecy-fulfillment').value;
+            
+            if (title && text && interpretations && characters && fulfillment) {
+                const timeline = document.getElementById('timeline');
+                const newProphecy = document.createElement('div');
+                newProphecy.className = 'timeline-item ' + (timeline.children.length % 2 === 0 ? 'left' : 'right');
+                newProphecy.innerHTML = `<div class="content"><h2>Prophétie: ${title}</h2>
+                                         <p>Texte: ${text}</p>
+                                         <p>Interprétations: ${interpretations}</p>
+                                         <p>Personnages concernés: ${characters}</p>
+                                         <p>Réalisations attendues: ${fulfillment}</p>
+                                         <button class="edit-event">Modifier</button>
+                                         <button class="delete-event">Supprimer</button></div>`;
+                timeline.appendChild(newProphecy);
+                
+                document.getElementById('prophecy-title').value = '';
+                document.getElementById('prophecy-text').value = '';
+                document.getElementById('prophecy-interpretations').value = '';
+                document.getElementById('prophecy-characters').value = '';
+                document.getElementById('prophecy-fulfillment').value = '';
+            } else {
+                alert('Veuillez remplir tous les champs.');
+            }
+        });
+        
+        document.getElementById('download-prophecy').addEventListener('click', function() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            const title = document.getElementById('prophecy-title').value;
+            const text = document.getElementById('prophecy-text').value;
+            const interpretations = document.getElementById('prophecy-interpretations').value;
+            const characters = document.getElementById('prophecy-characters').value;
+            const fulfillment = document.getElementById('prophecy-fulfillment').value;
+            
+            if (title && text && interpretations && characters && fulfillment) {
+                doc.text(10, 10, `Prophétie: ${title}`);
+                doc.text(10, 20, `Texte: ${text}`);
+                doc.text(10, 30, `Interprétations: ${interpretations}`);
+                doc.text(10, 40, `Personnages concernés: ${characters}`);
+                doc.text(10, 50, `Réalisations attendues: ${fulfillment}`);
+                doc.save('prophétie.pdf');
+            } else {
+                alert('Veuillez remplir tous les champs.');
+            }
+        });
+
+        document.getElementById('add-rebellion').addEventListener('click', function() {
+            const name = document.getElementById('rebellion-name').value;
+            const causes = document.getElementById('rebellion-causes').value;
+            const leaders = document.getElementById('rebellion-leaders').value;
+            const battles = document.getElementById('rebellion-battles').value;
+            const consequences = document.getElementById('rebellion-consequences').value;
+            
+            if (name && causes && leaders && battles && consequences) {
+                const timeline = document.getElementById('timeline');
+                const newRebellion = document.createElement('div');
+                newRebellion.className = 'timeline-item ' + (timeline.children.length % 2 === 0 ? 'left' : 'right');
+                newRebellion.innerHTML = `<div class="content"><h2>Rébellion: ${name}</h2>
+                                          <p>Causes: ${causes}</p>
+                                          <p>Leaders: ${leaders}</p>
+                                          <p>Batailles majeures: ${battles}</p>
+                                          <p>Conséquences: ${consequences}</p>
+                                          <button class="edit-event">Modifier</button>
+                                          <button class="delete-event">Supprimer</button></div>`;
+                timeline.appendChild(newRebellion);
+                
+                document.getElementById('rebellion-name').value = '';
+                document.getElementById('rebellion-causes').value = '';
+                document.getElementById('rebellion-leaders').value = '';
+                document.getElementById('rebellion-battles').value = '';
+                document.getElementById('rebellion-consequences').value = '';
+            } else {
+                alert('Veuillez remplir tous les champs.');
+            }
+        });
+        
+        document.getElementById('download-rebellion').addEventListener('click', function() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            const name = document.getElementById('rebellion-name').value;
+            const causes = document.getElementById('rebellion-causes').value;
+            const leaders = document.getElementById('rebellion-leaders').value;
+            const battles = document.getElementById('rebellion-battles').value;
+            const consequences = document.getElementById('rebellion-consequences').value;
+            
+            if (name && causes && leaders && battles && consequences) {
+                doc.text(10, 10, `Rébellion: ${name}`);
+                doc.text(10, 20, `Causes: ${causes}`);
+                doc.text(10, 30, `Leaders: ${leaders}`);
+                doc.text(10, 40, `Batailles majeures: ${battles}`);
+                doc.text(10, 50, `Conséquences: ${consequences}`);
+                doc.save('rébellion.pdf');
+            } else {
+                alert('Veuillez remplir tous les champs.');
+            }
+        });
+
+        document.getElementById('add-festivity').addEventListener('click', function() {
+            const name = document.getElementById('festivity-name').value;
+            const date = document.getElementById('festivity-date').value;
+            const traditions = document.getElementById('festivity-traditions').value;
+            const importance = document.getElementById('festivity-importance').value;
+            const activities = document.getElementById('festivity-activities').value;
+            
+            if (name && date && traditions && importance && activities) {
+                const timeline = document.getElementById('timeline');
+                const newFestivity = document.createElement('div');
+                newFestivity.className = 'timeline-item ' + (timeline.children.length % 2 === 0 ? 'left' : 'right');
+                newFestivity.innerHTML = `<div class="content"><h2>Festivité: ${name}</h2>
+                                          <p>Date: ${date}</p>
+                                          <p>Traditions: ${traditions}</p>
+                                          <p>Importance culturelle: ${importance}</p>
+                                          <p>Activités et célébrations: ${activities}</p>
+                                          <button class="edit-event">Modifier</button>
+                                          <button class="delete-event">Supprimer</button></div>`;
+                timeline.appendChild(newFestivity);
+                
+                document.getElementById('festivity-name').value = '';
+                document.getElementById('festivity-date').value = '';
+                document.getElementById('festivity-traditions').value = '';
+                document.getElementById('festivity-importance').value = '';
+                document.getElementById('festivity-activities').value = '';
+            } else {
+                alert('Veuillez remplir tous les champs.');
+            }
+        });
+        
+        document.getElementById('download-festivity').addEventListener('click', function() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            const name = document.getElementById('festivity-name').value;
+            const date = document.getElementById('festivity-date').value;
+            const traditions = document.getElementById('festivity-traditions').value;
+            const importance = document.getElementById('festivity-importance').value;
+            const activities = document.getElementById('festivity-activities').value;
+            
+            if (name && date && traditions && importance && activities) {
+                doc.text(10, 10, `Festivité: ${name}`);
+                doc.text(10, 20, `Date: ${date}`);
+                doc.text(10, 30, `Traditions: ${traditions}`);
+                doc.text(10, 40, `Importance culturelle: ${importance}`);
+                doc.text(10, 50, `Activités et célébrations: ${activities}`);
+                doc.save('festivité.pdf');
+            } else {
+                alert('Veuillez remplir tous les champs.');
+            }
+        });
+
+        document.getElementById('add-treaty').addEventListener('click', function() {
+            const name = document.getElementById('treaty-name').value;
+            const parties = document.getElementById('treaty-parties').value;
+            const conditions = document.getElementById('treaty-conditions').value;
+            const signatories = document.getElementById('treaty-signatories').value;
+            const impact = document.getElementById('treaty-impact').value;
+            
+            if (name && parties && conditions && signatories && impact) {
+                const timeline = document.getElementById('timeline');
+                const newTreaty = document.createElement('div');
+                newTreaty.className = 'timeline-item ' + (timeline.children.length % 2 === 0 ? 'left' : 'right');
+                newTreaty.innerHTML = `<div class="content"><h2>Traité de Paix: ${name}</h2>
+                                       <p>Parties impliquées: ${parties}</p>
+                                       <p>Conditions
