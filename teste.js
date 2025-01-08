@@ -237,3 +237,13 @@ resizeCanvas();
 
 // Initial render
 render();
+function downloadCanvasAsJPEG() {
+    const link = document.createElement('a');
+    link.href = canvas.toDataURL('image/jpeg', 1.0); // Convertir le canvas en JPEG
+    link.download = 'map.jpg'; // Nom du fichier téléchargé
+    link.click(); // Simuler le clic pour démarrer le téléchargement
+}
+
+// Ajouter un gestionnaire d'événements pour le bouton de téléchargement
+document.getElementById('downloadCanvas').addEventListener('click', downloadCanvasAsJPEG);
+
