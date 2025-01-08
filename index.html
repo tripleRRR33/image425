@@ -6,125 +6,57 @@
     <title>Fiche Personnage Fantastique</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <style>
+     <style>
+        /* Fond avec une image fantasy */
         body {
-            font-family: 'Roboto', sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f4f4f9;
-            color: #343a40;
+          background-image: url('https://example.com/fantasy-background.jpg');
+          background-size: cover;
+          background-attachment: fixed;
+          color: #f4f4f4;
+          font-family: 'Cinzel', serif;
         }
-        header, footer {
-            background-color: #007bff;
-            color: #ffffff;
-            text-align: center;
-            padding: 10px 0;
+
+        /* Header style */
+        header {
+          background: rgba(0, 0, 0, 0.8);
+          color: #fff;
+          padding: 20px;
+          text-align: center;
+          font-size: 2rem;
+          border-bottom: 3px solid #9d6c34;
         }
-        .container {
-            max-width: 800px;
-            margin: 20px auto;
-            background: #ffffff;
-            padding: 20px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            border-radius: 10px;
-        }
-        h1 {
-            text-align: center;
-            color: #495057;
-            margin-bottom: 20px;
-        }
-        .form-group {
-            margin-bottom: 15px;
-            display: flex;
-            flex-direction: column;
-        }
-        label {
-            font-weight: bold;
-            margin-bottom: 5px;
-        }
-        input, textarea, select {
-            width: 100%;
-            padding: 10px;
-            margin-top: 5px;
-            border: 1px solid #ced4da;
-            border-radius: 5px;
-            background-color: #f8f9fa;
-            transition: border-color 0.3s, background-color 0.3s;
-            font-size: 16px;
-        }
-        input:focus, textarea:focus, select:focus {
-            border-color: #80bdff;
-            outline: 0;
-            background-color: #ffffff;
-        }
+
+        /* Boutons */
         button {
-            background-color: #007bff;
-            color: white;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s, transform 0.3s;
-            font-size: 16px;
+          background: #6b4226;
+          color: #fff;
+          border: 2px solid #9d6c34;
+          padding: 10px 20px;
+          font-size: 1.2rem;
+          border-radius: 5px;
+          transition: 0.3s ease-in-out;
         }
+
         button:hover {
-            background-color: #0056b3;
-            transform: scale(1.05);
+          background: #9d6c34;
+          transform: scale(1.1);
         }
-        .image-preview {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin-top: 10px;
-        }
-        .image-preview img {
-            max-width: 150px;
-            border-radius: 5px;
-            border: 1px solid #ced4da;
-        }
-        .download-pdf {
-            text-align: center;
-            margin-top: 20px;
-        }
+
+        /* Cartes ou conteneurs */
         .card {
-            padding: 20px;
-            background: #ffffff;
-            border: 1px solid #ced4da;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            margin-bottom: 20px;
-            max-height: 400px;  /* Limite la hauteur maximale de la carte */
-            overflow-y: auto;   /* Ajoute une barre de défilement verticale */
+          background: rgba(0, 0, 0, 0.7);
+          border: 1px solid #9d6c34;
+          padding: 20px;
+          margin: 20px;
+          border-radius: 10px;
+          box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
         }
-        .form-group i {
-            margin-right: 10px;
-        }
-        .nav-menu {
-            display: flex;
-            flex-direction: column;
-            position: fixed;
-            right: 20px;
-            top: 100px;
-            gap: 10px;
-            max-height: 80vh; /* Limite la hauteur maximale de la navigation */
-            overflow-y: auto; /* Ajoute une barre de défilement verticale */
-        }
-        .nav-menu a {
-            text-decoration: none;
-            color: #007bff;
-            padding: 10px 20px;
-            border: 1px solid #007bff;
-            border-radius: 5px;
-            transition: background-color 0.3s, color 0.3s;
-            display: flex;
-            align-items: center;
-        }
-        .nav-menu a:hover {
-            background-color: #007bff;
-            color: #ffffff;
-        }
-        .nav-menu a i {
-            margin-right: 10px;
+
+        /* Titres des sections */
+        h1, h2, h3 {
+          font-family: 'Cormorant', serif;
+          color: #ffd700;
+          text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.8);
         }
     </style>
 </head>
