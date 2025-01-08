@@ -173,6 +173,7 @@
             <button onclick="clearMap()">Effacer la carte</button>
             <button onclick="saveMap()">Sauvegarder</button>
             <button onclick="toggleDrawing()">Mode dessin: OFF</button>
+            <button onclick="generateTiles()">Générer des Tuiles</button>
         </div>
 
         <div class="map-container" id="mapContainer">
@@ -220,16 +221,21 @@
         const gridSize = { width: 40, height: 30 };
         const terrainData = Array(gridSize.height).fill().map(() => Array(gridSize.width).fill(''));
 
-        // Créer la grille
-        for (let y = 0; y < gridSize.height; y++) {
-            for (let x = 0; x < gridSize.width; x++) {
-                const tile = document.createElement('div');
-                tile.className = 'tile';
-                tile.dataset.x = x;
-                tile.dataset.y = y;
-                mapContainer.appendChild(tile);
-            }
+        function generateTiles() {
+            mapContainer.innerHTML = ''; // Clear existing tiles
+            terrainData.forEach((row, y) => {
+                row.forEach((tile, x) => {
+                    const tileElement = document.createElement('div');
+                    tileElement.className = 'tile';
+                    tileElement.dataset.x = x;
+                    tileElement.dataset.y = y;
+                    mapContainer.appendChild(tileElement);
+                });
+            });
         }
+
+        // Créer la grille initiale
+        generateTiles();
 
         // Gestion de la palette
         document.querySelectorAll('.palette-tile').forEach(tile => {
