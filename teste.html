@@ -131,30 +131,42 @@
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
 
-        const gridSize = 50;
-        const elements = [];
+        const gridSize = 25; // Increase grid resolution
+        let elements = [];
         let currentTool = null;
+        let zoomLevel = 1;
+        let offsetX = 0;
+        let offsetY = 0;
+        let isDragging = false;
+        let startDragOffset = { x: 0, y: 0 };
 
         // Draw the grid
         function drawGrid() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.save();
+            ctx.translate(offsetX, offsetY);
+            ctx.scale(zoomLevel, zoomLevel);
             ctx.strokeStyle = '#ddd';
-            for (let x = 0; x < canvas.width; x += gridSize) {
+            for (let x = 0; x < canvas.width / zoomLevel; x += gridSize) {
                 ctx.beginPath();
                 ctx.moveTo(x, 0);
-                ctx.lineTo(x, canvas.height);
+                ctx.lineTo(x, canvas.height / zoomLevel);
                 ctx.stroke();
             }
-            for (let y = 0; y < canvas.height; y += gridSize) {
+            for (let y = 0; y < canvas.height / zoomLevel; y += gridSize) {
                 ctx.beginPath();
                 ctx.moveTo(0, y);
-                ctx.lineTo(canvas.width, y);
+                ctx.lineTo(canvas.width / zoomLevel, y);
                 ctx.stroke();
             }
+            ctx.restore();
         }
 
         // Draw all elements on the map
         function drawElements() {
+            ctx.save();
+            ctx.translate(offsetX, offsetY);
+            ctx.scale(zoomLevel, zoomLevel);
             elements.forEach(el => {
                 if (el.type === 'town') {
                     ctx.fillStyle = 'blue';
@@ -194,6 +206,7 @@
                     ctx.fillRect(el.x - el.size / 2, el.y - el.size / 2, el.size, el.size);
                 }
             });
+            ctx.restore();
         }
 
         // Re-render the entire map
@@ -224,14 +237,48 @@
 
         // Reset the map
         document.getElementById('reset').addEventListener('click', () => {
-            elements.length = 0;
+            elements = [];
+            render();
+        });
+
+        canvas.addEventListener('mousedown', (event) => {
+            isDragging = true;
+            startDragOffset.x = event.clientX - offsetX;
+            startDragOffset.y = event.clientY - offsetY;
+        });
+
+        canvas.addEventListener('mousemove', (event) => {
+            if (isDragging) {
+                offsetX = event.clientX - startDragOffset.x;
+                offsetY = event.clientY - startDragOffset.y;
+                render();
+            }
+        });
+
+        canvas.addEventListener('mouseup', () => {
+            isDragging = false;
+        });
+
+        canvas.addEventListener('wheel', (event) => {
+            const zoomIntensity = 0.1;
+            const mousePos = {
+                x: event.clientX - offsetX,
+                y: event.clientY - offsetY
+            };
+            if (event.deltaY < 0) {
+                zoomLevel *= 1 + zoomIntensity;
+            } else {
+                zoomLevel *= 1 - zoomIntensity;
+            }
+            offsetX -= mousePos.x * zoomIntensity;
+            offsetY -= mousePos.y * zoomIntensity;
             render();
         });
 
         canvas.addEventListener('click', (event) => {
             const rect = canvas.getBoundingClientRect();
-            const x = Math.floor(event.clientX / gridSize) * gridSize + gridSize / 2;
-            const y = Math.floor(event.clientY / gridSize) * gridSize + gridSize / 2;
+            const x = (Math.floor((event.clientX - offsetX) / zoomLevel / gridSize) * gridSize + gridSize / 2);
+            const y = (Math.floor((event.clientY - offsetY) / zoomLevel / gridSize) * gridSize + gridSize / 2);
 
             if (currentTool === 'addTown') {
                 elements.push({ type: 'town', x, y });
