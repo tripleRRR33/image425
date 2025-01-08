@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Créateur de Carte Fantasy - Éditeur de Tuiles Avancé</title>
+    <title>Créateur de Carte Fantasy - Éditeur de Tuiles</title>
     <style>
         :root {
             --parchment: #f4d03f;
@@ -43,10 +43,6 @@
             height: 100%;
             border: 1px solid rgba(0, 0, 0, 0.1);
             transition: background-color 0.2s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 12px;
         }
 
         .controls {
@@ -61,9 +57,6 @@
             grid-template-columns: repeat(auto-fit, minmax(60px, 1fr));
             gap: 5px;
             margin-bottom: 20px;
-            padding: 10px;
-            background: rgba(255, 255, 255, 0.3);
-            border-radius: 5px;
         }
 
         .palette-tile {
@@ -74,18 +67,27 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            border-radius: 5px;
             position: relative;
-            transition: all 0.3s ease;
         }
 
         .palette-tile.selected {
             border-color: #ff0000;
-            transform: scale(1.1);
         }
 
-        .palette-tile:hover {
-            transform: scale(1.05);
+        .palette-tile::after {
+            content: attr(title);
+            position: absolute;
+            bottom: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 12px;
+            white-space: nowrap;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .palette-tile:hover::after {
+            opacity: 1;
         }
 
         button {
@@ -96,23 +98,18 @@
             border-radius: 5px;
             cursor: pointer;
             font-family: 'Times New Roman', serif;
-            transition: all 0.3s ease;
         }
 
         button:hover {
             background: #6b3410;
-            transform: translateY(-2px);
         }
 
-        /* Terrains de base */
         .terrain-plains { background-color: #90EE90; }
         .terrain-forest { background-color: #228B22; }
         .terrain-mountain { background-color: #808080; }
         .terrain-water { background-color: #4169E1; }
         .terrain-desert { background-color: #F4A460; }
         .terrain-swamp { background-color: #556B2F; }
-
-        /* Nouveaux terrains */
         .terrain-deepWater { background-color: #000080; }
         .terrain-snowMountain { background-color: #FFFFFF; }
         .terrain-volcano { background-color: #8B0000; }
@@ -127,27 +124,6 @@
         .terrain-city { background-color: #C0C0C0; }
         .terrain-farmland { background-color: #DAA520; }
         .terrain-wasteland { background-color: #8B4513; }
-
-        .palette-tile::after {
-            content: attr(title);
-            position: absolute;
-            bottom: -20px;
-            left: 50%;
-            transform: translateX(-50%);
-            font-size: 12px;
-            white-space: nowrap;
-            opacity: 0;
-            transition: opacity 0.3s;
-            background: rgba(0, 0, 0, 0.8);
-            color: white;
-            padding: 2px 6px;
-            border-radius: 3px;
-            pointer-events: none;
-        }
-
-        .palette-tile:hover::after {
-            opacity: 1;
-        }
     </style>
 </head>
 <body>
@@ -155,15 +131,13 @@
         <h1>Créateur de Carte Fantasy</h1>
         
         <div class="palette" id="terrainPalette">
-            <!-- La palette sera générée en JavaScript -->
+            <!-- La palette sera générée automatiquement -->
         </div>
 
         <div class="controls">
             <button onclick="clearMap()">Effacer la carte</button>
             <button onclick="saveMap()">Sauvegarder</button>
-            <button onclick="loadMap()">Charger</button>
-            <button onclick="toggleDrawing()" id="drawingMode">Mode dessin: OFF</button>
-            <button onclick="generateRandomMap()">Générer aléatoirement</button>
+            <button onclick="toggleDrawing()">Mode dessin: OFF</button>
         </div>
 
         <div class="map-container" id="mapContainer">
@@ -173,15 +147,12 @@
 
     <script>
         const TERRAIN_TYPES = {
-            // Terrains de base
             'plains': { color: '#90EE90', emoji: '🌿', name: 'Plaines' },
             'forest': { color: '#228B22', emoji: '🌲', name: 'Forêt' },
             'mountain': { color: '#808080', emoji: '⛰️', name: 'Montagne' },
             'water': { color: '#4169E1', emoji: '💧', name: 'Eau' },
             'desert': { color: '#F4A460', emoji: '🏜️', name: 'Désert' },
             'swamp': { color: '#556B2F', emoji: '🌿', name: 'Marais' },
-            
-            // Nouveaux terrains
             'deepWater': { color: '#000080', emoji: '🌊', name: 'Océan Profond' },
             'snowMountain': { color: '#FFFFFF', emoji: '🏔️', name: 'Montagne Enneigée' },
             'volcano': { color: '#8B0000', emoji: '🌋', name: 'Volcan' },
@@ -205,7 +176,18 @@
         // Initialiser la grille
         const mapContainer = document.getElementById('mapContainer');
         const gridSize = { width: 40, height: 30 };
-        const terrainData = Array(gridSize.height).fill().map(() => Array(gridSize.width).fill('plains'));
+        let terrainData = Array(gridSize.height).fill().map(() => Array(gridSize.width).fill('plains'));
+
+        // Créer la grille
+        for (let y = 0; y < gridSize.height; y++) {
+            for (let x = 0; x < gridSize.width; x++) {
+                const tile = document.createElement('div');
+                tile.className = 'tile terrain-plains';
+                tile.dataset.x = x;
+                tile.dataset.y = y;
+                mapContainer.appendChild(tile);
+            }
+        }
 
         // Générer la palette
         function generatePalette() {
@@ -220,32 +202,8 @@
                 tileDiv.innerHTML = value.emoji;
                 palette.appendChild(tileDiv);
             });
-        }
 
-        // Créer la grille
-        function createGrid() {
-            mapContainer.innerHTML = '';
-            for (let y = 0; y < gridSize.height; y++) {
-                for (let x = 0; x < gridSize.width; x++) {
-                    const tile = document.createElement('div');
-                    tile.className = 'tile terrain-plains';
-                    tile.dataset.x = x;
-                    tile.dataset.y = y;
-                    mapContainer.appendChild(tile);
-                }
-            }
-        }
-
-        // Initialisation
-        document.addEventListener('DOMContentLoaded', () => {
-            generatePalette();
-            createGrid();
-            attachEventListeners();
-        });
-
-        // Attacher les événements
-        function attachEventListeners() {
-            // Événements de la palette
+            // Réattacher les événements de la palette
             document.querySelectorAll('.palette-tile').forEach(tile => {
                 tile.addEventListener('click', (e) => {
                     document.querySelectorAll('.palette-tile').forEach(t => t.classList.remove('selected'));
@@ -253,97 +211,73 @@
                     selectedTerrain = e.target.dataset.terrain;
                 });
             });
-
-            // Événements de dessin
-            mapContainer.addEventListener('mousedown', startDrawing);
-            mapContainer.addEventListener('mousemove', draw);
-            document.addEventListener('mouseup', stopDrawing);
         }
 
-        function startDrawing(e) {
+        // Appeler generatePalette à la fin du chargement du document
+        document.addEventListener('DOMContentLoaded', () => {
+            generatePalette();
+        });
+
+        // Gestion du dessin
+        mapContainer.addEventListener('mousedown', (e) => {
             isMouseDown = true;
             if (e.target.classList.contains('tile')) {
                 paintTile(e.target);
             }
-        }
+        });
 
-        function draw(e) {
+        mapContainer.addEventListener('mousemove', (e) => {
             if (isMouseDown && isDrawing && e.target.classList.contains('tile')) {
                 paintTile(e.target);
             }
-// Terminer la fonction de dessin des tuiles
-        function draw(e) {
-            if (isMouseDown && isDrawing && e.target.classList.contains('tile')) {
-                paintTile(e.target);
-            }
-        }
+        });
 
-        // Arrêter le dessin
-        function stopDrawing() {
+        document.addEventListener('mouseup', () => {
             isMouseDown = false;
-        }
+        });
 
-        // Peindre la tuile
         function paintTile(tile) {
-            const x = tile.dataset.x;
-            const y = tile.dataset.y;
+            // Retirer les classes de terrain existantes
+            tile.className = 'tile';
+            tile.classList.add(`terrain-${selectedTerrain}`);
+            
+            // Mettre à jour les données
+            const x = parseInt(tile.dataset.x);
+            const y = parseInt(tile.dataset.y);
             terrainData[y][x] = selectedTerrain;
-            tile.className = `tile terrain-${selectedTerrain}`;
         }
 
-        // Effacer la carte
-        function clearMap() {
-            terrainData.forEach((row, y) => {
-                row.forEach((tile, x) => {
-                    terrainData[y][x] = 'plains';
-                });
-            });
-            createGrid();
-        }
-
-        // Sauvegarder la carte
-        function saveMap() {
-            const savedData = JSON.stringify(terrainData);
-            localStorage.setItem('savedMap', savedData);
-            alert('Carte sauvegardée!');
-        }
-
-        // Charger la carte
-        function loadMap() {
-            const savedData = localStorage.getItem('savedMap');
-            if (savedData) {
-                const parsedData = JSON.parse(savedData);
-                parsedData.forEach((row, y) => {
-                    row.forEach((tile, x) => {
-                        terrainData[y][x] = tile;
-                        const tileDiv = document.querySelector(`.tile[data-x="${x}"][data-y="${y}"]`);
-                        tileDiv.className = `tile terrain-${tile}`;
-                    });
-                });
-                alert('Carte chargée!');
-            } else {
-                alert('Aucune carte sauvegardée trouvée.');
-            }
-        }
-
-        // Basculer le mode de dessin
         function toggleDrawing() {
             isDrawing = !isDrawing;
-            const drawingButton = document.getElementById('drawingMode');
-            drawingButton.textContent = `Mode dessin: ${isDrawing ? 'ON' : 'OFF'}`;
+            const btn = document.querySelector('button:last-child');
+            btn.textContent = `Mode dessin: ${isDrawing ? 'ON' : 'OFF'}`;
         }
 
-        // Générer une carte aléatoire
-        function generateRandomMap() {
-            terrainData.forEach((row, y) => {
-                row.forEach((tile, x) => {
-                    const terrainTypes = Object.keys(TERRAIN_TYPES);
-                    const randomTerrain = terrainTypes[Math.floor(Math.random() * terrainTypes.length)];
-                    terrainData[y][x] = randomTerrain;
-                    const tileDiv = document.querySelector(`.tile[data-x="${x}"][data-y="${y}"]`);
-                    tileDiv.className = `tile terrain-${randomTerrain}`;
-                });
+        function clearMap() {
+            document.querySelectorAll('.tile').forEach(tile => {
+                tile.className = 'tile terrain-plains';
             });
+            terrainData.forEach(row => row.fill('plains'));
+        }
+
+        function saveMap() {
+            const mapData = {
+                terrain: terrainData,
+                width: gridSize.width,
+                height: gridSize.height,
+                timestamp: new Date().toISOString()
+            };
+            
+            const blob = new Blob([JSON.stringify(mapData, null, 2)], {type: 'application/json'});
+            const url = URL.createObjectURL(blob);
+            
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'carte-fantasy.json';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
         }
     </script>
 </body>
