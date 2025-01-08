@@ -171,7 +171,8 @@
 
         <div class="controls">
             <button onclick="clearMap()">Effacer la carte</button>
-            <button onclick="saveMap()">Sauvegarder</button>
+            <button onclick="saveMap()">Sauvegarder JSON</button>
+            <button onclick="saveAsJpeg()">Sauvegarder JPEG</button>
             <button onclick="toggleDrawing()">Mode dessin: OFF</button>
             <button onclick="generateTiles()">Générer des Tuiles</button>
         </div>
@@ -210,6 +211,9 @@
             <div class="legend-item"><div class="legend-color terrain-mine"></div>Mine</div>
         </div>
     </div>
+
+    <!-- Inclure la bibliothèque html2canvas -->
+    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 
     <script>
         let selectedTerrain = 'plains';
@@ -279,7 +283,7 @@
 
         function toggleDrawing() {
             isDrawing = !isDrawing;
-            const btn = document.querySelector('button:last-child');
+            const btn = document.querySelector('button:nth-last-child(2)');
             btn.textContent = `Mode dessin: ${isDrawing ? 'ON' : 'OFF'}`;
         }
 
@@ -308,6 +312,15 @@
             a.click();
             document.body.removeChild(a);
             URL.revokeObjectURL(url);
+        }
+
+        function saveAsJpeg() {
+            html2canvas(mapContainer).then(canvas => {
+                const link = document.createElement('a');
+                link.href = canvas.toDataURL('image/jpeg');
+                link.download = 'carte-fantasy.jpg';
+                link.click();
+            });
         }
     </script>
 </body>
