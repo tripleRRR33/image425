@@ -16,6 +16,7 @@ let offsetX = 0;
 let offsetY = 0;
 let isDragging = false;
 let startDragOffset = { x: 0, y: 0 };
+let startPoint = null;
 
 // Draw the grid
 function drawGrid() {
