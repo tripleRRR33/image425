@@ -113,6 +113,27 @@
         .terrain-tower { background-color: #708090; }
         .terrain-port { background-color: #4682B4; }
         .terrain-mine { background-color: #2F4F4F; }
+
+        .legend {
+            margin-top: 20px;
+            background: var(--parchment);
+            padding: 10px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.3);
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 5px;
+        }
+
+        .legend-color {
+            width: 20px;
+            height: 20px;
+            margin-right: 10px;
+            border: 1px solid var(--ink);
+        }
     </style>
 </head>
 <body>
@@ -156,6 +177,36 @@
 
         <div class="map-container" id="mapContainer">
             <!-- La grille sera générée en JavaScript -->
+        </div>
+        
+        <div class="legend">
+            <h3>Légende des Tuiles</h3>
+            <div class="legend-item"><div class="legend-color terrain-plains"></div>Plaines</div>
+            <div class="legend-item"><div class="legend-color terrain-forest"></div>Forêt</div>
+            <div class="legend-item"><div class="legend-color terrain-mountain"></div>Montagne</div>
+            <div class="legend-item"><div class="legend-color terrain-water"></div>Eau</div>
+            <div class="legend-item"><div class="legend-color terrain-desert"></div>Désert</div>
+            <div class="legend-item"><div class="legend-color terrain-swamp"></div>Marais</div>
+            <div class="legend-item"><div class="legend-color terrain-prairie"></div>Prairie</div>
+            <div class="legend-item"><div class="legend-color terrain-river"></div>Rivière</div>
+            <div class="legend-item"><div class="legend-color terrain-hills"></div>Collines</div>
+            <div class="legend-item"><div class="legend-color terrain-rocks"></div>Roches</div>
+            <div class="legend-item"><div class="legend-color terrain-beach"></div>Plage</div>
+            <div class="legend-item"><div class="legend-color terrain-lake"></div>Lac</div>
+            <div class="legend-item"><div class="legend-color terrain-volcano"></div>Volcan</div>
+            <div class="legend-item"><div class="legend-color terrain-glacier"></div>Glacier</div>
+            <div class="legend-item"><div class="legend-color terrain-savanna"></div>Savane</div>
+            <div class="legend-item"><div class="legend-color terrain-garden"></div>Jardin</div>
+            <div class="legend-item"><div class="legend-color terrain-cemetery"></div>Cimetière</div>
+            <div class="legend-item"><div class="legend-color terrain-ruins"></div>Ruines</div>
+            <div class="legend-item"><div class="legend-color terrain-road"></div>Route</div>
+            <div class="legend-item"><div class="legend-color terrain-bridge"></div>Pont</div>
+            <div class="legend-item"><div class="legend-color terrain-farm"></div>Ferme</div>
+            <div class="legend-item"><div class="legend-color terrain-village"></div>Village</div>
+            <div class="legend-item"><div class="legend-color terrain-castle"></div>Château</div>
+            <div class="legend-item"><div class="legend-color terrain-tower"></div>Tour</div>
+            <div class="legend-item"><div class="legend-color terrain-port"></div>Port</div>
+            <div class="legend-item"><div class="legend-color terrain-mine"></div>Mine</div>
         </div>
     </div>
 
