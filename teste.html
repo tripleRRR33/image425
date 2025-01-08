@@ -18,13 +18,19 @@
             background-size: cover;
             border: 2px solid #333;
         }
-        .city {
+        .city, .terrain {
             position: absolute;
-            background-color: red;
-            color: white;
             padding: 5px;
             border-radius: 3px;
             cursor: pointer;
+        }
+        .city {
+            background-color: red;
+            color: white;
+        }
+        .terrain {
+            background-color: green;
+            color: white;
         }
         #controls {
             margin: 10px;
@@ -46,18 +52,26 @@
             <input type="text" id="cityName" placeholder="Enter city name">
         </label>
         <button id="addCity">Add City</button>
+        <label>
+            Terrain Type:
+            <input type="text" id="terrainType" placeholder="Enter terrain type">
+        </label>
+        <button id="addTerrain">Add Terrain</button>
     </div>
 
     <script>
         const map = document.getElementById('map');
         const addCityButton = document.getElementById('addCity');
         const cityNameInput = document.getElementById('cityName');
+        const addTerrainButton = document.getElementById('addTerrain');
+        const terrainTypeInput = document.getElementById('terrainType');
 
         map.addEventListener('click', (event) => {
             const cityName = cityNameInput.value.trim();
+            const terrainType = terrainTypeInput.value.trim();
 
-            if (!cityName) {
-                alert('Please enter a city name first!');
+            if (!cityName && !terrainType) {
+                alert('Please enter a city name or terrain type first!');
                 return;
             }
 
@@ -65,26 +79,51 @@
             const x = event.clientX - rect.left;
             const y = event.clientY - rect.top;
 
-            const cityElement = document.createElement('div');
-            cityElement.className = 'city';
-            cityElement.style.left = `${x}px`;
-            cityElement.style.top = `${y}px`;
-            cityElement.textContent = cityName;
+            if (cityName) {
+                const cityElement = document.createElement('div');
+                cityElement.className = 'city';
+                cityElement.style.left = `${x}px`;
+                cityElement.style.top = `${y}px`;
+                cityElement.textContent = cityName;
 
-            cityElement.addEventListener('click', (e) => {
-                e.stopPropagation();
-                const newName = prompt('Edit city name:', cityElement.textContent);
-                if (newName) {
-                    cityElement.textContent = newName;
-                }
-            });
+                cityElement.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const newName = prompt('Edit city name:', cityElement.textContent);
+                    if (newName) {
+                        cityElement.textContent = newName;
+                    }
+                });
 
-            map.appendChild(cityElement);
-            cityNameInput.value = '';
+                map.appendChild(cityElement);
+                cityNameInput.value = '';
+            }
+
+            if (terrainType) {
+                const terrainElement = document.createElement('div');
+                terrainElement.className = 'terrain';
+                terrainElement.style.left = `${x}px`;
+                terrainElement.style.top = `${y}px`;
+                terrainElement.textContent = terrainType;
+
+                terrainElement.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const newType = prompt('Edit terrain type:', terrainElement.textContent);
+                    if (newType) {
+                        terrainElement.textContent = newType;
+                    }
+                });
+
+                map.appendChild(terrainElement);
+                terrainTypeInput.value = '';
+            }
         });
 
         addCityButton.addEventListener('click', () => {
             alert('Click on the map to place your city!');
+        });
+
+        addTerrainButton.addEventListener('click', () => {
+            alert('Click on the map to place your terrain!');
         });
     </script>
 </body>
