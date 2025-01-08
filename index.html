@@ -261,12 +261,17 @@
 
             let yOffset = 60;
 
-            const addText = (title, text, startY) => {
+            const addText = (title, text, startY, maxHeight = 250) => {
                 pdf.setFontSize(16);
                 pdf.text(title, 10, startY);
                 pdf.setFontSize(12);
+                const textHeight = pdf.getTextDimensions(text, { maxWidth: 180 }).h;
+                if (startY + textHeight > maxHeight) {
+                    pdf.addPage();
+                    startY = 10;
+                }
                 pdf.text(text, 10, startY + 10, { maxWidth: 180 });
-                return startY + pdf.getTextDimensions(text).h + 20;
+                return startY + textHeight + 20;
             };
 
             yOffset = addText('Description :', form.description.value, yOffset);
@@ -275,12 +280,6 @@
             yOffset = addText('Équipement :', form.equipment.value, yOffset);
             yOffset = addText('Alliés :', form.allies.value, yOffset);
             yOffset = addText('Ennemis :', form.enemies.value, yOffset);
-
-            if (yOffset > 240) {
-                pdf.addPage();
-                yOffset = 10;
-            }
-
             yOffset = addText('Quêtes/Aventures :', form.quests.value, yOffset);
             yOffset = addText('Relations :', form.relations.value, yOffset);
             yOffset = addText('Traits de personnalité :', form.traits.value, yOffset);
@@ -295,7 +294,12 @@
                     const reader = new FileReader();
                     await new Promise((resolve) => {
                         reader.onload = () => {
-                            pdf.addImage(reader.result, 'JPEG', 10, yOffset + (index * 60), 50, 50);
+                            if (yOffset + 60 > 250) {
+                                pdf.addPage();
+                                yOffset = 10;
+                            }
+                            pdf.addImage(reader.result, 'JPEG', 10, yOffset, 50, 50);
+                            yOffset += 60;
                             resolve();
                         };
                         reader.readAsDataURL(file);
