@@ -1,0 +1,84 @@
+Voici le code complet que tu peux copier-coller directement dans une nouvelle page HTML :
+
+```html
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Générateur de Personnages</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #1e1e2f;
+            color: #f4f4f4;
+            text-align: center;
+            padding: 50px;
+        }
+        button {
+            background-color: #6b4226;
+            color: #fff;
+            border: 2px solid #9d6c34;
+            padding: 10px 20px;
+            font-size: 1.2rem;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: 0.3s ease-in-out;
+        }
+        button:hover {
+            background-color: #9d6c34;
+            transform: scale(1.1);
+        }
+        #resultat {
+            margin-top: 20px;
+            font-size: 1.2rem;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+        }
+    </style>
+</head>
+<body>
+    <h1>Générateur de Personnages Fantastiques</h1>
+    <div id="generateur">
+        <button onclick="afficherPersonnage()">Générer un personnage</button>
+        <p id="resultat"></p>
+    </div>
+
+    <script>
+        function genererNom() {
+            const prefixes = ["Ael", "Thar", "Zar", "Ery", "Lor"];
+            const suffixes = ["anor", "dil", "mir", "ith", "ion"];
+            const prefix = prefixes[Math.floor(Math.random() * prefixes.length)];
+            const suffix = suffixes[Math.floor(Math.random() * suffixes.length)];
+            return prefix + suffix;
+        }
+
+        function genererCapacite() {
+            const capacites = ["Contrôle du feu", "Télépathie", "Manipulation du temps", "Force surhumaine", "Métamorphose"];
+            return capacites[Math.floor(Math.random() * capacites.length)];
+        }
+
+        function genererTrait() {
+            const traits = ["Courageux", "Mystérieux", "Impulsif", "Calculateur", "Charismatique"];
+            return traits[Math.floor(Math.random() * traits.length)];
+        }
+
+        function genererPersonnage() {
+            const nom = genererNom();
+            const capacite = genererCapacite();
+            const trait = genererTrait();
+            return `Nom: ${nom}, Capacité: ${capacite}, Trait: ${trait}`;
+        }
+
+        function afficherPersonnage() {
+            document.getElementById('resultat').textContent = genererPersonnage();
+        }
+    </script>
+</body>
+</html>
+```
+
+Copie ce code dans un fichier nommé, par exemple, `generateur.html`, et ouvre-le dans un navigateur pour tester directement !
+
