@@ -131,7 +131,8 @@
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
 
-        const gridSize = 25; // Increase grid resolution
+        // Adjust gridSize based on canvas size
+        const gridSize = Math.min(canvas.width, canvas.height) / 20; 
         let elements = [];
         let currentTool = null;
         let zoomLevel = 1;
