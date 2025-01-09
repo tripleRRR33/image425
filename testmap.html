@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Carte Procédurale 2D</title>
+  <style>
+    body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background-color: #222;
+      color: white;
+      font-family: Arial, sans-serif;
+    }
+    canvas {
+      border: 1px solid white;
+      margin-top: 20px;
+    }
+    button {
+      margin-top: 10px;
+      padding: 10px 20px;
+      background-color: #555;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #777;
+    }
+  </style>
+</head>
+<body>
+  <h1>Carte Procédurale 2D</h1>
+  <button id="generate">Générer une nouvelle carte</button>
+  <canvas id="map" width="512" height="512"></canvas>
+
+  <script src="https://cdn.jsdelivr.net/npm/simplex-noise@3.0.0/simplex-noise.min.js"></script>
+  <script>
+    const canvas = document.getElementById('map');
+    const ctx = canvas.getContext('2d');
+    const generateButton = document.getElementById('generate');
+
+    // Fonction pour générer la carte
+    function generateMap() {
+      const simplex = new SimplexNoise();
+      const imageData = ctx.createImageData(canvas.width, canvas.height);
+      const data = imageData.data;
+
+      for (let y = 0; y < canvas.height; y++) {
+        for (let x = 0; x < canvas.width; x++) {
+          // Coordonnées normalisées entre 0 et 1
+          const nx = x / canvas.width - 0.5;
+          const ny = y / canvas.height - 0.5;
+
+          // Génération de bruit (zoom contrôlé par 10 ici)
+          const elevation = simplex.noise2D(nx * 10, ny * 10);
+
+          // Conversion en valeurs 0-255
+          const color = Math.floor((elevation + 1) * 128); // Recentré entre 0-255
+          const index = (y * canvas.width + x) * 4;
+
+          // Couleurs selon l'altitude
+          if (color < 120) {
+            // Océans
+            data[index] = 0; // R
+            data[index + 1] = 0; // G
+            data[index + 2] = color + 50; // B (bleu)
+          } else if (color < 180) {
+            // Plaines
+            data[index] = color - 50; // R (vert clair)
+            data[index + 1] = color; // G
+            data[index + 2] = color - 80; // B
+          } else {
+            // Montagnes
+            data[index] = color; // R (gris)
+            data[index + 1] = color; // G
+            data[index + 2] = color; // B
+          }
+
+          data[index + 3] = 255; // Opacité
+        }
+      }
+
+      ctx.putImageData(imageData, 0, 0);
+    }
+
+    // Génération initiale
+    generateMap();
+
+    // Générer une nouvelle carte au clic
+    generateButton.addEventListener('click', generateMap);
+  </script>
+</body>
+</html>
