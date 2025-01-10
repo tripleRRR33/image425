@@ -3,168 +3,111 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Générateur de Cartes Aléatoires</title>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <title>Fiche : Voyage du Héros</title>
     <style>
         body {
-            background-image: url('https://i.imgur.com/FI9t6z9.jpeg');
-            background-size: cover;
-            background-attachment: fixed;
-            color: #f4f4f4;
-            font-family: 'Cinzel', serif;
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
         }
-        header {
-            background: rgba(0, 0, 0, 0.8);
-            color: #fff;
-            padding: 20px;
-            text-align: center;
-            font-size: 2rem;
-            border-bottom: 3px solid #9d6c34;
+        h1, h2 {
+            color: #333;
+        }
+        textarea {
+            width: 100%;
+            height: 80px;
+            margin-bottom: 15px;
         }
         button {
-            background: #6b4226;
-            color: #fff;
-            border: 2px solid #9d6c34;
+            background-color: #4CAF50;
+            color: white;
             padding: 10px 20px;
-            font-size: 1.2rem;
-            border-radius: 5px;
-            transition: 0.3s ease-in-out;
-            margin-top: 20px;
+            border: none;
+            cursor: pointer;
         }
         button:hover {
-            background: #9d6c34;
-            transform: scale(1.1);
-        }
-        .card {
-            background: rgba(0, 0, 0, 0.7);
-            border: 1px solid #9d6c34;
-            padding: 20px;
-            margin: 20px;
-            border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
-        }
-        h1, h2, h3 {
-            font-family: 'Cormorant', serif;
-            color: #ffd700;
-            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.8);
-        }
-        .nav-menu {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            justify-content: center;
-            margin: 20px 0;
-        }
-        .nav-menu a {
-            text-decoration: none;
-            color: #ffd700;
-            padding: 10px 20px;
-            border: 1px solid #9d6c34;
-            border-radius: 5px;
-            transition: background-color 0.3s, color 0.3s;
-            display: flex;
-            align-items: center;
-        }
-        .nav-menu a:hover {
-            background-color: #9d6c34;
-            color: #fff;
-        }
-        .nav-menu a i {
-            margin-right: 10px;
-        }
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            background: rgba(0, 0, 0, 0.7);
-            padding: 20px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            border-radius: 10px;
-        }
-        canvas {
-            display: block;
-            margin: 0 auto;
-            border: 1px solid #ced4da;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            background-color: #45a049;
         }
     </style>
 </head>
 <body>
-    <header>Générateur de Cartes Aléatoires</header>
-    <div class="nav-menu">
-        <a href="index.html"><i class="fa fa-home"></i> Accueil</a>
-        <a href="pays.html"><i class="fa fa-globe"></i> Fiche Pays</a>
-        <a href="intrigue.html"><i class="fa fa-book"></i> Fiche Intrigue</a>
-        <a href="divinite.html"><i class="fa fa-god"></i> Fiche Divinité</a>
-        <a href="monstre.html"><i class="fa fa-monster"></i> Fiche Monstre</a>
-        <a href="artefact.html"><i class="fa fa-gem"></i> Fiche Artefact</a>
-        <a href="malediction.html"><i class="fa fa-skull"></i> Fiche Malédiction</a>
-        <a href="peuple.html"><i class="fa fa-users"></i> Fiche Peuple</a>
-        <a href="vilain.html"><i class="fa fa-user-ninja"></i> Fiche Vilain</a>
-        <a href="organisation.html"><i class="fa fa-sitemap"></i> Fiche Organisation</a>
-        <a href="alliance.html"><i class="fa fa-handshake"></i> Fiche Alliance</a>
-        <a href="technologie.html"><i class="fa fa-cogs"></i> Fiche Technologie</a>
-        <a href="gouvernement.html"><i class="fa fa-landmark"></i> Fiche Gouvernement</a>
-        <a href="chapitre.html"><i class="fa fa-bookmark"></i> Chapitre</a>
-        <a href="map.html"><i class="fa fa-map"></i> Map</a>
-        <a href="brainstorming.html"><i class="fa fa-lightbulb"></i> Brainstorming</a>
-        <a href="chronologie.html"><i class="fa fa-hourglass"></i> Chronologie</a>
-        <a href="batail_maison.html"><i class="fa fa-shield-alt"></i> Bataille et Noble</a>
-        <a href="evenement.html"><i class="fa fa-calendar-alt"></i> Événement</a>
-        <a href="generateur.html"><i class="fa fa-cog"></i> Générateur</a>
-        <a href="test.html"><i class="fa fa-file-alt"></i> Dico</a>
-    </div>
-    <div class="container">
-        <h1>Générateur de Cartes Aléatoires</h1>
-        <canvas id="mapCanvas" width="600" height="400"></canvas>
-        <button id="generateMap">Générer une Nouvelle Carte</button>
-        <button id="download-pdf">Télécharger en PDF</button>
-    </div>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+    <h1>Fiche : Voyage du Héros</h1>
+    <form id="heroForm">
+        <h2>I. Le Départ : Le Monde Ordinaire et l'Appel à l'Aventure</h2>
+        <label>1. Monde ordinaire :</label>
+        <textarea id="mondeOrdinaire"></textarea>
+        <label>2. L'appel à l'aventure :</label>
+        <textarea id="appelAventure"></textarea>
+        <label>3. Le refus de l'appel (optionnel) :</label>
+        <textarea id="refusAppel"></textarea>
+        <label>4. La rencontre avec le mentor :</label>
+        <textarea id="rencontreMentor"></textarea>
+        <label>5. Passage du seuil :</label>
+        <textarea id="passageSeuil"></textarea>
+
+        <h2>II. L'Initiation : Les Épreuves et la Transformation</h2>
+        <label>6. Alliés, ennemis et épreuves :</label>
+        <textarea id="alliesEnnemis"></textarea>
+        <label>7. La descente dans les ténèbres :</label>
+        <textarea id="descenteTenebres"></textarea>
+        <label>8. La révélation / transformation :</label>
+        <textarea id="revelationTransformation"></textarea>
+        <label>9. L’épreuve suprême :</label>
+        <textarea id="epreuveSupreme"></textarea>
+        <label>10. La récompense :</label>
+        <textarea id="recompense"></textarea>
+
+        <h2>III. Le Retour : Le Monde Ordinaire Transformé</h2>
+        <label>11. Le chemin du retour :</label>
+        <textarea id="cheminRetour"></textarea>
+        <label>12. La résurrection (optionnel) :</label>
+        <textarea id="resurrection"></textarea>
+        <label>13. Le trésor partagé :</label>
+        <textarea id="tresorPartage"></textarea>
+
+        <button type="button" onclick="downloadHTML()">Télécharger en HTML</button>
+    </form>
+
     <script>
-        const canvas = document.getElementById('mapCanvas');
-        const context = canvas.getContext('2d');
-        const generateMapButton = document.getElementById('generateMap');
-        const downloadPdfButton = document.getElementById('download-pdf');
+        function downloadHTML() {
+            const form = document.getElementById('heroForm');
+            let content = `
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fiche : Voyage du Héros</title>
+</head>
+<body>
+    <h1>Fiche : Voyage du Héros</h1>
+    <h2>I. Le Départ : Le Monde Ordinaire et l'Appel à l'Aventure</h2>
+    <p><strong>1. Monde ordinaire :</strong> ${form.mondeOrdinaire.value}</p>
+    <p><strong>2. L'appel à l'aventure :</strong> ${form.appelAventure.value}</p>
+    <p><strong>3. Le refus de l'appel (optionnel) :</strong> ${form.refusAppel.value}</p>
+    <p><strong>4. La rencontre avec le mentor :</strong> ${form.rencontreMentor.value}</p>
+    <p><strong>5. Passage du seuil :</strong> ${form.passageSeuil.value}</p>
 
-        function getRandomInt(min, max) {
-            return Math.floor(Math.random() * (max - min + 1)) + min;
+    <h2>II. L'Initiation : Les Épreuves et la Transformation</h2>
+    <p><strong>6. Alliés, ennemis et épreuves :</strong> ${form.alliesEnnemis.value}</p>
+    <p><strong>7. La descente dans les ténèbres :</strong> ${form.descenteTenebres.value}</p>
+    <p><strong>8. La révélation / transformation :</strong> ${form.revelationTransformation.value}</p>
+    <p><strong>9. L’épreuve suprême :</strong> ${form.epreuveSupreme.value}</p>
+    <p><strong>10. La récompense :</strong> ${form.recompense.value}</p>
+
+    <h2>III. Le Retour : Le Monde Ordinaire Transformé</h2>
+    <p><strong>11. Le chemin du retour :</strong> ${form.cheminRetour.value}</p>
+    <p><strong>12. La résurrection (optionnel) :</strong> ${form.resurrection.value}</p>
+    <p><strong>13. Le trésor partagé :</strong> ${form.tresorPartage.value}</p>
+</body>
+</html>
+            `;
+            const blob = new Blob([content], { type: 'text/html' });
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = 'fiche_voyage_hero.html';
+            a.click();
         }
-
-        function drawMap() {
-            context.clearRect(0, 0, canvas.width, canvas.height);
-
-            // Draw background
-            context.fillStyle = '#87CEEB';
-            context.fillRect(0, 0, canvas.width, canvas.height);
-
-            // Draw islands
-            const numberOfIslands = getRandomInt(5, 15);
-            for (let i = 0; i < numberOfIslands; i++) {
-                const x = getRandomInt(0, canvas.width);
-                const y = getRandomInt(0, canvas.height);
-                const width = getRandomInt(50, 150);
-                const height = getRandomInt(50, 150);
-                context.fillStyle = '#228B22';
-                context.beginPath();
-                context.ellipse(x, y, width, height, Math.random() * Math.PI, 0, 2 * Math.PI);
-                context.fill();
-            }
-        }
-
-        generateMapButton.addEventListener('click', drawMap);
-
-        downloadPdfButton.addEventListener('click', () => {
-            const { jsPDF } = window.jspdf;
-            const pdf = new jsPDF();
-            pdf.text('Carte Générée', 10, 10);
-            pdf.addImage(canvas.toDataURL('image/jpeg'), 'JPEG', 10, 20, 180, 120);
-            pdf.save('carte_generee.pdf');
-        });
-
-        // Generate an initial map
-        drawMap();
     </script>
 </body>
 </html>
