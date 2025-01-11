@@ -1,20 +1,6 @@
 import React, { useState } from 'react';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
-import { 
-  Plus, 
-  Save, 
-  Trash2, 
-  Tag, 
-  FileText,
-  Globe, 
-  Compass, 
-  Map, 
-  Calendar, 
-  Users,
-  Book,
-  Bookmark,
-  Building
-} from 'lucide-react';
+import { Plus, Save, Trash2, Tag, FileText, Globe, Compass, Map, Calendar, Users, Book, Bookmark, Building } from 'lucide-react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip } from 'recharts';
 import ReactDOM from 'react-dom';
 
@@ -25,24 +11,9 @@ const WorldbuildingApp = () => {
       name: 'Géographie Physique',
       icon: <Globe className="w-4 h-4" />,
       subcategories: [
-        { 
-          id: 'geo-1',
-          name: 'Climats & Météo',
-          icon: <Compass className="w-4 h-4" />,
-          properties: ['température', 'précipitations', 'vents', 'saisons']
-        },
-        { 
-          id: 'geo-2',
-          name: 'Relief & Topographie',
-          icon: <Map className="w-4 h-4" />,
-          properties: ['altitude', 'type', 'composition', 'âge']
-        },
-        { 
-          id: 'geo-3',
-          name: 'Écosystèmes',
-          icon: <Globe className="w-4 h-4" />,
-          properties: ['type', 'biodiversité', 'endémisme', 'menaces']
-        }
+        { id: 'geo-1', name: 'Climats & Météo', icon: <Compass className="w-4 h-4" />, properties: ['température', 'précipitations', 'vents', 'saisons'] },
+        { id: 'geo-2', name: 'Relief & Topographie', icon: <Map className="w-4 h-4" />, properties: ['altitude', 'type', 'composition', 'âge'] },
+        { id: 'geo-3', name: 'Écosystèmes', icon: <Globe className="w-4 h-4" />, properties: ['type', 'biodiversité', 'endémisme', 'menaces'] }
       ]
     },
     {
@@ -129,14 +100,7 @@ const WorldbuildingApp = () => {
   const [relationships, setRelationships] = useState([]);
   const [activeView, setActiveView] = useState('edit');
 
-  const [elementForm, setElementForm] = useState({
-    name: '',
-    description: '',
-    tags: [],
-    properties: {},
-    relationships: [],
-    coordinates: { x: 0, y: 0 }
-  });
+  const [elementForm, setElementForm] = useState({ name: '', description: '', tags: [], properties: {}, relationships: [], coordinates: { x: 0, y: 0 } });
 
   const handleAddElement = () => {
     if (!elementForm.name.trim()) return;
@@ -155,22 +119,11 @@ const WorldbuildingApp = () => {
       [selectedSubcategory]: [...(prev[selectedSubcategory] || []), newElement]
     }));
 
-    setElementForm({
-      name: '',
-      description: '',
-      tags: [],
-      properties: {},
-      relationships: [],
-      coordinates: { x: 0, y: 0 }
-    });
+    setElementForm({ name: '', description: '', tags: [], properties: {}, relationships: [], coordinates: { x: 0, y: 0 } });
   };
 
   const handleSaveWorld = () => {
-    const worldData = {
-      categories,
-      elements,
-      relationships
-    };
+    const worldData = { categories, elements, relationships };
     localStorage.setItem('worldbuilding-data', JSON.stringify(worldData));
     alert('Monde sauvegardé !');
   };
@@ -182,32 +135,23 @@ const WorldbuildingApp = () => {
           <div className="flex justify-between items-center">
             <CardTitle className="text-2xl font-bold">Créateur de Monde</CardTitle>
             <div className="flex gap-2">
-              <button
-                className="p-2 bg-green-500 text-white rounded hover:bg-green-600 flex items-center gap-2"
-                onClick={handleSaveWorld}
-              >
-                <Save size={20} />
-                Sauvegarder
+              <button className="p-2 bg-green-500 text-white rounded hover:bg-green-600 flex items-center gap-2" onClick={handleSaveWorld}>
+                <Save size={20} /> Sauvegarder
               </button>
-              <button
-                className="p-2 bg-blue-500 text-white rounded hover:bg-blue-600 flex items-center gap-2"
-                onClick={() => {
-                  const worldData = { categories, elements, relationships };
-                  const blob = new Blob([JSON.stringify(worldData, null, 2)]);
-                  const url = URL.createObjectURL(blob);
-                  const a = document.createElement('a');
-                  a.href = url;
-                  a.download = 'monde.json';
-                  a.click();
-                }}
-              >
-                <FileText size={20} />
-                Exporter
+              <button className="p-2 bg-blue-500 text-white rounded hover:bg-blue-600 flex items-center gap-2" onClick={() => {
+                const worldData = { categories, elements, relationships };
+                const blob = new Blob([JSON.stringify(worldData, null, 2)]);
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'monde.json';
+                a.click();
+              }}>
+                <FileText size={20} /> Exporter
               </button>
             </div>
           </div>
         </CardHeader>
-
         <CardContent>
           <div className="grid grid-cols-12 gap-4">
             <div className="col-span-3 border-r pr-4">
@@ -219,16 +163,10 @@ const WorldbuildingApp = () => {
                   </div>
                   <ul className="space-y-1">
                     {category.subcategories.map(sub => (
-                      <li
-                        key={sub.id}
-                        className={`flex items-center gap-2 p-2 rounded cursor-pointer hover:bg-gray-100 ${
-                          selectedSubcategory === sub.id ? 'bg-blue-100' : ''
-                        }`}
-                        onClick={() => {
-                          setSelectedCategory(category.id);
-                          setSelectedSubcategory(sub.id);
-                        }}
-                      >
+                      <li key={sub.id} className={`flex items-center gap-2 p-2 rounded cursor-pointer hover:bg-gray-100 ${selectedSubcategory === sub.id ? 'bg-blue-100' : ''}`} onClick={() => {
+                        setSelectedCategory(category.id);
+                        setSelectedSubcategory(sub.id);
+                      }}>
                         {sub.icon}
                         <span>{sub.name}</span>
                       </li>
@@ -237,72 +175,34 @@ const WorldbuildingApp = () => {
                 </div>
               ))}
             </div>
-
             <div className="col-span-9">
               <div className="flex gap-4 mb-4">
-                <button
-                  className={`p-2 rounded ${activeView === 'edit' ? 'bg-blue-500 text-white' : 'bg-gray-100'}`}
-                  onClick={() => setActiveView('edit')}
-                >
-                  Édition
-                </button>
-                <button
-                  className={`p-2 rounded ${activeView === 'relationships' ? 'bg-blue-500 text-white' : 'bg-gray-100'}`}
-                  onClick={() => setActiveView('relationships')}
-                >
-                  Relations
-                </button>
+                <button className={`p-2 rounded ${activeView === 'edit' ? 'bg-blue-500 text-white' : 'bg-gray-100'}`} onClick={() => setActiveView('edit')}>Édition</button>
+                <button className={`p-2 rounded ${activeView === 'relationships' ? 'bg-blue-500 text-white' : 'bg-gray-100'}`} onClick={() => setActiveView('relationships')}>Relations</button>
               </div>
-
               {activeView === 'edit' && (
                 <Card className="p-4">
                   <div className="grid grid-cols-2 gap-4 mb-4">
-                    <input
-                      type="text"
-                      className="p-2 border rounded"
-                      placeholder="Nom de l'élément"
-                      value={elementForm.name}
-                      onChange={(e) => setElementForm(prev => ({...prev, name: e.target.value}))}
-                    />
+                    <input type="text" className="p-2 border rounded" placeholder="Nom de l'élément" value={elementForm.name} onChange={(e) => setElementForm(prev => ({...prev, name: e.target.value}))} />
                     <div className="flex gap-2">
-                      <input
-                        type="text"
-                        className="flex-1 p-2 border rounded"
-                        placeholder="Ajouter un tag..."
-                        onKeyPress={(e) => {
-                          if (e.key === 'Enter' && e.target.value) {
-                            setElementForm(prev => ({
-                              ...prev,
-                              tags: [...prev.tags, e.target.value]
-                            }));
-                            e.target.value = '';
-                          }
-                        }}
-                      />
-                      <button className="p-2 border rounded">
-                        <Tag size={20} />
-                      </button>
+                      <input type="text" className="flex-1 p-2 border rounded" placeholder="Ajouter un tag..." onKeyPress={(e) => {
+                        if (e.key === 'Enter' && e.target.value) {
+                          setElementForm(prev => ({
+                            ...prev,
+                            tags: [...prev.tags, e.target.value]
+                          }));
+                          e.target.value = '';
+                        }
+                      }} />
+                      <button className="p-2 border rounded"><Tag size={20} /></button>
                     </div>
                   </div>
-
-                  <textarea
-                    className="w-full p-2 border rounded mb-4"
-                    placeholder="Description détaillée..."
-                    rows="4"
-                    value={elementForm.description}
-                    onChange={(e) => setElementForm(prev => ({...prev, description: e.target.value}))}
-                  />
-
-                  <button
-                    className="w-full p-2 bg-blue-500 text-white rounded hover:bg-blue-600 flex items-center justify-center gap-2"
-                    onClick={handleAddElement}
-                  >
-                    <Plus size={20} />
-                    Ajouter
+                  <textarea className="w-full p-2 border rounded mb-4" placeholder="Description détaillée..." rows="4" value={elementForm.description} onChange={(e) => setElementForm(prev => ({...prev, description: e.target.value}))} />
+                  <button className="w-full p-2 bg-blue-500 text-white rounded hover:bg-blue-600 flex items-center justify-center gap-2" onClick={handleAddElement}>
+                    <Plus size={20} /> Ajouter
                   </button>
                 </Card>
               )}
-
               <div className="mt-4 space-y-4">
                 {elements[selectedSubcategory]?.map(element => (
                   <Card key={element.id} className="p-4">
@@ -313,22 +213,17 @@ const WorldbuildingApp = () => {
                         {element.tags?.length > 0 && (
                           <div className="flex gap-2 mt-2">
                             {element.tags.map((tag, index) => (
-                              <span key={index} className="px-2 py-1 bg-gray-100 rounded-full text-sm">
-                                {tag}
-                              </span>
+                              <span key={index} className="px-2 py-1 bg-gray-100 rounded-full text-sm">{tag}</span>
                             ))}
                           </div>
                         )}
                       </div>
-                      <button
-                        className="text-red-500 hover:text-red-700"
-                        onClick={() => {
-                          setElements(prev => ({
-                            ...prev,
-                            [selectedSubcategory]: prev[selectedSubcategory].filter(el => el.id !== element.id)
-                          }));
-                        }}
-                      >
+                      <button className="text-red-500 hover:text-red-700" onClick={() => {
+                        setElements(prev => ({
+                          ...prev,
+                          [selectedSubcategory]: prev[selectedSubcategory].filter(el => el.id !== element.id)
+                        }));
+                      }}>
                         <Trash2 size={20} />
                       </button>
                     </div>
