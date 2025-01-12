@@ -1,358 +1,225 @@
-import React, { useState } from 'react';
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
-import { 
-  Plus, 
-  Save, 
-  Trash2, 
-  Edit, 
-  Tag, 
-  FileText,
-  Image, 
-  Link, 
-  Map, 
-  Calendar, 
-  Compass,
-  Users,
-  Book,
-  Bookmark,
-  Globe,
-  Building
-} from 'lucide-react';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip } from 'recharts';
-
-const WorldbuildingApp = () => {
-  // ... [Le reste du code précédent reste identique jusqu'aux initialCategories]
-
-  const initialCategories = [
-    {
-      id: 1,
-      name: 'Géographie Physique',
-      icon: <Globe className="w-4 h-4" />,
-      subcategories: [
-        { 
-          id: 'geo-1',
-          name: 'Climats & Météo',
-          icon: <Compass className="w-4 h-4" />,
-          properties: ['température', 'précipitations', 'vents', 'saisons']
-        },
-        { 
-          id: 'geo-2',
-          name: 'Relief & Topographie',
-          icon: <Map className="w-4 h-4" />,
-          properties: ['altitude', 'type', 'composition', 'âge']
-        },
-        { 
-          id: 'geo-3',
-          name: 'Écosystèmes',
-          icon: <Globe className="w-4 h-4" />,
-          properties: ['type', 'biodiversité', 'endémisme', 'menaces']
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Générateur de Descriptions Physiques</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f0f2f5;
         }
-      ]
-    },
-    {
-      id: 2,
-      name: 'Civilisations',
-      icon: <Building className="w-4 h-4" />,
-      subcategories: [
-        {
-          id: 'civ-1',
-          name: 'Structure Sociale',
-          icon: <Users className="w-4 h-4" />,
-          properties: ['classes', 'hiérarchie', 'mobilité', 'traditions']
-        },
-        {
-          id: 'civ-2',
-          name: 'Politique',
-          icon: <Bookmark className="w-4 h-4" />,
-          properties: ['système', 'institutions', 'lois', 'relations']
-        },
-        {
-          id: 'civ-3',
-          name: 'Économie',
-          icon: <Building className="w-4 h-4" />,
-          properties: ['ressources', 'commerce', 'monnaie', 'technologies']
+
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
-      ]
-    },
-    {
-      id: 3,
-      name: 'Culture',
-      icon: <Book className="w-4 h-4" />,
-      subcategories: [
-        {
-          id: 'cul-1',
-          name: 'Langues',
-          icon: <FileText className="w-4 h-4" />,
-          properties: ['famille', 'écriture', 'dialectes', 'évolution']
-        },
-        {
-          id: 'cul-2',
-          name: 'Arts & Littérature',
-          icon: <Book className="w-4 h-4" />,
-          properties: ['formes', 'styles', 'influences', 'périodes']
-        },
-        {
-          id: 'cul-3',
-          name: 'Religion & Mythologie',
-          icon: <Compass className="w-4 h-4" />,
-          properties: ['panthéon', 'rituels', 'croyances', 'textes']
+
+        h1, h2 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 20px;
         }
-      ]
-    },
-    {
-      id: 4,
-      name: 'Histoire',
-      icon: <Calendar className="w-4 h-4" />,
-      subcategories: [
-        {
-          id: 'his-1',
-          name: 'Époques',
-          icon: <Calendar className="w-4 h-4" />,
-          properties: ['début', 'fin', 'caractéristiques', 'événements']
-        },
-        {
-          id: 'his-2',
-          name: 'Conflits',
-          icon: <Users className="w-4 h-4" />,
-          properties: ['belligérants', 'causes', 'durée', 'conséquences']
-        },
-        {
-          id: 'his-3',
-          name: 'Développements',
-          icon: <Bookmark className="w-4 h-4" />,
-          properties: ['domaine', 'impact', 'origines', 'propagation']
+
+        .description-container {
+            margin: 20px 0;
+            padding: 20px;
+            border: 1px solid #e1e1e1;
+            border-radius: 5px;
+            background-color: #fafafa;
         }
-      ]
-    }
-  ];
 
-  // États
-  const [categories] = useState(initialCategories);
-  const [selectedCategory, setSelectedCategory] = useState(1);
-  const [selectedSubcategory, setSelectedSubcategory] = useState('geo-1');
-  const [elements, setElements] = useState({});
-  const [relationships, setRelationships] = useState([]);
-  const [activeView, setActiveView] = useState('edit'); // edit, timeline, relationships, map
+        #description-output, #simple-description-output {
+            white-space: pre-wrap;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
 
-  // État du formulaire
-  const [elementForm, setElementForm] = useState({
-    name: '',
-    description: '',
-    tags: [],
-    properties: {},
-    relationships: [],
-    coordinates: { x: 0, y: 0 }
-  });
+        .divider {
+            border-top: 2px dashed #3498db;
+            margin: 20px 0;
+        }
 
-  // Gestionnaires d'événements
-  const handleAddElement = () => {
-    if (!elementForm.name.trim()) return;
+        .button-container {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin: 20px 0;
+        }
 
-    const newElement = {
-      id: Date.now(),
-      categoryId: selectedCategory,
-      subcategoryId: selectedSubcategory,
-      ...elementForm,
-      created: new Date().toISOString(),
-      modified: new Date().toISOString()
-    };
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
 
-    setElements(prev => ({
-      ...prev,
-      [selectedSubcategory]: [...(prev[selectedSubcategory] || []), newElement]
-    }));
+        .generate-button {
+            background-color: #3498db;
+        }
 
-    setElementForm({
-      name: '',
-      description: '',
-      tags: [],
-      properties: {},
-      relationships: [],
-      coordinates: { x: 0, y: 0 }
-    });
-  };
+        .generate-button:hover {
+            background-color: #2980b9;
+        }
 
-  const handleSaveWorld = () => {
-    const worldData = {
-      categories,
-      elements,
-      relationships
-    };
-    localStorage.setItem('worldbuilding-data', JSON.stringify(worldData));
-    alert('Monde sauvegardé !');
-  };
+        .copy-button {
+            background-color: #27ae60;
+        }
 
-  return (
-    <div className="p-4 max-w-7xl mx-auto">
-      <Card className="mb-6">
-        <CardHeader className="border-b">
-          <div className="flex justify-between items-center">
-            <CardTitle className="text-2xl font-bold">Créateur de Monde</CardTitle>
-            <div className="flex gap-2">
-              <button
-                className="p-2 bg-green-500 text-white rounded hover:bg-green-600 flex items-center gap-2"
-                onClick={handleSaveWorld}
-              >
-                <Save size={20} />
-                Sauvegarder
-              </button>
-              <button
-                className="p-2 bg-blue-500 text-white rounded hover:bg-blue-600 flex items-center gap-2"
-                onClick={() => {
-                  const worldData = { categories, elements, relationships };
-                  const blob = new Blob([JSON.stringify(worldData, null, 2)]);
-                  const url = URL.createObjectURL(blob);
-                  const a = document.createElement('a');
-                  a.href = url;
-                  a.download = 'monde.json';
-                  a.click();
-                }}
-              >
-                <FileText size={20} />
-                Exporter
-              </button>
-            </div>
-          </div>
-        </CardHeader>
+        .copy-button:hover {
+            background-color: #219a52;
+        }
 
-        <CardContent>
-          <div className="grid grid-cols-12 gap-4">
-            {/* Barre latérale */}
-            <div className="col-span-3 border-r pr-4">
-              {categories.map(category => (
-                <div key={category.id} className="mb-6">
-                  <div className="flex items-center gap-2 mb-2">
-                    {category.icon}
-                    <h3 className="font-bold">{category.name}</h3>
-                  </div>
-                  <ul className="space-y-1">
-                    {category.subcategories.map(sub => (
-                      <li
-                        key={sub.id}
-                        className={`flex items-center gap-2 p-2 rounded cursor-pointer hover:bg-gray-100 ${
-                          selectedSubcategory === sub.id ? 'bg-blue-100' : ''
-                        }`}
-                        onClick={() => {
-                          setSelectedCategory(category.id);
-                          setSelectedSubcategory(sub.id);
-                        }}
-                      >
-                        {sub.icon}
-                        <span>{sub.name}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              ))}
-            </div>
+        .link-container {
+            text-align: center;
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #f8f9fa;
+            border-radius: 5px;
+        }
 
-            {/* Contenu principal */}
-            <div className="col-span-9">
-              {/* Vues */}
-              <div className="flex gap-4 mb-4">
-                <button
-                  className={`p-2 rounded ${activeView === 'edit' ? 'bg-blue-500 text-white' : 'bg-gray-100'}`}
-                  onClick={() => setActiveView('edit')}
-                >
-                  Édition
-                </button>
-                <button
-                  className={`p-2 rounded ${activeView === 'relationships' ? 'bg-blue-500 text-white' : 'bg-gray-100'}`}
-                  onClick={() => setActiveView('relationships')}
-                >
-                  Relations
-                </button>
-              </div>
+        .link-container a {
+            color: #3498db;
+            text-decoration: none;
+            font-weight: bold;
+        }
 
-              {/* Formulaire d'ajout */}
-              {activeView === 'edit' && (
-                <Card className="p-4">
-                  <div className="grid grid-cols-2 gap-4 mb-4">
-                    <input
-                      type="text"
-                      className="p-2 border rounded"
-                      placeholder="Nom de l'élément"
-                      value={elementForm.name}
-                      onChange={(e) => setElementForm(prev => ({...prev, name: e.target.value}))}
-                    />
-                    <div className="flex gap-2">
-                      <input
-                        type="text"
-                        className="flex-1 p-2 border rounded"
-                        placeholder="Ajouter un tag..."
-                        onKeyPress={(e) => {
-                          if (e.key === 'Enter' && e.target.value) {
-                            setElementForm(prev => ({
-                              ...prev,
-                              tags: [...prev.tags, e.target.value]
-                            }));
-                            e.target.value = '';
-                          }
-                        }}
-                      />
-                      <button className="p-2 border rounded">
-                        <Tag size={20} />
-                      </button>
-                    </div>
-                  </div>
+        .link-container a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Générateur de Descriptions Physiques</h1>
+        <div class="button-container">
+            <button onclick="genererDescriptions()" class="generate-button">Générer nouvelles descriptions</button>
+        </div>
+        
+        <div class="description-container">
+            <h2>Description Détaillée</h2>
+            <div id="description-output"></div>
+            <button onclick="copierDescription('description-output')" class="copy-button">Copier la description détaillée</button>
+        </div>
 
-                  <textarea
-                    className="w-full p-2 border rounded mb-4"
-                    placeholder="Description détaillée..."
-                    rows="4"
-                    value={elementForm.description}
-                    onChange={(e) => setElementForm(prev => ({...prev, description: e.target.value}))}
-                  />
+        <div class="divider"></div>
 
-                  <button
-                    className="w-full p-2 bg-blue-500 text-white rounded hover:bg-blue-600 flex items-center justify-center gap-2"
-                    onClick={handleAddElement}
-                  >
-                    <Plus size={20} />
-                    Ajouter
-                  </button>
-                </Card>
-              )}
+        <div class="description-container">
+            <h2>Description Simplifiée (optimisée pour IA)</h2>
+            <div id="simple-description-output"></div>
+            <button onclick="copierDescription('simple-description-output')" class="copy-button">Copier la description simplifiée</button>
+        </div>
 
-              {/* Liste des éléments */}
-              <div className="mt-4 space-y-4">
-                {elements[selectedSubcategory]?.map(element => (
-                  <Card key={element.id} className="p-4">
-                    <div className="flex justify-between items-start">
-                      <div>
-                        <h3 className="text-lg font-bold">{element.name}</h3>
-                        <p className="text-gray-600">{element.description}</p>
-                        {element.tags?.length > 0 && (
-                          <div className="flex gap-2 mt-2">
-                            {element.tags.map((tag, index) => (
-                              <span key={index} className="px-2 py-1 bg-gray-100 rounded-full text-sm">
-                                {tag}
-                              </span>
-                            ))}
-                          </div>
-                        )}
-                      </div>
-                      <button
-                        className="text-red-500 hover:text-red-700"
-                        onClick={() => {
-                          setElements(prev => ({
-                            ...prev,
-                            [selectedSubcategory]: prev[selectedSubcategory].filter(el => el.id !== element.id)
-                          }));
-                        }}
-                      >
-                        <Trash2 size={20} />
-                      </button>
-                    </div>
-                  </Card>
-                ))}
-              </div>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
+        <div class="link-container">
+            <p>🎨 Utilisez aussi le <a href="https://perchance.org/ai-text-to-image-generator" target="_blank">Générateur de Prompts IA</a> pour optimiser vos descriptions !</p>
+        </div>
     </div>
-  );
-};
 
-export default WorldbuildingApp;
+    <script>
+        const caracteristiques = {
+            age: ["18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30"],
+            
+            visage: {
+                forme: ["ovale", "en forme de cœur", "rond", "anguleux", "allongé", "en diamant", "carré adouci", "triangulaire inversé"],
+                teint: ["porcelaine", "hâlé", "olive", "pêche", "doré", "ivoire", "albâtre", "caramel", "miel", "bronze", "beige rosé"],
+                traits: ["des pommettes hautes et saillantes", "une mâchoire délicate", "des traits fins et harmonieux", "un visage expressif", 
+                        "des traits délicats et féminins", "une structure osseuse élégante", "des traits symétriques et raffinés",
+                        "un profil gracieux", "des traits doux et harmonieux", "une expression naturellement douce"],
+                nez: ["petit et délicat", "droit et raffiné", "légèrement retroussé", "fin et élégant", "parfaitement proportionné"],
+                levres: ["pulpeuses et bien dessinées", "fines et élégantes", "naturellement rosées", "en forme d'arc de cupidon prononcé", 
+                        "doucement colorées", "parfaitement symétriques", "délicatement ourlées"]
+            },
+            
+            yeux: {
+                couleur: ["bleu glacier", "vert émeraude", "noisette doré", "violet améthyste", "gris argenté", "bleu océan", "vert jade", 
+                         "ambre", "brun profond", "bleu saphir", "vert forêt", "gris orage", "bleu céruléen", "vert mousse", 
+                         "brun ambré", "turquoise", "indigo", "améthyste", "aigue-marine"],
+                forme: ["en amande", "grands et expressifs", "légèrement bridés", "ronds et lumineux", "félinement étirés", 
+                       "délicatement inclinés", "harmonieusement espacés", "profonds et envoûtants"],
+                details: ["avec des reflets dorés", "parsemés de paillettes dorées", "avec un anneau doré autour de la pupille", 
+                         "aux longs cils fournis", "soulignés de cils naturellement longs", "avec des reflets irisés", 
+                         "mouchetés de points dorés", "avec un dégradé subtil", "bordés de cils épais et recourbés"]
+            },
+            
+            cheveux: {
+                longueur: ["très longs jusqu'aux hanches", "mi-longs effleurant les épaules", "courts et stylisés", 
+                          "longs jusqu'au milieu du dos", "au niveau des omoplates", "coupés au carré net", 
+                          "descendant en cascade jusqu'aux reins", "effleurant la taille"],
+                couleur: ["blond platine", "noir de jais", "roux flamboyant", "châtain aux reflets dorés", "brun chocolat", 
+                         "blanc argenté", "bleu nuit", "violet profond", "rose poudré", "lavande pastel", "bordeaux profond",
+                         "caramel", "miel doré", "acajou", "cuivré", "auburn", "prune"],
+                style: ["ondulés", "bouclés", "parfaitement lisses", "légèrement ondulés", "en boucles souples", 
+                       "en vagues glamour", "en spirales définies", "en boucles romantiques", "en cascade ondoyante"],
+                texture: ["soyeux", "épais et volumineux", "fins et légers", "brillants et sains", "doux comme de la soie", 
+                         "luxuriants et abondants", "légers comme une plume", "resplendissants de santé"]
+            },
+            
+            corps: {
+                taille: ["petite (1m55-1m60)", "moyenne (1m65-1m70)", "grande (1m75-1m80)", "très grande (1m80+)"],
+                silhouette: ["mince et élancée", "athlétique et tonique", "aux courbes harmonieuses", "svelte et gracieuse",
+                            "fine et délicate", "athlétique et sculptée", "aux proportions parfaites", "élancée et souple"],
+                details: ["une posture gracieuse", "une démarche élégante", "des mouvements fluides", 
+                         "une présence naturellement élégante", "un maintien royal", "une grâce naturelle"]
+            },
+
+            style: {
+                vetements: ["élégante", "sophistiquée", "décontractée chic", "avant-gardiste", "bohème chic", 
+                           "minimaliste raffinée", "glamour", "romantique moderne"],
+                accessoires: ["bijoux délicats en or", "accessoires raffinés en argent", "touches personnalisées subtiles",
+                            "bijoux minimalistes", "accessoires vintage sélectionnés", "pièces artisanales uniques"],
+                allure: ["une allure naturellement gracieuse", "un style distinctif", "une élégance innée",
+                        "un charisme magnétique", "une présence captivante", "un magnétisme naturel"]
+            }
+        };
+
+        function choixAleatoire(array) {
+            return array[Math.floor(Math.random() * array.length)];
+        }
+
+        function genererDescription() {
+            const age = choixAleatoire(caracteristiques.age);
+            
+            const description = `Portrait détaillé d'une jeune femme de ${age} ans :
+
+Apparence générale : ${choixAleatoire(caracteristiques.corps.taille)}, ${choixAleatoire(caracteristiques.corps.silhouette)}, dégageant ${choixAleatoire(caracteristiques.corps.details)}.
+
+Visage : ${choixAleatoire(caracteristiques.visage.forme)}, au teint ${choixAleatoire(caracteristiques.visage.teint)}, avec ${choixAleatoire(caracteristiques.visage.traits)}. Son nez est ${choixAleatoire(caracteristiques.visage.nez)}, accompagné de lèvres ${choixAleatoire(caracteristiques.visage.levres)}.
+
+Yeux : ${choixAleatoire(caracteristiques.yeux.couleur)}, ${choixAleatoire(caracteristiques.yeux.forme)}, ${choixAleatoire(caracteristiques.yeux.details)}.
+
+Cheveux : ${choixAleatoire(caracteristiques.cheveux.longueur)}, ${choixAleatoire(caracteristiques.cheveux.couleur)}, ${choixAleatoire(caracteristiques.cheveux.style)} et ${choixAleatoire(caracteristiques.cheveux.texture)}.
+
+Style : ${choixAleatoire(caracteristiques.style.vetements)}, portant des ${choixAleatoire(caracteristiques.style.accessoires)}, ${choixAleatoire(caracteristiques.style.allure)}.`;
+
+            document.getElementById('description-output').textContent = description;
+        }
+
+        function genererDescriptionSimple() {
+            const age = choixAleatoire(caracteristiques.age);
+            return `beautiful young woman, ${age} years old, ${choixAleatoire(caracteristiques.corps.silhouette)}, ${choixAleatoire(caracteristiques.cheveux.longueur)} ${choixAleatoire(caracteristiques.cheveux.couleur)} ${choixAleatoire(caracteristiques.cheveux.style)} hair, ${choixAleatoire(caracteristiques.yeux.couleur)} ${choixAleatoire(caracteristiques.yeux.forme)} eyes, ${choixAleatoire(caracteristiques.visage.teint)} skin tone, ${choixAleatoire(caracteristiques.style.vetements)} style, high quality, detailed, realistic, 8k, masterpiece, perfect face`;
+        }
+
+        function genererDescriptions() {
+            genererDescription();
+            document.getElementById('simple-description-output').textContent = genererDescriptionSimple();
+        }
+
+        function copierDescription(elementId) {
+            const texte = document.getElementById(elementId).textContent;
+            navigator.clipboard.writeText(texte).then(() => {
+                alert('Description copiée dans le presse-papiers !');
+            });
+        }
+
+        // Générer les descriptions au chargement
+        genererDescriptions();
+    </script>
+</body>
+</html>
